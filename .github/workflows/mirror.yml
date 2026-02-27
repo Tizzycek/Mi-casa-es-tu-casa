@@ -21,4 +21,4 @@ jobs:
           git remote add gitlab https://oauth2:$GITLAB_TOKEN@gitlab.di.unipmn.it/20055217/mi-casa-es-tu-casa.git
           
           # Push di tutto
-          git push --mirror gitlab
+          git push gitlab --force --all
