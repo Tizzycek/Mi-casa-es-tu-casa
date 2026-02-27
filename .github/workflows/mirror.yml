@@ -18,7 +18,7 @@ jobs:
           GITLAB_TOKEN: ${{ secrets.GITLAB_HTTPS_TOKEN }}
         run: |
           # Configura git per usare il token
-          git remote add gitlab https://oauth2:$GITLAB_TOKEN@gitlab.di.unipmn.it/mi-casa-es-tu-casa.git
+          git remote add gitlab https://oauth2:$GITLAB_TOKEN@gitlab.di.unipmn.it/20055217/mi-casa-es-tu-casa.git
           
           # Push di tutto
           git push --mirror gitlab
