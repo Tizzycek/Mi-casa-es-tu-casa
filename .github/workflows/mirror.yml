@@ -13,13 +13,12 @@ jobs:
         with:
           fetch-depth: 0
       
-      - name: Push to GitLab
+      - name: Push to GitLab (HTTPS)
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.GITLAB_SSH_PRIVATE_KEY }}
+          GITLAB_TOKEN: ${{ secrets.GITLAB_HTTPS_TOKEN }}
         run: |
-          mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
-          git remote add gitlab git@gitlab.di.unipmn.it:20055217/mi-casa-es-tu-casa.git
+          # Configura git per usare il token
+          git remote add gitlab https://oauth2:$GITLAB_TOKEN@gitlab.di.unipmn.it:20055217/mi-casa-es-tu-casa.git
+          
+          # Push di tutto
           git push --mirror gitlab
