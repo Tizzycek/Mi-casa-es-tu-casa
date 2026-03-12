@@ -1,4 +1,4 @@
-package tizzycek.micasaestucasa
+package it.tizzycek.myapplication
 
 import org.junit.Test
 
