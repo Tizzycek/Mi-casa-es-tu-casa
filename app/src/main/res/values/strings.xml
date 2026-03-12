@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Mi Casa es tu Casa</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="dont_have_account">"Don't you have an account?"</string>
+    <string name="enter_email">"Please enter email"</string>
+    <string name="enter_password">"Please enter password"</string>
+    <string name="invalid_email">This is not a valid email address</string>
+    <string name="login_success">Login successfully completed</string>
+    <string name="login_fail">Login failed</string>
+    <string name="sign_up">Sign up!</string>
+    <string name="notification">Send notification</string>
+    <string name="logout">Log out!</string>
+    <string name="title_activity_login">Login activity</string>
 </resources>

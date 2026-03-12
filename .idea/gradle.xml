@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
@@ -15,6 +16,12 @@
       <GradleProjectSettings>
         <option name="testRunner" value="CHOOSE_PER_TEST" />
         <option name="externalProjectPath" value="$USER_HOME$/OneDrive - Università del Piemonte Orientale/Terzo anno/Applicazioni mobili/Micasaestucasa" />
+        <option name="modules">
+          <set>
+            <option value="$USER_HOME$/OneDrive - Università del Piemonte Orientale/Terzo anno/Applicazioni mobili/Micasaestucasa" />
+            <option value="$USER_HOME$/OneDrive - Università del Piemonte Orientale/Terzo anno/Applicazioni mobili/Micasaestucasa/app" />
+          </set>
+        </option>
       </GradleProjectSettings>
     </option>
   </component>

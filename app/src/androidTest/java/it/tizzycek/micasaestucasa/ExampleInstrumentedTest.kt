@@ -1,4 +1,4 @@
-package it.tizzycek.myapplication
+package it.tizzycek.micasaestucasa
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

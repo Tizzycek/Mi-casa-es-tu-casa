@@ -1,0 +1,25 @@
+fun setupAdminManualmente(adminUid: String) {
+        val adminData = mapOf(
+            "nome" to "Tiziano",
+            "tipo" to "ADMIN",
+            "stato" to 1
+            // NOTA: La password NON va qui. È già al sicuro in Firebase Auth.
+        )
+
+        FirebaseFirestore.getInstance()
+            .collection("utenti")
+            .document(adminUid) // Uso l'UID di Authentication
+            .set(adminData)
+    }
+
+        // ADMIN TEST: success
+        var test = true
+        val UserRepository = UserRepository()
+        try {
+            UserRepository.setupAdminManualmente("9PCOF34oqxW3U74fhoBrcmbipWE3")
+        } catch (e: Exception) {
+            Toast.makeText(baseContext, "errore: " + e.message, Toast.LENGTH_LONG).show()
+            test = false
+        } finally {
+            Toast.makeText(baseContext, if (test) "success" else "failure", Toast.LENGTH_LONG).show()
+        }
