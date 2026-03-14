@@ -20,6 +20,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
+        MainRepo.getUserRepository().logout()
+
         if (MainRepo.getUserRepository().isLoggedIn()) {
             setContentView(R.layout.activity_main)
             ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->

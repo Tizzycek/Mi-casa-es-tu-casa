@@ -11,6 +11,7 @@ import com.google.android.material.snackbar.Snackbar
 import it.tizzycek.micasaestucasa.R
 import it.tizzycek.micasaestucasa.databinding.LoginBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo
+import it.tizzycek.micasaestucasa.ui.mostraErrore
 import kotlinx.coroutines.launch
 
 class LoginActivity() : AppCompatActivity() {
@@ -25,27 +26,30 @@ class LoginActivity() : AppCompatActivity() {
         binding = LoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val loginBtn = binding.btnLogIn
-        val signUpBtn = binding.btnSignUp
 
-        loginBtn.setOnClickListener {
-            val email = binding.tvUsername.toString()
-            val password = binding.tvPassword.toString()
-
-            lifecycleScope.launch {
-                login(email, password)
+        binding.btnLogin.setOnClickListener {
+                lifecycleScope.launch {
+                login()
             }
         }
 
-        signUpBtn.setOnClickListener {
+        binding.btnSignUp.setOnClickListener {
             startActivity(Intent(this, RegistrationActivity::class.java))
+            finish()
         }
     }
 
-    suspend fun login(email: String, password: String) {
-        binding.btnLogIn.isEnabled = false
-        binding.btnSignUp.isEnabled = false
+    suspend fun login() {
+        val email = binding.emailEditText.text.toString().trim()
+        val password = binding.passwordEditText.text.toString().trim()
 
+        if (email.isEmpty() || password.isEmpty()) {
+            mostraErrore(R.string.data_missing)
+            return
+        }
+
+        binding.btnLogin.isEnabled = false
+        binding.btnSignUp.isEnabled = false
         binding.progressBar.visibility = View.VISIBLE
 
         val risultato = MainRepo.getUserRepository().login(email, password)
@@ -59,16 +63,12 @@ class LoginActivity() : AppCompatActivity() {
                 }
             },
             onFailure = { errore ->
-                mostraErrore(errore.message ?: R.string.unknown_error.toString())
-                binding.btnLogIn.isEnabled = true
+                val messaggioFinal = errore.message ?: getString(R.string.unknown_error)
+                mostraErrore(messaggioFinal)
+                binding.btnLogin.isEnabled = true
                 binding.btnSignUp.isEnabled = true
                 binding.progressBar.visibility = View.GONE
             }
         )
-        binding.progressBar.visibility = View.GONE
-    }
-
-    private fun mostraErrore(messaggio: String) {
-        Snackbar.make(binding.root, messaggio, Snackbar.LENGTH_LONG).setBackgroundTint(ContextCompat.getColor(this, R.color.red)).setTextColor(ContextCompat.getColor(this, R.color.white)).show()
     }
 }

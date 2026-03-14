@@ -64,6 +64,7 @@
                 android:maxLines="1"
                 android:padding="12dp"
                 android:layout_marginBottom="16dp"
+                android:autofillHints="emailAddress"
                 android:background="@drawable/edittext_background"
                 android:textColor="?android:attr/textColorPrimary"
                 android:textColorHint="?android:attr/textColorHint"/>
@@ -85,6 +86,7 @@
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:padding="12dp"
+                android:autofillHints="password"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/edittext_background"
                 android:textColor="?android:attr/textColorPrimary"
@@ -120,6 +122,7 @@
                         android:inputType="textPersonName"
                         android:maxLines="1"
                         android:padding="12dp"
+                        android:autofillHints="name"
                         android:background="@drawable/edittext_background"
                         android:textColor="?android:attr/textColorPrimary"
                         android:textColorHint="?android:attr/textColorHint"/>
