@@ -9,7 +9,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.firestore.auth.User
-import it.tizzycek.micasaestucasa.repo.utente.MainRepo
+import it.tizzycek.micasaestucasa.repo.MainRepo
 import it.tizzycek.micasaestucasa.repo.utente.UserRepository
 import it.tizzycek.micasaestucasa.ui.utente.LoginActivity
 

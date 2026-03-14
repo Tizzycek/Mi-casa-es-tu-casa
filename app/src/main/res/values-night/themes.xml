@@ -1,7 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.MiCasaEsTuCasa" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    <!-- Il tema per modalità scura - eredita tutto dal tema base -->
+    <style name="Theme.MiCasaEsTuCasa" parent="Base.Theme.MiCasaEsTuCasa">
+
+        <item name="colorSurface">@color/light_gray</item>
+        <item name="android:colorBackground">@color/backgroundColor</item>
+        <item name="android:statusBarColor">@color/black</item>
+        <item name="android:navigationBarColor">@color/black</item>
     </style>
 </resources>

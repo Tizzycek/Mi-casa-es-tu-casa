@@ -15,6 +15,9 @@
             android:name=".ui.utente.LoginActivity"
             android:exported="false"
             android:label="@string/title_activity_login" />
+        <activity android:name=".ui.utente.RegistrationActivity"
+            android:exported="false"
+            />
         <activity
             android:name=".MainActivity"
             android:exported="true"

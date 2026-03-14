@@ -13,4 +13,30 @@
     <string name="notification">Send notification</string>
     <string name="logout">Log out!</string>
     <string name="title_activity_login">Login activity</string>
+    <string name="nome">name</string>
+    <string name="cognome">Surname</string>
+    <string name="nascita">Birth date</string>
+    <string name="sono">I\'m a</string>
+    <string name="have_account">Do you already have an account?</string>
+    <string name="locatario">Landlord</string>
+    <string name="conduttore">Tenant</string>
+
+
+
+    <!-- Sign Up -->
+    <string name="crea_account">Crea Account</string>
+    <string name="registrati_subito">Registrati subito per iniziare</string>
+    <string name="data_nascita">Data di Nascita</string>
+    <string name="seleziona_tipo">Seleziona il tipo di utente</string>
+    <string name="hai_gia_account">Hai già un account?</string>
+    <string name="accedi">Accedi</string>
+
+    <!-- Errori e validazioni -->
+    <string name="campo_obbligatorio">Campo obbligatorio</string>
+    <string name="email_non_valida">Inserisci un\'email valida</string>
+    <string name="password_minima">La password deve essere di almeno 6 caratteri</string>
+
+    <!-- Tipi utente -->
+    <string name="proprietario">Proprietario</string>
+    <string name="affittuario">Affittuario</string>
 </resources>
