@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -48,51 +47,48 @@
                 android:layout_marginBottom="32dp"/>
 
             <!-- Email -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/emailLayout"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@color/primary"
-                app:hintEnabled="true"
-                app:placeholderText="@string/email"
-                app:placeholderTextColor="?android:attr/textColorHint">
+                android:text="@string/email"
+                android:textSize="14sp"
+                android:textColor="?android:attr/textColorSecondary"
+                android:layout_marginBottom="4dp"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/emailEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/email"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:textColorHint="?android:attr/textColorHint"/>
-            </com.google.android.material.textfield.TextInputLayout>
+            <EditText
+                android:id="@+id/emailEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:padding="12dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/edittext_background"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textColorHint="?android:attr/textColorHint"/>
 
             <!-- Password -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/passwordLayout"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@color/primary"
-                app:hintEnabled="true"
-                app:passwordToggleEnabled="true"
-                app:placeholderText="@string/password"
-                app:placeholderTextColor="?android:attr/textColorHint">
+                android:text="@string/password"
+                android:textSize="14sp"
+                android:textColor="?android:attr/textColorSecondary"
+                android:layout_marginBottom="4dp"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/passwordEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/password"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:textColorHint="?android:attr/textColorHint"/>
-            </com.google.android.material.textfield.TextInputLayout>
+            <EditText
+                android:id="@+id/passwordEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:padding="12dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/edittext_background"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textColorHint="?android:attr/textColorHint"/>
 
             <!-- Nome e Cognome -->
             <LinearLayout
@@ -101,50 +97,60 @@
                 android:orientation="horizontal"
                 android:layout_marginBottom="16dp">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/nomeLayout"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
-                    app:boxBackgroundMode="outline"
-                    app:boxStrokeColor="@color/primary"
-                    app:hintEnabled="true"
-                    app:placeholderText="@string/nome"
-                    app:placeholderTextColor="?android:attr/textColorHint">
+                    android:orientation="vertical">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/nome"
+                        android:textSize="14sp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:layout_marginBottom="4dp"/>
+
+                    <EditText
                         android:id="@+id/nomeEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/nome"
                         android:inputType="textPersonName"
                         android:maxLines="1"
+                        android:padding="12dp"
+                        android:background="@drawable/edittext_background"
                         android:textColor="?android:attr/textColorPrimary"
                         android:textColorHint="?android:attr/textColorHint"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/cognomeLayout"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:boxBackgroundMode="outline"
-                    app:boxStrokeColor="@color/primary"
-                    app:hintEnabled="true"
-                    app:placeholderText="@string/cognome"
-                    app:placeholderTextColor="?android:attr/textColorHint">
+                    android:orientation="vertical">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/cognome"
+                        android:textSize="14sp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:layout_marginBottom="4dp"/>
+
+                    <EditText
                         android:id="@+id/cognomeEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/cognome"
                         android:inputType="textPersonName"
                         android:maxLines="1"
+                        android:padding="12dp"
+                        android:background="@drawable/edittext_background"
                         android:textColor="?android:attr/textColorPrimary"
                         android:textColorHint="?android:attr/textColorHint"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
             </LinearLayout>
 
             <!-- Data di Nascita -->
@@ -211,12 +217,11 @@
                 android:backgroundTint="@color/primary"
                 android:text="@string/sign_up"
                 android:textSize="16sp"
-                android:textColor="@android:color/white"
+                android:textColor="?android:attr/colorBackground"
                 android:textAllCaps="false"
                 android:padding="16dp"
                 android:layout_marginTop="24dp"
-                android:layout_marginBottom="16dp"
-                app:cornerRadius="28dp"/>
+                android:layout_marginBottom="16dp"/>
 
             <!-- Link al Login -->
             <LinearLayout
@@ -225,11 +230,13 @@
                 android:orientation="horizontal"
                 android:gravity="center">
 
+
+                <!--testa il colorbackground. In scuro ci sta, in chiaro?-->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/hai_gia_account"
-                    android:textColor="?android:attr/textColorSecondary"/>
+                    android:text="@string/have_account"
+                    android:textColor="?android:attr/textColorPrimary"/>
 
                 <Space
                     android:layout_width="0dp"
@@ -243,7 +250,7 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:text="@string/accedi"
-                    android:textColor="?android:attr/textColorPrimary"
+                    android:textColor="?android:attr/colorBackground"
                     android:textSize="14sp"
                     android:textAllCaps="false"
                     android:padding="8dp"/>

@@ -1,42 +1,40 @@
 <resources>
     <string name="app_name">Mi Casa es tu Casa</string>
+
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
-    <string name="dont_have_account">"Don't you have an account?"</string>
-    <string name="enter_email">"Please enter email"</string>
-    <string name="enter_password">"Please enter password"</string>
+    <string name="logout">Log out</string>
+    <string name="sign_up">Sign up</string>
+    <string name="accedi">Sign in</string>
+    <string name="crea_account">Create Account</string>
+    <string name="registrati_subito">Register now to get started</string>
+
+    <string name="dont_have_account">Don\'t you have an account?</string>
+    <string name="have_account">Do you already have an account?</string>
+
+    <string name="nome">First Name</string>
+    <string name="cognome">Surname</string>
+    <string name="data_nascita">Birth date</string>
+    <string name="sono">I\'m a</string>
+    <string name="seleziona_tipo">Select user type</string>
+
+    <string name="landlord">Landlord</string>
+    <string name="tenant">Tenant</string>
+
+    <string name="enter_email">Please enter email</string>
+    <string name="enter_password">Please enter password</string>
     <string name="invalid_email">This is not a valid email address</string>
+    <string name="campo_obbligatorio">Required field</string>
+    <string name="password_minima">Password must be at least 6 characters</string>
+    <string name="unknown_error">Errore sconosciuto</string>
+    <string name="invalid_age">"Age must be over 18"</string>
+    <string name="error_registration_success">Registration completed but login failed</string>
+    <string name="data_missing">Please, fill all the fields</string>
+
     <string name="login_success">Login successfully completed</string>
     <string name="login_fail">Login failed</string>
-    <string name="sign_up">Sign up!</string>
     <string name="notification">Send notification</string>
-    <string name="logout">Log out!</string>
-    <string name="title_activity_login">Login activity</string>
-    <string name="nome">name</string>
-    <string name="cognome">Surname</string>
-    <string name="nascita">Birth date</string>
-    <string name="sono">I\'m a</string>
-    <string name="have_account">Do you already have an account?</string>
-    <string name="locatario">Landlord</string>
-    <string name="conduttore">Tenant</string>
 
-
-
-    <!-- Sign Up -->
-    <string name="crea_account">Crea Account</string>
-    <string name="registrati_subito">Registrati subito per iniziare</string>
-    <string name="data_nascita">Data di Nascita</string>
-    <string name="seleziona_tipo">Seleziona il tipo di utente</string>
-    <string name="hai_gia_account">Hai già un account?</string>
-    <string name="accedi">Accedi</string>
-
-    <!-- Errori e validazioni -->
-    <string name="campo_obbligatorio">Campo obbligatorio</string>
-    <string name="email_non_valida">Inserisci un\'email valida</string>
-    <string name="password_minima">La password deve essere di almeno 6 caratteri</string>
-
-    <!-- Tipi utente -->
-    <string name="proprietario">Proprietario</string>
-    <string name="affittuario">Affittuario</string>
+    <string name="title_activity_login">Login Activity</string>
 </resources>

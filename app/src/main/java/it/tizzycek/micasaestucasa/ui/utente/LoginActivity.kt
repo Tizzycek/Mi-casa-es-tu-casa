@@ -59,7 +59,7 @@ class LoginActivity() : AppCompatActivity() {
                 }
             },
             onFailure = { errore ->
-                mostraErrore(errore.message ?: "Errore sconosciuto")
+                mostraErrore(errore.message ?: R.string.unknown_error.toString())
                 binding.btnLogIn.isEnabled = true
                 binding.btnSignUp.isEnabled = true
                 binding.progressBar.visibility = View.GONE

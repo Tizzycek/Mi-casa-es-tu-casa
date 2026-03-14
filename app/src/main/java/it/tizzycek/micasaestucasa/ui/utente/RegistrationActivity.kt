@@ -2,19 +2,20 @@ package it.tizzycek.micasaestucasa.ui.utente
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import it.tizzycek.micasaestucasa.R
 import it.tizzycek.micasaestucasa.data.utente.TipoUtente
 import it.tizzycek.micasaestucasa.databinding.SignupBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo
+import it.tizzycek.micasaestucasa.ui.mostraErrore
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.Calendar
@@ -49,6 +50,7 @@ class RegistrationActivity: AppCompatActivity() {
     }
 
     private suspend fun tryRegister() {
+
         val email = binding.emailEditText.text.toString().trim()
         val password = binding.passwordEditText.text.toString().trim()
         val nome = binding.nomeEditText.text.toString().trim()
@@ -65,46 +67,58 @@ class RegistrationActivity: AppCompatActivity() {
             0 -> TipoUtente.AFFITTUARIO
             1 -> TipoUtente.PROPRIETARIO
             else -> {
-                mostraErrore("Seleziona un tipo di utente")
+                mostraErrore(R.string.seleziona_tipo)
                 return
             }
+        }
+
+        if (email.isEmpty() || password.isEmpty() || nome.isEmpty() || cognome.isEmpty()) {
+            mostraErrore(R.string.data_missing)
         }
 
         binding.btnSignUp.isEnabled = false
         binding.progressBar.visibility = View.VISIBLE
 
-        try {
-            val risultatoRegistrazione = MainRepo.getUserRepository().registration(
-                email = email,
-                password = password,
-                nome = nome,
-                cognome = cognome,
-                nascita = dataNascita,
-                tipoUtente = tipoUtenteSelezionato
-            )
+        if (validData(email, dataNascita, tipoUtenteSelezionato)) {
+            try {
+                val risultatoRegistrazione = MainRepo.getUserRepository().registration(
+                    email = email,
+                    password = password,
+                    nome = nome,
+                    cognome = cognome,
+                    nascita = dataNascita,
+                    tipoUtente = tipoUtenteSelezionato
+                )
 
-            risultatoRegistrazione.fold(
-                onSuccess = {
-                    val risultatoLogin = MainRepo.getUserRepository().login(email, password)
-                    risultatoLogin.fold(
-                        onSuccess = {
-                            val profilo = MainRepo.getUserRepository().getCurrentUser()
-                            if (profilo != null) {
-                                //vaiAllaHome(profilo)
-                                Toast.makeText(this, "To be implemented!", Toast.LENGTH_LONG).show()
+                risultatoRegistrazione.fold(
+                    onSuccess = {
+                        val risultatoLogin = MainRepo.getUserRepository().login(email, password)
+                        risultatoLogin.fold(
+                            onSuccess = {
+                                val profilo = MainRepo.getUserRepository().getCurrentUser()
+                                if (profilo != null) {
+                                    //vaiAllaHome(profilo)
+                                    Toast.makeText(this, "To be implemented!", Toast.LENGTH_LONG)
+                                        .show()
+                                    finish()
+                                }
+                            },
+                            onFailure = { errore ->
+                                val messaggio = errore.message ?: getString(R.string.unknown_error)
+                                mostraErrore(messaggio)
                                 finish()
-                            }
-                        },
-                        onFailure = { errore ->
-                            mostraErrore(errore.message ?: "Registrazione completata ma login fallito")
-                            finish()
-                        })
-                },
-                onFailure = { errore ->
-                    mostraErrore(errore.message ?: "Errore durante la registrazione")
-                }
-            )
-        } finally {
+                            })
+                    },
+                    onFailure = { errore ->
+                        val messaggioFinal = errore.message ?: getString(R.string.unknown_error)
+                        mostraErrore(messaggioFinal)
+                    }
+                )
+            } finally {
+                binding.btnSignUp.isEnabled = true
+                binding.progressBar.visibility = View.GONE
+            }
+        } else {
             binding.btnSignUp.isEnabled = true
             binding.progressBar.visibility = View.GONE
         }
@@ -115,8 +129,8 @@ class RegistrationActivity: AppCompatActivity() {
             it != TipoUtente.ADMIN
         }.map {
             tipo -> when (tipo) {
-                TipoUtente.PROPRIETARIO -> getString(R.string.conduttore)
-                TipoUtente.AFFITTUARIO -> getString(R.string.locatario)
+                TipoUtente.PROPRIETARIO -> getString(R.string.landlord)
+                TipoUtente.AFFITTUARIO -> getString(R.string.tenant)
                 else -> ""
             }
         }
@@ -147,10 +161,20 @@ class RegistrationActivity: AppCompatActivity() {
         binding.dataNascita.maxDate = calendar.timeInMillis
     }
 
-
-    // TODO: è copiata dal login, andrebbe adattata
-    private fun mostraErrore(messaggio: String) {
-        Snackbar.make(binding.root, messaggio, Snackbar.LENGTH_LONG).setBackgroundTint(ContextCompat.getColor(this, R.color.red)).setTextColor(ContextCompat.getColor(this, R.color.white)).show()
+    private fun validData(email: String, nascita: LocalDate, tipoUtente: TipoUtente): Boolean {
+        val today = LocalDate.now()
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            mostraErrore(R.string.invalid_email)
+            return false
+        } else if (today.year - nascita.year < 18) {
+            mostraErrore(R.string.invalid_age)
+            return false
+        } else if (tipoUtente == TipoUtente.ADMIN) {
+            mostraErrore(R.string.seleziona_tipo)
+            return false
+        } else {
+            return true
+        }
     }
 
 }
