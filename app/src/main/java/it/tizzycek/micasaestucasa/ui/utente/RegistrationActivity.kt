@@ -64,8 +64,8 @@ class RegistrationActivity: AppCompatActivity() {
 
         // tipo utente
         val tipoUtenteSelezionato = when (binding.spinnerUserType.selectedItemPosition) {
-            0 -> TipoUtente.AFFITTUARIO
-            1 -> TipoUtente.PROPRIETARIO
+            1 -> TipoUtente.AFFITTUARIO
+            2 -> TipoUtente.PROPRIETARIO
             else -> {
                 mostraErrore(R.string.seleziona_tipo)
                 return
@@ -135,24 +135,17 @@ class RegistrationActivity: AppCompatActivity() {
             }
         }
 
+        val listaFinale = mutableListOf<String>()
+        listaFinale.add(getString(R.string.seleziona_tipo))
+        listaFinale.addAll(tipiUtente)
+
         val adapter = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_item,
-            tipiUtente
+            listaFinale
         )
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerUserType.adapter = adapter
-
-        // Listener per lo spinner
-        /*binding.spinnerUserType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                binding.selection.text = tipiUtente[position]
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                binding.selection.text = getString(R.string.seleziona_tipo)
-            }
-        }*/
     }
 
     private fun setupDatePicker() {

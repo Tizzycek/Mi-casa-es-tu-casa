@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
             }
         } else {
             startActivity(Intent(this, LoginActivity::class.java))
+            finish()
         }
 
     }
