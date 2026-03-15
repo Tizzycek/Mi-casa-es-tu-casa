@@ -44,7 +44,7 @@ Funzionalità per voto >25/30
 9) Storico delle prenotazioni effettuate (affittuario) o ricevute (proprietario)
 10) Possibilità di segnalare un utente (sia proprietario che affittuario) che si è comportato male
 11) Ricerca avanzata: oltre ai parametri del punto 2, anche tramite "parole chiave"
-12) Admin==> possibilità di aggiunge/modificare/eliminare parole chiave
+12) Admin ==> possibilità di aggiunge/modificare/eliminare parole chiave
 13) Admin ==> possibilità di sospendere o bloccare un utente
-14) Admin==> Schermata statistiche: n. prenotazioni totali/concluse/in corso/da iniziare.	 
+14) Admin ==> Schermata statistiche: n. prenotazioni totali/concluse/in corso/da iniziare.	 
     Il resto della relazione deve contenere informazioni utili sulle strutture dati scelte, descrizione delle scelte implementative più significative corredate da pezzi di codice commentati.
