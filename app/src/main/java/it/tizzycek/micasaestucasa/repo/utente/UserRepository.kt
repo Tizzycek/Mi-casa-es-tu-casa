@@ -4,6 +4,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+import it.tizzycek.micasaestucasa.data.recensioni.Statistiche
 import it.tizzycek.micasaestucasa.data.utente.Stato
 import it.tizzycek.micasaestucasa.data.utente.TipoUtente
 import it.tizzycek.micasaestucasa.data.utente.Utente
@@ -32,6 +33,7 @@ class UserRepository {
         }
     }
 
+    // deserializza da firebase
     private suspend fun beccaDatiUtente(uid: String?): Utente? {
         val id = requireNotNull(uid) {
             "UID cannot be NULL"
@@ -46,7 +48,11 @@ class UserRepository {
                 cognome = document.getString("cognome") ?: "",
                 nascita = LocalDate.parse(document.getString("nascita")),
                 tipo = TipoUtente.valueOf(document.getString("tipoUtente") ?: "AFFITTUARIO"),
-                stato = Stato.valueOf(document.getString("stato") ?: "OK")
+                stato = Stato.valueOf(document.getString("stato") ?: "OK"),
+                statistiche = Statistiche(
+                    mediaRecensioni = document.getDouble("mediaRecensioni") ?: 0.0,
+                    totaleRecensioni = document.getLong("totaleRecensioni")?.toInt() ?: 0
+                )
             )
         } else {
             null
@@ -66,6 +72,7 @@ class UserRepository {
         }
     }
 
+    // serializza su firebase
     private suspend fun salvaUtenteSuFirestore(utente: Utente?) {
         val dataMap = mapOf(
             "uid" to utente?.id,
@@ -74,7 +81,11 @@ class UserRepository {
             "cognome" to utente?.cognome,
             "nascita" to utente?.nascita.toString(),
             "tipo" to utente?.tipo,
-            "stato" to utente?.stato?.name
+            "stato" to utente?.stato?.name,
+            "statistiche" to mapOf(
+                "mediaRecensioni" to utente?.statistiche?.mediaRecensioni,
+                "totaleRecensioni" to utente?.statistiche?.totaleRecensioni
+            )
         )
 
         val uid = requireNotNull(utente?.id) {

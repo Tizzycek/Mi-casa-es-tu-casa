@@ -5,3 +5,4 @@ import it.tizzycek.micasaestucasa.data.utente.Utente
 
 data class Proprieta(var proprietario: Utente, var posti: Int, var location: GoogleMap)
 //proprietario, posti, luogo, foto?
+// obbligatori: parole chiave, descrizione, recensioni, valutazione (media)
