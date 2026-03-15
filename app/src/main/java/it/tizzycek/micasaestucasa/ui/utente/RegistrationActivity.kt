@@ -64,8 +64,8 @@ class RegistrationActivity: AppCompatActivity() {
 
         // tipo utente
         val tipoUtenteSelezionato = when (binding.spinnerUserType.selectedItemPosition) {
-            1 -> TipoUtente.AFFITTUARIO
-            2 -> TipoUtente.PROPRIETARIO
+            1 -> TipoUtente.PROPRIETARIO
+            2 -> TipoUtente.AFFITTUARIO
             else -> {
                 mostraErrore(R.string.seleziona_tipo)
                 return

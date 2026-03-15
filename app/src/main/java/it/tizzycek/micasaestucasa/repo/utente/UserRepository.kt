@@ -4,6 +4,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+import it.tizzycek.micasaestucasa.data.utente.Stato
 import it.tizzycek.micasaestucasa.data.utente.TipoUtente
 import it.tizzycek.micasaestucasa.data.utente.Utente
 import kotlinx.coroutines.tasks.await
@@ -44,7 +45,8 @@ class UserRepository {
                 nome = document.getString("nome") ?: "",
                 cognome = document.getString("cognome") ?: "",
                 nascita = LocalDate.parse(document.getString("nascita")),
-                tipo = TipoUtente.valueOf(document.getString("tipoUtente") ?: "AFFITTUARIO")
+                tipo = TipoUtente.valueOf(document.getString("tipoUtente") ?: "AFFITTUARIO"),
+                stato = Stato.valueOf(document.getString("stato") ?: "OK")
             )
         } else {
             null
@@ -71,7 +73,8 @@ class UserRepository {
             "nome" to utente?.nome,
             "cognome" to utente?.cognome,
             "nascita" to utente?.nascita.toString(),
-            "tipo" to utente?.tipo
+            "tipo" to utente?.tipo,
+            "stato" to utente?.stato?.name
         )
 
         val uid = requireNotNull(utente?.id) {
