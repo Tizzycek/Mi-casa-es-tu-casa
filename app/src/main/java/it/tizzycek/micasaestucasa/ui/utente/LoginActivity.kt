@@ -11,6 +11,7 @@ import com.google.android.material.snackbar.Snackbar
 import it.tizzycek.micasaestucasa.R
 import it.tizzycek.micasaestucasa.databinding.LoginBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo
+import it.tizzycek.micasaestucasa.ui.home.FragmentManager
 import it.tizzycek.micasaestucasa.ui.mostraErrore
 import kotlinx.coroutines.launch
 
@@ -57,8 +58,8 @@ class LoginActivity() : AppCompatActivity() {
             onSuccess = {
                 val profilo = MainRepo.getUserRepository().getCurrentUser()
                 if (profilo != null) {
-                    //vaiAllaHome(profilo)
-                    Toast.makeText(this, "To be implemented!", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this, FragmentManager::class.java))
+                    finish()
                 }
             },
             onFailure = { errore ->

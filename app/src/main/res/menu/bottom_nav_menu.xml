@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Questi item verranno sovrascritti dinamicamente -->
+    <item
+        android:id="@+id/mappaFragment"
+        android:title="@string/esplora" />
+    <item
+        android:id="@+id/prenotazioniFragment"
+        android:title="@string/prenotazioni" />
+    <item
+        android:id="@+id/messaggiFragment"
+        android:title="@string/messaggistica" />
+    <item
+        android:id="@+id/profiloFragment"
+        android:title="@string/profilo" />
+
+</menu>

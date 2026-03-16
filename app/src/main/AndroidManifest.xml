@@ -42,6 +42,9 @@
         <activity
             android:name=".ui.utente.RegistrationActivity"
             android:exported="false" />
+        <activity android:name=".ui.home.FragmentManager"
+            android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

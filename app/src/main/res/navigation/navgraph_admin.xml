@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_admin"
+    app:startDestination="@id/dashboardAdminFragment">
+
+    <fragment
+        android:id="@+id/dashboardAdminFragment"
+        android:name="it.tizzycek.micasaestucasa.ui.admin.DashboardAdminFragment"
+        android:label="Dashboard"
+        tools:layout="@layout/fragment_dashboard_admin" />
+
+    <fragment
+        android:id="@+id/gestioneUtentiFragment"
+        android:name="it.tizzycek.micasaestucasa.ui.admin.GestioneUtentiFragment"
+        android:label="Utenti"
+        tools:layout="@layout/fragment_gestione_utenti" />
+
+    <fragment
+        android:id="@+id/gestioneAnnunciFragment"
+        android:name="it.tizzycek.micasaestucasa.ui.admin.GestioneAnnunciFragment"
+        android:label="Annunci"
+        tools:layout="@layout/fragment_gestione_annunci" />
+
+    <fragment
+        android:id="@+id/segnalazioniFragment"
+        android:name="it.tizzycek.micasaestucasa.ui.admin.SegnalazioniFragment"
+        android:label="Segnalazioni"
+        tools:layout="@layout/fragment_segnalazioni" />
+
+    <fragment
+        android:id="@+id/impostazioniAdminFragment"
+        android:name="it.tizzycek.micasaestucasa.ui.admin.ImpostazioniAdminFragment"
+        android:label="Impostazioni"
+        tools:layout="@layout/fragment_impostazioni_admin" />
+
+</navigation>

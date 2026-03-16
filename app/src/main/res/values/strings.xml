@@ -41,4 +41,9 @@
 
     <string name="title_activity_login">Login Activity</string>
     <string name="title_activity_maps">MapsActivity</string>
+
+    <string name="esplora">Explore</string>
+    <string name="prenotazioni">Reservations</string>
+    <string name="messaggistica">Messaging</string>
+    <string name="profilo">Profile</string>
 </resources>
