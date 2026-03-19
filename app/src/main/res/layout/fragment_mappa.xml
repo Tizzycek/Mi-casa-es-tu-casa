@@ -1,6 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
+    tools:context=".ui.home.fragments.nonadmin.MappaFragment">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnMyLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@android:drawable/ic_menu_mylocation"
+        android:visibility="gone"
+        android:contentDescription="La mia posizione" /> <!--TODO-->
+
+    <!-- Mappa -->
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Card per la barra di ricerca -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/searchCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="28dp"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="@color/design_default_color_surface"
+        android:layout_alignParentTop="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="4dp"
+            android:gravity="center_vertical">
+
+            <!-- Icona di ricerca -->
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="12dp"
+                android:src="@drawable/ic_launcher_foreground"
+                app:tint="@color/material_on_background_emphasis_high_type"/>
+
+            <!-- EditText per la ricerca -->
+            <EditText
+                android:id="@+id/searchEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/campo_obbligatorio"
+                android:textColorHint="@color/material_on_background_emphasis_high_type"
+                android:textColor="@color/primary"
+                android:background="@null"
+                android:paddingVertical="12dp"
+                android:textSize="16sp"
+                android:maxLines="1"
+                android:inputType="text"/>
+
+            <!-- Pulsante filtri opzionale -->
+            <ImageView
+                android:id="@+id/filterButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="12dp"
+                android:src="@drawable/ic_launcher_foreground"
+                app:tint="@color/primary"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Pulsante + tondo per nuovo elemento -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddProperty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="24dp"
+        android:src="@drawable/ic_launcher_foreground"
+        android:contentDescription="@string/accedi"
+        app:backgroundTint="@color/primary"
+        app:rippleColor="@color/primary_light"
+        app:fabSize="normal"
+        app:elevation="8dp"
+        android:visibility="gone"/> <!-- Visibile solo per proprietari/admin -->
+
+    <!-- Suggerimenti di ricerca (inizialmente nascosti) -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/suggestionsCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_below="@id/searchCard"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="@color/secondary">
+
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:id="@+id/suggestionsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp" />
+
+</RelativeLayout>

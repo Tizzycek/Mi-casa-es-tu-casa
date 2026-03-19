@@ -13,7 +13,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "it.tizzycek.myapplication"
+        applicationId = "it.tizzycek.micasaestucasa"
         minSdk = 33
         targetSdk = 36
         versionCode = 1
@@ -54,11 +54,12 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.play.services.maps)
     implementation(libs.firebase.storage)
+    implementation(libs.play.services.location)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation(libs.androidx.core.splashscreen)
-    implementation("androidx.navigation:navigation-fragment-ktx:2.9.7")
-    implementation("androidx.navigation:navigation-ui-ktx:2.9.7")
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
 }

@@ -7,6 +7,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.navigation.NavigationBarView
 import it.tizzycek.micasaestucasa.R
 import it.tizzycek.micasaestucasa.data.utente.TipoUtente
 import it.tizzycek.micasaestucasa.databinding.ActivityHomeBinding
@@ -46,17 +47,6 @@ class FragmentManager: AppCompatActivity() {
 
         navController.setGraph(navGraphId)
 
-        // È la toolbar. Per ora non fa niente (c'è un explore con una freccia ma non funziona)
-        setSupportActionBar(binding.toolbar)
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                // TODO
-                // Qui puoi specificare le destinazioni "top-level"
-                // Per ora lasciamo vuoto per avere il pulsante back automatico
-            )
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-
         setupBottomNavigationMenu(tipo)
 
         binding.bottomNavigation.setupWithNavController(navController)
@@ -79,6 +69,10 @@ class FragmentManager: AppCompatActivity() {
             menu.add(0, R.id.messaggiFragment, 2, getString(R.string.messaggistica)).setIcon(R.drawable.stacked_email_24px)
             menu.add(0, R.id.profiloFragment, 3, getString(R.string.profilo)).setIcon(R.drawable.account_circle_24px)
         }
+
+        binding.bottomNavigation.labelVisibilityMode = NavigationBarView.LABEL_VISIBILITY_LABELED
+        binding.bottomNavigation.itemTextColor = getColorStateList(R.color.red)
+        binding.bottomNavigation.itemIconTintList = getColorStateList(R.color.red)
     }
 
     override fun onSupportNavigateUp(): Boolean {

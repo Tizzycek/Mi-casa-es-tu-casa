@@ -1,12 +1,11 @@
 package it.tizzycek.micasaestucasa.repo.proprieta
 
-import com.google.firebase.Firebase
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.firestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.storage
 import it.tizzycek.micasaestucasa.data.proprieta.Proprieta
 import kotlinx.coroutines.tasks.await
+import java.util.Date
 import java.util.UUID
 import kotlin.math.atan2
 import kotlin.math.cos
@@ -15,6 +14,8 @@ import kotlin.math.sqrt
 
 class ProprietaRepository {
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
+
+    // TODO: questa classe non è testata. Controllare soprattutto le immagini e la gestione delle parole chiave
     val storageRef = FirebaseStorage.getInstance()
 
     private val collection = "proprieta"
@@ -82,13 +83,77 @@ class ProprietaRepository {
         }
     }
 
+    suspend fun getProprietaDisponibili(dal: Date, al: Date, posti: Int, lat: Double, lng: Double, raggioKm: Double = 20.0): Result<List<Proprieta>> {
+        return getProprieta().map { lista ->
+            lista.filter { proprieta ->
+                proprieta.isDisponibile(dal, al) && proprieta.posti <= posti && calcolaDistanza(lat, lng, proprieta.latitudine, proprieta.longitudine) <= raggioKm
+            }
+        }
+    }
+
+    suspend fun cercaDisponibili(dal: Date? = null, al: Date? = null, titolo: String? = null, posti: Int? = null, lat: Double? = null, lng: Double? = null, raggioKm: Double = 20.0, paroleChiaveIds: List<String>? = null, prezzoMin: Double? = null, prezzoMax: Double? = null): Result<List<Proprieta>> {
+        // Serve per fare la ricerca. Prende POTENZIALMENTE tutti i dati.
+        // Possibilmente fa la query prima. Dove non riesce, smista dopo
+        return try {
+            var query: Query
+            query = firestore.collection(collection)
+
+            titolo?.let {
+                query = query.whereEqualTo("nome", titolo)
+            }
+
+            posti?.let {
+                query = query.whereGreaterThanOrEqualTo("posti", posti)
+            }
+
+            paroleChiaveIds?.let { ids ->
+                if (ids.isNotEmpty()) {
+                    query = query.whereArrayContainsAny("paroleChiaveIds", ids)
+                }
+            }
+
+            prezzoMin?.let {
+                query = query.whereGreaterThanOrEqualTo("prezzo", it)
+            }
+
+            prezzoMax?.let {
+                query = query.whereLessThanOrEqualTo("prezzo", it)
+            }
+
+            query = query.orderBy("prezzo", Query.Direction.ASCENDING).limit(50)
+
+            val snapshot = query.get().await()
+
+            var risultati = snapshot.documents.mapNotNull { doc ->
+                doc.toObject(Proprieta::class.java)?.copy(id = doc.id)
+            }
+
+            if (dal != null && al != null) {
+                risultati = risultati.filter { proprieta ->
+                    proprieta.isDisponibile(dal, al)
+                }
+            }
+
+            if (lat != null && lng != null) {
+                risultati = risultati.filter { prop ->
+                    calcolaDistanza(lat, lng, prop.latitudine, prop.longitudine) <= raggioKm
+                }
+            }
+
+            Result.success(risultati)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+
     // TODO: da vedere se è utile
     suspend fun cercaProprietaPerParoleChiave(parole: List<String>, lat: Double? = null, lng: Double? = null, raggioKm: Double = 20.0): Result<List<Proprieta>> {
         return try {
             // Firestore può cercare array con "array-contains-any"
             val snapshot = firestore.collection(collection)
                 .whereEqualTo("paroleChiave", parole) // Attenzione: vuole match esatto
-                // .whereArrayContainsAny("paroleChiave", parole) // Per match parziale
+                .whereArrayContainsAny("paroleChiave", parole) // Per match parziale
                 .limit(50)
                 .get()
                 .await()
