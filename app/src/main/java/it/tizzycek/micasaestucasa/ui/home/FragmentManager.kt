@@ -1,6 +1,8 @@
 package it.tizzycek.micasaestucasa.ui.home
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -12,6 +14,7 @@ import it.tizzycek.micasaestucasa.R
 import it.tizzycek.micasaestucasa.data.utente.TipoUtente
 import it.tizzycek.micasaestucasa.databinding.ActivityHomeBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo
+import it.tizzycek.micasaestucasa.ui.utente.LoginActivity
 
 class FragmentManager: AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding

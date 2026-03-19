@@ -103,4 +103,14 @@ class UserRepository {
         return auth.currentUser != null
     }
 
+    suspend fun caricaUtente(): Utente? {
+        val firebaseUser = auth.currentUser
+        if (firebaseUser != null) {
+            // Restituisci DIRETTAMENTE il risultato della chiamata DB
+            val dati = beccaDatiUtente(firebaseUser.uid)
+            this.utente = dati // Aggiorna la cache interna del Repo
+            return dati
+        }
+        return null
+    }
 }
