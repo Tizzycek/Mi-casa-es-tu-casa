@@ -12,7 +12,6 @@ import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
 
 class UserRepository {
-    private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
 
     private var utente: Utente? = null

@@ -3,11 +3,8 @@ package it.tizzycek.micasaestucasa.ui.utente
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.snackbar.Snackbar
 import it.tizzycek.micasaestucasa.R
 import it.tizzycek.micasaestucasa.databinding.LoginBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo

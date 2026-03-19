@@ -13,19 +13,19 @@
 
     <fragment
         android:id="@+id/prenotazioniFragment"
-        android:name="it.tizzycek.micasaestucasa.ui.proprietario.AnnunciFragment"
+        android:name="it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.PrenotazioniFragment"
         android:label="@string/prenotazioni"
         tools:layout="@layout/fragment_prenotazioni" />
 
     <fragment
         android:id="@+id/messaggisticaFragment"
-        android:name="it.tizzycek.micasaestucasa.ui.proprietario.PrenotazioniFragment"
+        android:name="it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.MessaggisticaFragment"
         android:label="@string/messaggistica"
         tools:layout="@layout/fragment_messaggistica" />
 
     <fragment
         android:id="@+id/profiloFragment"
-        android:name="it.tizzycek.micasaestucasa.ui.proprietario.ProfiloProprietarioFragment"
+        android:name="it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.ProfiloFragment"
         android:label="@string/profilo"
         tools:layout="@layout/fragment_profilo" />
 

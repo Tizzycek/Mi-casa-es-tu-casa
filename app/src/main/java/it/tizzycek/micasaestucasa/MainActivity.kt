@@ -17,10 +17,7 @@ class MainActivity : AppCompatActivity() {
         MainRepo.getUserRepository().logout()
 
         if (MainRepo.getUserRepository().isLoggedIn()) {
-            val profilo = MainRepo.getUserRepository().getCurrentUser()
-            if (profilo != null) {
-                startActivity(Intent(this, FragmentManager::class.java))
-            }
+            startActivity(Intent(this, FragmentManager::class.java))
         } else {
             startActivity(Intent(this, LoginActivity::class.java))
         }
