@@ -22,8 +22,7 @@ class ProprietaRepository {
 
     suspend fun caricaProprietaPerProprietario(id: String): Result<List<Proprieta>> {
         return try {
-            val snapshot =
-                firestore.collection(collection).whereEqualTo("proprietarioId", id).get().await()
+            val snapshot = firestore.collection(collection).whereEqualTo("proprietarioId", id).get().await()
 
             val proprieta = snapshot.documents.mapNotNull { doc ->
                 doc.toObject(Proprieta::class.java)?.copy(id = doc.id)
