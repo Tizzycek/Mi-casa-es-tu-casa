@@ -13,7 +13,6 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        // togli poi quello che non serve
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
 

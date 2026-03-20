@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mappaFragment"
-        android:name="it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.MappaFragment"
+        android:name="it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.mappa.MappaFragment"
         android:label="@string/esplora"
         tools:layout="@layout/fragment_mappa" />
 

@@ -1,7 +1,8 @@
-package it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin
+package it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.mappa
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
@@ -22,9 +23,9 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.protobuf.DescriptorProtos
 import it.tizzycek.micasaestucasa.R
 import it.tizzycek.micasaestucasa.data.proprieta.Proprieta
+import it.tizzycek.micasaestucasa.data.utente.TipoUtente
 import it.tizzycek.micasaestucasa.databinding.FragmentMappaBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo
 import kotlinx.coroutines.launch
@@ -61,6 +62,8 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupButtons()
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
@@ -75,6 +78,17 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
         caricaProprieta()
     }
 
+    private fun setupButtons() {
+        if (MainRepo.getUserRepository().getCurrentUser()!!.tipo == TipoUtente.PROPRIETARIO){
+            binding.fabAddProperty.visibility = View.VISIBLE
+            binding.fabAddProperty.setOnClickListener {
+                startActivity(Intent(requireContext(), AggiungiProprieta::class.java))
+            }
+        }
+        binding.searchBarContainer.setOnClickListener {
+            Toast.makeText(requireContext(), "Ricerca", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     private fun checkLocationPermissions() {
         when {
@@ -161,7 +175,6 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
     }
 
     private fun caricaTutte() {
-
         lifecycleScope.launch {
             val risultato = MainRepo.getProprietaRepository().getProprieta()
 
