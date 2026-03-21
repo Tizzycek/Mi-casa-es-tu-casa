@@ -1,9 +1,7 @@
 package it.tizzycek.micasaestucasa.ui
 
 import android.app.Activity
-import android.provider.Settings.Global.getString
 import androidx.core.content.ContextCompat
-import androidx.viewbinding.ViewBindings
 import com.google.android.material.snackbar.Snackbar
 import it.tizzycek.micasaestucasa.R
 

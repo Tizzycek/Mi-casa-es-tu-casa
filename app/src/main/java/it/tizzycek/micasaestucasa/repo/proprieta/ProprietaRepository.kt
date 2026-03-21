@@ -4,7 +4,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
 import it.tizzycek.micasaestucasa.data.proprieta.Proprieta
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.tasks.await
+import java.time.LocalDate
 import java.util.Date
 import java.util.UUID
 import kotlin.math.atan2
@@ -28,7 +32,7 @@ class ProprietaRepository {
                 doc.toObject(Proprieta::class.java)?.copy(id = doc.id)
             }
 
-            return Result.success(proprieta)
+            Result.success(proprieta)
         } catch (e: Exception) {
             Result.failure(e)
         }
@@ -59,17 +63,17 @@ class ProprietaRepository {
         }
     }
 
-    suspend fun aggiungiProprieta(proprieta: Proprieta, immagini: List<ByteArray>): Result<Boolean> {
-        return try {
-            val urls = mutableListOf<String>()
-            for ((index, bytes) in immagini.withIndex()) {
-                val imageName = "proprieta/${UUID.randomUUID()}_$index.jpg"
-                val storageRef = storageRef.reference.child(imageName)
-                storageRef.putBytes(bytes).await()
-
-                val downloadURL = storageRef.downloadUrl.await()
-                urls.add(downloadURL.toString())
+    suspend fun aggiungiProprieta(proprieta: Proprieta, immagini: List<ByteArray>): Result<Boolean> = coroutineScope {
+        try {
+            val uploadTasks = immagini.withIndex().map { (index, bytes) ->
+                async {
+                    val imageName = "proprieta/${UUID.randomUUID()}_$index.jpg"
+                    val ref = storageRef.reference.child(imageName)
+                    ref.putBytes(bytes).await()
+                    ref.downloadUrl.await().toString()
+                }
             }
+            val urls = uploadTasks.awaitAll()
 
             proprieta.immaginiUrl = urls
             proprieta.id = UUID.randomUUID().toString()
@@ -78,11 +82,11 @@ class ProprietaRepository {
 
             Result.success(true)
         } catch (e: Exception) {
-            return Result.failure(e)
+            Result.failure(e)
         }
     }
 
-    suspend fun getProprietaDisponibili(dal: Date, al: Date, posti: Int, lat: Double, lng: Double, raggioKm: Double = 20.0): Result<List<Proprieta>> {
+    suspend fun getProprietaDisponibili(dal: LocalDate, al: LocalDate, posti: Int, lat: Double, lng: Double, raggioKm: Double = 20.0): Result<List<Proprieta>> {
         return getProprieta().map { lista ->
             lista.filter { proprieta ->
                 proprieta.isDisponibile(dal, al) && proprieta.posti <= posti && calcolaDistanza(lat, lng, proprieta.latitudine, proprieta.longitudine) <= raggioKm
@@ -90,7 +94,7 @@ class ProprietaRepository {
         }
     }
 
-    suspend fun cercaDisponibili(dal: Date? = null, al: Date? = null, titolo: String? = null, posti: Int? = null, lat: Double? = null, lng: Double? = null, raggioKm: Double = 20.0, paroleChiaveIds: List<String>? = null, prezzoMin: Double? = null, prezzoMax: Double? = null): Result<List<Proprieta>> {
+    suspend fun cercaDisponibili(dal: LocalDate? = null, al: LocalDate? = null, titolo: String? = null, posti: Int? = null, lat: Double? = null, lng: Double? = null, raggioKm: Double = 20.0, paroleChiaveIds: List<String>? = null, prezzoMin: Double? = null, prezzoMax: Double? = null): Result<List<Proprieta>> {
         // Serve per fare la ricerca. Prende POTENZIALMENTE tutti i dati.
         // Possibilmente fa la query prima. Dove non riesce, smista dopo
         return try {

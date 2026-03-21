@@ -16,7 +16,7 @@ class ParoleChiaveRepository {
         return try {
             val snapshot = firestore.collection(collection).get().await()
             val paroleChiave = snapshot.documents.mapNotNull { doc ->
-                doc.toObject(ParoleChiave::class.java)?.copy(id = doc.id)
+                doc.toObject(ParoleChiave::class.java)
             }
             Result.success(paroleChiave)
         } catch (e: Exception) {

@@ -1,6 +1,7 @@
 package it.tizzycek.micasaestucasa.repo
 
 import com.google.firebase.firestore.FirebaseFirestore
+import it.tizzycek.micasaestucasa.data.parolechiave.ParoleChiave
 import it.tizzycek.micasaestucasa.data.proprieta.Proprieta
 import it.tizzycek.micasaestucasa.repo.parolechiave.ParoleChiaveRepository
 import it.tizzycek.micasaestucasa.repo.proprieta.ProprietaRepository
@@ -13,8 +14,6 @@ object MainRepo {
 
     private val paroleChiaveRepository = ParoleChiaveRepository()
 
-    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
-
     fun getUserRepository(): UserRepository {
         return userRepository
     }
@@ -23,7 +22,7 @@ object MainRepo {
         return proprietaRepository
     }
 
-    fun getFirestore(): FirebaseFirestore {
-        return firestore
+    fun getParoleChiave(): ParoleChiaveRepository {
+        return paroleChiaveRepository
     }
 }

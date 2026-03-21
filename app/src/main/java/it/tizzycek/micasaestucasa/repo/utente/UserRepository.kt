@@ -46,7 +46,7 @@ class UserRepository {
                 nome = document.getString("nome") ?: "",
                 cognome = document.getString("cognome") ?: "",
                 nascita = LocalDate.parse(document.getString("nascita")),
-                tipo = TipoUtente.valueOf(document.getString("tipoUtente") ?: "AFFITTUARIO"),
+                tipo = TipoUtente.valueOf(document.getString("tipo") ?: "AFFITTUARIO"),
                 stato = Stato.valueOf(document.getString("stato") ?: "OK"),
                 statistiche = Statistiche(
                     mediaRecensioni = document.getDouble("mediaRecensioni") ?: 0.0,
@@ -56,7 +56,6 @@ class UserRepository {
         } else {
             null
         }
-
     }
 
     suspend fun registration(email: String, password: String, nome: String, cognome: String, nascita: LocalDate, tipoUtente: TipoUtente): Result<Boolean> {
@@ -106,9 +105,9 @@ class UserRepository {
     suspend fun caricaUtente(): Utente? {
         val firebaseUser = auth.currentUser
         if (firebaseUser != null) {
-            // Restituisci DIRETTAMENTE il risultato della chiamata DB
+
             val dati = beccaDatiUtente(firebaseUser.uid)
-            this.utente = dati // Aggiorna la cache interna del Repo
+            this.utente = dati
             return dati
         }
         return null

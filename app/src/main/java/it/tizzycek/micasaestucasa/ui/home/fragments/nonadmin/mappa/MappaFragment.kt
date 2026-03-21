@@ -119,8 +119,8 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
     }
 
     private fun setupMap() {
-        mMap.uiSettings.isZoomControlsEnabled = true
-        mMap.uiSettings.isCompassEnabled = true
+        mMap.uiSettings.isZoomControlsEnabled = false
+        mMap.uiSettings.isCompassEnabled = false
         mMap.uiSettings.isMyLocationButtonEnabled = false
         mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
 

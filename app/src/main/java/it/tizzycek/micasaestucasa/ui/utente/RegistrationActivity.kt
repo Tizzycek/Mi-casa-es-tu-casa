@@ -4,17 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.view.View
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.snackbar.Snackbar
 import it.tizzycek.micasaestucasa.R
 import it.tizzycek.micasaestucasa.data.utente.TipoUtente
 import it.tizzycek.micasaestucasa.databinding.SignupBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo
+import it.tizzycek.micasaestucasa.ui.home.FragmentManager
 import it.tizzycek.micasaestucasa.ui.mostraErrore
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -97,9 +94,7 @@ class RegistrationActivity: AppCompatActivity() {
                             onSuccess = {
                                 val profilo = MainRepo.getUserRepository().getCurrentUser()
                                 if (profilo != null) {
-                                    //vaiAllaHome(profilo)
-                                    Toast.makeText(this, "To be implemented!", Toast.LENGTH_LONG)
-                                        .show()
+                                    startActivity(Intent(this, FragmentManager::class.java))
                                     finish()
                                 }
                             },

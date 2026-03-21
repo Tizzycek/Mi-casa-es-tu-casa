@@ -1,16 +1,17 @@
 package it.tizzycek.micasaestucasa.data.proprieta
 
+import java.time.LocalDate
 import java.util.Currency
 import java.util.Date
 
-data class Disponibilita(val id: String, var dataInizio: Date, var dataFine: Date, var prezzo: Double, var valuta: Currency) {
+data class Disponibilita(val id: String, var dataInizio: LocalDate, var dataFine: LocalDate, var prezzo: Double, var valuta: Currency) {
     init {
-        require (dataFine.after(dataInizio)) {
+        require (dataFine.isAfter((dataInizio))) {
             "Data fine deve essere successiva alla data inizio"
         }
     }
 
-    fun contiene(data: Date): Boolean {
-        return !data.before(dataInizio) && !data.after(dataFine)
+    fun contiene(data: LocalDate): Boolean {
+        return !data.isBefore(dataInizio) && !data.isAfter(dataFine)
     }
 }
