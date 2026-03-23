@@ -4,9 +4,12 @@ import android.app.DatePickerDialog
 import android.location.Address
 import android.location.Geocoder
 import android.media.Image
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -18,17 +21,21 @@ import com.google.android.material.snackbar.Snackbar
 import it.tizzycek.micasaestucasa.R
 import it.tizzycek.micasaestucasa.data.parolechiave.ParoleChiave
 import it.tizzycek.micasaestucasa.data.proprieta.Disponibilita
+import it.tizzycek.micasaestucasa.data.proprieta.Proprieta
 import it.tizzycek.micasaestucasa.databinding.AggiungiProprietaBinding
 import it.tizzycek.micasaestucasa.databinding.ItemAvailabilityBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo
 import it.tizzycek.micasaestucasa.ui.ImageAdapter
 import it.tizzycek.micasaestucasa.ui.mostraErrore
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
 import java.time.LocalDate
 import java.util.Calendar
 import java.util.Currency
 import java.util.Locale
 import java.util.UUID
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class AggiungiProprieta: AppCompatActivity() {
     private lateinit var binding: AggiungiProprietaBinding
@@ -105,7 +112,7 @@ class AggiungiProprieta: AppCompatActivity() {
             val day = calendar.get(Calendar.DAY_OF_MONTH)
 
             DatePickerDialog( v.context,{ _, selectedYear, selectedMonth, selectedDay ->
-                    bindingRowView.btnStartDate.text = LocalDate.of(selectedYear, selectedMonth, selectedDay).toString()
+                    bindingRowView.btnStartDate.text = LocalDate.of(selectedYear, selectedMonth + 1, selectedDay).toString()
                 },
                 year, month, day).show()
         }
@@ -117,7 +124,7 @@ class AggiungiProprieta: AppCompatActivity() {
             val day = calendar.get(Calendar.DAY_OF_MONTH)
 
             DatePickerDialog( v.context,{ _, selectedYear, selectedMonth, selectedDay ->
-                bindingRowView.btnEndDate.text = LocalDate.of(selectedYear, selectedMonth, selectedDay).toString()
+                bindingRowView.btnEndDate.text = LocalDate.of(selectedYear, selectedMonth + 1, selectedDay).toString()
             },
                 year, month, day).show()
         }
@@ -158,6 +165,8 @@ class AggiungiProprieta: AppCompatActivity() {
     }
 
     private fun newProperty() {
+        setButtons(false)
+
         val nome = binding.etPropertyName.text.toString()
         val indirizzo = binding.etPropertyAddress.text.toString()
         val posti = binding.etPropertySpots.text.toString()
@@ -166,28 +175,68 @@ class AggiungiProprieta: AppCompatActivity() {
         val disponibilita = getDisponibilita()
 
         
-        if (nome.isEmpty() || indirizzo.isEmpty() || posti.toInt() < 1 || descrizione.isEmpty() || paroleChiave.isEmpty() || disponibilita.isEmpty()) {
+        if (nome.isEmpty() || indirizzo.isEmpty() || posti.isEmpty() || posti.toInt() < 1 || descrizione.isEmpty() || paroleChiave.isEmpty() || disponibilita.isEmpty() || listaImmagini.isEmpty()) {
             mostraErrore(R.string.data_missing)
+            setButtons(true)
         } else {
-            val coordinates = findPlace(indirizzo)
-        }
+            try {
+                val immaginiDaCaricare = mutableListOf<ByteArray>()
+                val urlsGiaPresenti = mutableListOf<String>()
 
+                listaImmagini.forEach { item ->
+                    when (item) {
+                        is Uri -> {
+                            uriToByteArray(item)?.let { immaginiDaCaricare.add(it) }
+                        }
+                        is String -> {
+                            urlsGiaPresenti.add(item)
+                        }
+                    }
+                }
+
+                if (immaginiDaCaricare.isEmpty() && urlsGiaPresenti.isEmpty())
+                    throw Exception("Nessuna immagine da caricare")
+
+                lifecycleScope.launch {
+                    val coordinates = requireNotNull(findPlace(indirizzo)) {
+                        throw Exception("indirizzo non valido")
+                    }
+
+                    val proprieta = Proprieta(UUID.randomUUID().toString(), requireNotNull(MainRepo.getUserRepository().getCurrentUser()!!.id), nome, posti.toInt(), coordinates.latitude, coordinates.longitude, descrizione, paroleChiave, urlsGiaPresenti, disponibilita)
+
+                    val risultato = MainRepo.getProprietaRepository().aggiungiProprieta(proprieta, immaginiDaCaricare)
+                    risultato.fold(
+                        onSuccess = {
+                            finish()
+                        },
+                        onFailure = { errore ->
+                            val messaggio = errore.message ?: getString(R.string.unknown_error)
+                            mostraErrore(messaggio)
+                            setButtons(true)
+                        }
+                    )
+                }
+            } catch (e: Exception) {
+                mostraErrore(e.message ?: getString(R.string.unknown_error))
+                setButtons(true)
+            }
+        }
     }
 
-    private fun findPlace(address: String): Address? {
+    suspend fun findPlace(address: String): Address? = suspendCancellableCoroutine { continuation ->
         val geocoder = Geocoder(this, Locale.getDefault())
-        var returnAddress: Address? = null
-        geocoder.getFromLocationName(address, 1, object: Geocoder.GeocodeListener {
+
+        geocoder.getFromLocationName(address, 1, object : Geocoder.GeocodeListener {
             override fun onGeocode(addresses: MutableList<Address>) {
-                if (addresses.isNotEmpty()) {
-                    returnAddress = addresses[0]
-                }
+                // Resume restituisce il risultato alla coroutine che sta aspettando
+                continuation.resume(addresses.firstOrNull())
             }
+
             override fun onError(errorMessage: String?) {
-                mostraErrore("Errore: $errorMessage")
+                mostraErrore(errorMessage ?: getString(R.string.unknown_error))
+                continuation.resume(null)
             }
         })
-        return returnAddress
     }
 
     private fun getSelectedKeywordIds(): List<String> {
@@ -232,5 +281,30 @@ class AggiungiProprieta: AppCompatActivity() {
             adapter = imageAdapter
         }
 
+    }
+
+    private fun setButtons(enabled: Boolean) {
+        if (enabled) {
+            binding.progressBar.visibility = View.GONE
+            binding.btnSaveProperty.isEnabled = true
+            binding.btnAddImage.isEnabled = true
+            binding.btnAddAvailability.isEnabled = true
+        } else {
+            binding.progressBar.visibility = View.VISIBLE
+            binding.btnSaveProperty.isEnabled = false
+            binding.btnAddImage.isEnabled = false
+            binding.btnAddAvailability.isEnabled = false
+        }
+    }
+
+    private fun uriToByteArray(uri: Uri): ByteArray? {
+        return try {
+            contentResolver.openInputStream(uri)?.use { inputStream ->
+                inputStream.readBytes()
+            }
+        } catch (e: Exception) {
+            mostraErrore(e.message ?: getString(R.string.unknown_error))
+            null
+        }
     }
 }

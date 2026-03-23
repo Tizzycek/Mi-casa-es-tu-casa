@@ -74,8 +74,8 @@ class FragmentManager: AppCompatActivity() {
         }
 
         binding.bottomNavigation.labelVisibilityMode = NavigationBarView.LABEL_VISIBILITY_LABELED
-        binding.bottomNavigation.itemTextColor = getColorStateList(R.color.red)
-        binding.bottomNavigation.itemIconTintList = getColorStateList(R.color.red)
+        binding.bottomNavigation.itemTextColor = getColorStateList(R.color.primary_dark)
+        binding.bottomNavigation.itemIconTintList = getColorStateList(R.color.primary)
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -67,15 +67,16 @@ class ProprietaRepository {
         try {
             val uploadTasks = immagini.withIndex().map { (index, bytes) ->
                 async {
-                    val imageName = "proprieta/${UUID.randomUUID()}_$index.jpg"
-                    val ref = storageRef.reference.child(imageName)
+                    val imageName = "${UUID.randomUUID()}_$index.jpg"
+                    val ref = storageRef.reference.child(imageName).child(imageName)
                     ref.putBytes(bytes).await()
                     ref.downloadUrl.await().toString()
                 }
             }
-            val urls = uploadTasks.awaitAll()
+            val nuoviUrls = uploadTasks.awaitAll()
+            val listaFinale = (proprieta.immaginiUrl?.plus(nuoviUrls))?.toMutableList()
 
-            proprieta.immaginiUrl = urls
+            proprieta.immaginiUrl = listaFinale
             proprieta.id = UUID.randomUUID().toString()
 
             firestore.collection(collection).document(requireNotNull(proprieta.id)).set(proprieta).await()
