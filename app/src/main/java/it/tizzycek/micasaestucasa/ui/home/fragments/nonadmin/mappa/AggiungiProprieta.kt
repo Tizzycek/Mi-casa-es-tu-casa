@@ -11,6 +11,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.snackbar.Snackbar
@@ -33,6 +34,9 @@ class AggiungiProprieta: AppCompatActivity() {
     private lateinit var binding: AggiungiProprietaBinding
 
     private val keywordList = mutableListOf<Chip>()
+    private val listaImmagini = mutableListOf<Any>()
+
+    private lateinit var imageAdapter: ImageAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +48,7 @@ class AggiungiProprieta: AppCompatActivity() {
         getKeyWords()
         setupAvailability()
         setupListener()
+        setupAdapter()
     }
 
     private fun getKeyWords() {
@@ -125,11 +130,7 @@ class AggiungiProprieta: AppCompatActivity() {
                 null
             }
         }
-        val adapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_item,
-            currencies
-        )
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, currencies)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         bindingRowView.spinnerCurrency.adapter = adapter
 
@@ -147,8 +148,8 @@ class AggiungiProprieta: AppCompatActivity() {
 
         val pickMedia = registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(5)) { uris ->
             if (uris.isNotEmpty()) {
-                val adapter = binding.rvPropertyImages.adapter as ImageAdapter
-                adapter.setImages(uris)
+                listaImmagini.addAll(uris)
+                imageAdapter.updateData(listaImmagini.toList())
             }
         }
         binding.btnAddImage.setOnClickListener {
@@ -169,7 +170,6 @@ class AggiungiProprieta: AppCompatActivity() {
             mostraErrore(R.string.data_missing)
         } else {
             val coordinates = findPlace(indirizzo)
-
         }
 
     }
@@ -217,5 +217,20 @@ class AggiungiProprieta: AppCompatActivity() {
         }
 
         return availabilityList
+    }
+
+    private fun setupAdapter() {
+
+        imageAdapter = ImageAdapter(listaImmagini) { itemDaRimuovere ->
+            listaImmagini.remove(itemDaRimuovere)
+            imageAdapter.updateData(listaImmagini.toList()) // Passiamo una copia
+        }
+
+        binding.rvPropertyImages.apply {
+            layoutManager = LinearLayoutManager(this@AggiungiProprieta, LinearLayoutManager.HORIZONTAL, false)
+
+            adapter = imageAdapter
+        }
+
     }
 }
