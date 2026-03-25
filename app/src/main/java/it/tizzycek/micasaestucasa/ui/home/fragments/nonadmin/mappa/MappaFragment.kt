@@ -21,6 +21,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import it.tizzycek.micasaestucasa.R
@@ -75,7 +76,7 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
         checkLocationPermissions()
 
         setupMap()
-        caricaProprieta()
+        mMap.setOnCameraIdleListener { loadOnZoom() }
     }
 
     private fun setupButtons() {
@@ -131,65 +132,71 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
         }
     }
 
-    @SuppressLint("MissingPermission")
-    private fun caricaProprieta() {
-        if (authPosition) {
-            lifecycleScope.launch {
-                binding.progressBar.visibility = View.VISIBLE
-                val location = fusedLocationClient.lastLocation.await()
-                if (location != null) {
-                    caricaProprietaVicine(location)
-                }
-                else {
-                    caricaTutte()
-                }
-            }
-        }
-        else
-            caricaTutte()
-    }
+//    @SuppressLint("MissingPermission")
+//    private fun caricaProprieta() {
+//        if (authPosition) {
+//            lifecycleScope.launch {
+//                binding.progressBar.visibility = View.VISIBLE
+//                val location = fusedLocationClient.lastLocation.await()
+//                if (location != null) {
+//                    if (MainRepo.getUserRepository().getCurrentUser()?.tipo == TipoUtente.PROPRIETARIO)
+//                        caricaTutte()
+//                    else
+//                        caricaProprietaVicine(location)
+//                }
+//                else {
+//                    caricaTutte()
+//                }
+//            }
+//        }
+//        else
+//            caricaTutte()
+//    }
 
-    private fun caricaProprietaVicine(location: Location) {
+//    private fun caricaProprietaVicine(location: Location) {
+//
+//        val latLng = LatLng(location.latitude, location.longitude)
+//
+//
+//        lifecycleScope.launch {
+//            val risultato = MainRepo.getProprietaRepository().cercaDisponibili(
+//                lat = latLng.latitude,
+//                lng = latLng.longitude,
+//                raggioKm = 20.0
+//            )
+//
+//            binding.progressBar.visibility = View.GONE
+//
+//            risultato.fold(
+//                onSuccess = { proprieta ->
+//                    aggiungiProprietaAllaMappa(proprieta)
+//                },
+//                onFailure = { errore ->
+//                    Toast.makeText(requireContext(), "Errore: ${errore.message}", Toast.LENGTH_SHORT).show()
+//                }
+//            )
+//        }
+//    }
 
-        val latLng = LatLng(location.latitude, location.longitude)
-
-
-        lifecycleScope.launch {
-            val risultato = MainRepo.getProprietaRepository().cercaDisponibili(
-                lat = latLng.latitude,
-                lng = latLng.longitude,
-                raggioKm = 20.0
-            )
-
-            binding.progressBar.visibility = View.GONE
-
-            risultato.fold(
-                onSuccess = { proprieta ->
-                    aggiungiProprietaAllaMappa(proprieta)
-                },
-                onFailure = { errore ->
-                    Toast.makeText(requireContext(), "Errore: ${errore.message}", Toast.LENGTH_SHORT).show()
-                }
-            )
-        }
-    }
-
-    private fun caricaTutte() {
-        lifecycleScope.launch {
-            val risultato = MainRepo.getProprietaRepository().getProprieta()
-
-            binding.progressBar.visibility = View.GONE
-
-            risultato.fold(
-                onSuccess = { proprieta ->
-                    aggiungiProprietaAllaMappa(proprieta)
-                },
-                onFailure = { errore ->
-                    Toast.makeText(requireContext(), "Errore: ${errore.message}", Toast.LENGTH_SHORT).show()
-                }
-            )
-        }
-    }
+//    private fun caricaTutte() {
+//        lifecycleScope.launch {
+//            val risultato: Result<List<Proprieta>> = if (MainRepo.getUserRepository().getCurrentUser()?.tipo == TipoUtente.PROPRIETARIO)
+//                MainRepo.getProprietaRepository().caricaProprietaPerProprietario(MainRepo.getUserRepository().getCurrentUser()?.id!!)
+//            else
+//                MainRepo.getProprietaRepository().getProprieta()
+//
+//            binding.progressBar.visibility = View.GONE
+//
+//            risultato.fold(
+//                onSuccess = { proprieta ->
+//                    aggiungiProprietaAllaMappa(proprieta)
+//                },
+//                onFailure = { errore ->
+//                    Toast.makeText(requireContext(), "Errore: ${errore.message}", Toast.LENGTH_SHORT).show()
+//                }
+//            )
+//        }
+//    }
 
     private fun aggiungiProprietaAllaMappa(proprieta: List<Proprieta>) {
         if (!::mMap.isInitialized) return
@@ -205,5 +212,54 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
                 markerMap[it] = requireNotNull(proprieta.id)
             }
         }
+    }
+
+    private fun loadOnZoom() {
+        val visualeCorrente = mMap.projection.visibleRegion.latLngBounds
+        val zoomAttuale = mMap.cameraPosition.zoom
+
+        // Carichiamo solo se lo zoom è abbastanza vicino (evitiamo di caricare tutto il mondo)
+        if (zoomAttuale > 8f) {
+            caricaProprietaNellaVisuale(visualeCorrente)
+        } else {
+            Toast.makeText(requireContext(), "Ingrandisci per vedere le case", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun caricaProprietaNellaVisuale(bounds: LatLngBounds) {
+        val user = MainRepo.getUserRepository().getCurrentUser()
+
+        lifecycleScope.launch {
+            binding.progressBar.visibility = View.VISIBLE
+
+            val risultato = if (user?.tipo == TipoUtente.PROPRIETARIO) {
+                MainRepo.getProprietaRepository().caricaProprietaPerProprietario(user.id!!)
+            } else {
+                // I conduttori caricano solo quello che entra nel "quadrato" della mappa
+                // NOTA: Firestore ha limiti sulle query "box". Usiamo il centro + raggio per ora.
+                val centro = bounds.center
+                val raggio = calcolaRaggioApprossimativo(bounds)
+
+                MainRepo.getProprietaRepository().cercaDisponibili(
+                    lat = centro.latitude,
+                    lng = centro.longitude,
+                    raggioKm = raggio
+                )
+            }
+
+            binding.progressBar.visibility = View.GONE
+            risultato.onSuccess { aggiungiProprietaAllaMappa(it) }
+        }
+    }
+
+    // Funzione utile per capire quanto "grande" è la porzione di mappa visibile
+    private fun calcolaRaggioApprossimativo(bounds: LatLngBounds): Double {
+        val results = FloatArray(1)
+        Location.distanceBetween(
+            bounds.center.latitude, bounds.center.longitude,
+            bounds.northeast.latitude, bounds.northeast.longitude,
+            results
+        )
+        return (results[0] / 1000.0) // Convertiamo in KM
     }
 }
