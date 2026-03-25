@@ -98,6 +98,7 @@ class ProprietaRepository {
     suspend fun cercaDisponibili(dal: LocalDate? = null, al: LocalDate? = null, titolo: String? = null, posti: Int? = null, lat: Double? = null, lng: Double? = null, raggioKm: Double = 20.0, paroleChiaveIds: List<String>? = null, prezzoMin: Double? = null, prezzoMax: Double? = null): Result<List<Proprieta>> {
         // Serve per fare la ricerca. Prende POTENZIALMENTE tutti i dati.
         // Possibilmente fa la query prima. Dove non riesce, smista dopo
+        // TODO:
         return try {
             var query: Query
             query = firestore.collection(collection)

@@ -17,7 +17,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nuova Proprietà"
+            android:text="@string/nuova_propriet"
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="?android:attr/textColorPrimary"
@@ -39,7 +39,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Informazioni di base"
+                    android:text="@string/informazioni_di_base"
                     android:textStyle="bold"
                     android:textColor="@color/primary"
                     android:layout_marginBottom="12dp"/>
@@ -48,7 +48,7 @@
                     android:id="@+id/etPropertyName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Nome della proprietà"
+                    android:hint="@string/nome_della_propriet"
                     android:inputType="textCapSentences"
                     android:layout_marginBottom="12dp"
                     android:padding="12dp"
@@ -58,7 +58,7 @@
                     android:id="@+id/etPropertyAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Indirizzo (per la mappa)"
+                    android:hint="@string/indirizzo_per_la_mappa"
                     android:inputType="textPostalAddress"
                     android:layout_marginBottom="12dp"
                     android:padding="12dp"
@@ -75,7 +75,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Posti disponibili:"
+                        android:text="@string/posti_disponibili"
                         android:textSize="16sp"/>
 
                     <EditText
@@ -94,7 +94,7 @@
                     android:id="@+id/etPropertyDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Descrizione della proprietà..."
+                    android:hint="@string/descrizione_della_propriet"
                     android:inputType="textMultiLine"
                     android:lines="4"
                     android:gravity="top"
@@ -119,7 +119,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Parole Chiave"
+                    android:text="@string/parole_chiave"
                     android:textStyle="bold"
                     android:textColor="@color/primary"
                     android:layout_marginBottom="8dp"/>
@@ -148,7 +148,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Immagini"
+                    android:text="@string/immagini"
                     android:textStyle="bold"
                     android:textColor="@color/primary"
                     android:layout_marginBottom="8dp"/>
@@ -158,7 +158,7 @@
                     style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="+ Aggiungi Foto"
+                    android:text="@string/aggiungi_foto"
                     android:textColor="@color/secondary" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -187,7 +187,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Disponibilità e Prezzi"
+                    android:text="@string/disponibilit_e_prezzi"
                     android:textStyle="bold"
                     android:textColor="@color/primary"
                     android:layout_marginBottom="8dp"/>
@@ -203,7 +203,7 @@
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Aggiungi Periodo"
+                    android:text="@string/aggiungi_periodo"
                     android:textColor="@color/secondary"
                     app:strokeColor="@color/secondary" />
             </LinearLayout>
@@ -221,7 +221,7 @@
             android:id="@+id/btnSaveProperty"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:text="Salva Proprietà"
+            android:text="@string/salva_propriet"
             android:backgroundTint="@color/primary"
             android:textColor="?android:attr/colorBackground"
             app:cornerRadius="28dp"

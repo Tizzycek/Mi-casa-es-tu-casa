@@ -3,22 +3,21 @@ package it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.mappa
 import android.app.DatePickerDialog
 import android.location.Address
 import android.location.Geocoder
-import android.media.Image
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
-import com.google.android.material.snackbar.Snackbar
 import it.tizzycek.micasaestucasa.R
+import it.tizzycek.micasaestucasa.data.DateValidator
 import it.tizzycek.micasaestucasa.data.parolechiave.ParoleChiave
 import it.tizzycek.micasaestucasa.data.proprieta.Disponibilita
 import it.tizzycek.micasaestucasa.data.proprieta.Proprieta
@@ -35,7 +34,6 @@ import java.util.Currency
 import java.util.Locale
 import java.util.UUID
 import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 class AggiungiProprieta: AppCompatActivity() {
     private lateinit var binding: AggiungiProprietaBinding
@@ -75,15 +73,18 @@ class AggiungiProprieta: AppCompatActivity() {
                         chip.isChecked = false
                         chip.setChipBackgroundColorResource(R.color.secondary_dark)
 
-                        chip.chipIcon = null
-                        chip.isChipIconVisible = true
-                        chip.setCheckedIconResource(R.color.gray)
+                        chip.chipIcon = ContextCompat.getDrawable(this@AggiungiProprieta, R.drawable.check_small_24px)
+                        chip.isChipIconVisible = false
 
                         chip.setOnCheckedChangeListener { button, isChecked ->
-                            if (isChecked)
+                            if (isChecked) {
+                                chip.isCheckedIconVisible = true
                                 chip.setChipBackgroundColorResource(R.color.secondary_light)
-                            else
+                            }
+                            else{
+                                chip.isCheckedIconVisible = false
                                 chip.setChipBackgroundColorResource(R.color.secondary_dark)
+                            }
                         }
 
                         binding.cgKeywords.addView(chip)
@@ -129,14 +130,12 @@ class AggiungiProprieta: AppCompatActivity() {
                 year, month, day).show()
         }
 
-        val codes = Currency.getAvailableCurrencies().sortedBy { it.currencyCode }
-        val currencies = codes.mapNotNull { code ->
-            try {
-                Currency.getInstance(code.currencyCode)
-            } catch (e: Exception) {
-                null
-            }
-        }
+        val defaultCurrency = Currency.getInstance(Locale.getDefault())
+        val codes = Currency.getAvailableCurrencies().toList()
+        val currencies = codes.sortedWith(compareBy<Currency> { currency ->
+            if (currency.currencyCode == defaultCurrency.currencyCode) 0 else 1
+        }.thenBy { it.currencyCode })
+
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, currencies)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         bindingRowView.spinnerCurrency.adapter = adapter
@@ -164,6 +163,19 @@ class AggiungiProprieta: AppCompatActivity() {
         }
     }
 
+    private fun setupAdapter() {
+        imageAdapter = ImageAdapter(listaImmagini) { itemDaRimuovere ->
+            listaImmagini.remove(itemDaRimuovere)
+            imageAdapter.updateData(listaImmagini.toList()) // Passiamo una copia
+        }
+
+        binding.rvPropertyImages.apply {
+            layoutManager = LinearLayoutManager(this@AggiungiProprieta, LinearLayoutManager.HORIZONTAL, false)
+
+            adapter = imageAdapter
+        }
+    }
+
     private fun newProperty() {
         setButtons(false)
 
@@ -175,29 +187,32 @@ class AggiungiProprieta: AppCompatActivity() {
         val disponibilita = getDisponibilita()
 
         
-        if (nome.isEmpty() || indirizzo.isEmpty() || posti.isEmpty() || posti.toInt() < 1 || descrizione.isEmpty() || paroleChiave.isEmpty() || disponibilita.isEmpty() || listaImmagini.isEmpty()) {
+        if (nome.isEmpty() || indirizzo.isEmpty() || posti.isEmpty() || posti.toInt() < 1 || descrizione.isEmpty() || paroleChiave.isEmpty() || listaImmagini.isEmpty()) {
             mostraErrore(R.string.data_missing)
             setButtons(true)
-        } else {
-            try {
-                val immaginiDaCaricare = mutableListOf<ByteArray>()
-                val urlsGiaPresenti = mutableListOf<String>()
+        } else if (disponibilita.isEmpty()) {
+            setButtons(true)
+        }
+        else {
+            lifecycleScope.launch {
+                try {
+                    val immaginiDaCaricare = mutableListOf<ByteArray>()
+                    val urlsGiaPresenti = mutableListOf<String>()
 
-                listaImmagini.forEach { item ->
-                    when (item) {
-                        is Uri -> {
-                            uriToByteArray(item)?.let { immaginiDaCaricare.add(it) }
-                        }
-                        is String -> {
-                            urlsGiaPresenti.add(item)
+                    listaImmagini.forEach { item ->
+                        when (item) {
+                            is Uri -> {
+                                uriToByteArray(item)?.let { immaginiDaCaricare.add(it) }
+                            }
+                            is String -> {
+                                urlsGiaPresenti.add(item)
+                            }
                         }
                     }
-                }
 
-                if (immaginiDaCaricare.isEmpty() && urlsGiaPresenti.isEmpty())
-                    throw Exception("Nessuna immagine da caricare")
+                    if (immaginiDaCaricare.isEmpty() && urlsGiaPresenti.isEmpty())
+                        throw Exception("Nessuna immagine da caricare")
 
-                lifecycleScope.launch {
                     val coordinates = requireNotNull(findPlace(indirizzo)) {
                         throw Exception("indirizzo non valido")
                     }
@@ -215,28 +230,12 @@ class AggiungiProprieta: AppCompatActivity() {
                             setButtons(true)
                         }
                     )
+                } catch (e: Exception) {
+                    mostraErrore(e.message ?: getString(R.string.unknown_error))
+                    setButtons(true)
                 }
-            } catch (e: Exception) {
-                mostraErrore(e.message ?: getString(R.string.unknown_error))
-                setButtons(true)
             }
         }
-    }
-
-    suspend fun findPlace(address: String): Address? = suspendCancellableCoroutine { continuation ->
-        val geocoder = Geocoder(this, Locale.getDefault())
-
-        geocoder.getFromLocationName(address, 1, object : Geocoder.GeocodeListener {
-            override fun onGeocode(addresses: MutableList<Address>) {
-                // Resume restituisce il risultato alla coroutine che sta aspettando
-                continuation.resume(addresses.firstOrNull())
-            }
-
-            override fun onError(errorMessage: String?) {
-                mostraErrore(errorMessage ?: getString(R.string.unknown_error))
-                continuation.resume(null)
-            }
-        })
     }
 
     private fun getSelectedKeywordIds(): List<String> {
@@ -260,28 +259,40 @@ class AggiungiProprieta: AppCompatActivity() {
 
             if (startDate.isEmpty() || endDate.isEmpty()  || prezzo.isEmpty()) {
                 mostraErrore(R.string.data_missing)
-            } else {
+                return emptyList()
+            } else if (DateValidator.startIsAfterEnd(LocalDate.parse(startDate), LocalDate.parse(endDate)) || DateValidator.isBeforeToday(LocalDate.parse(startDate))){
+                mostraErrore(R.string.date_error)
+                return emptyList()
+            }
+            else {
                 availabilityList.add(Disponibilita(UUID.randomUUID().toString(), LocalDate.parse(startDate), LocalDate.parse(endDate), prezzo.toDouble(),requireNotNull(currency)))
             }
         }
 
-        return availabilityList
+        if (DateValidator.hasOverlaps(availabilityList)) {
+            mostraErrore(R.string.date_overlap)
+            return emptyList()
+        } else {
+            return availabilityList
+        }
     }
 
-    private fun setupAdapter() {
+    suspend fun findPlace(address: String): Address? = suspendCancellableCoroutine { continuation ->
+        val geocoder = Geocoder(this, Locale.getDefault())
 
-        imageAdapter = ImageAdapter(listaImmagini) { itemDaRimuovere ->
-            listaImmagini.remove(itemDaRimuovere)
-            imageAdapter.updateData(listaImmagini.toList()) // Passiamo una copia
-        }
+        geocoder.getFromLocationName(address, 1, object : Geocoder.GeocodeListener {
+            override fun onGeocode(addresses: MutableList<Address>) {
+                // Resume restituisce il risultato alla coroutine che sta aspettando
+                continuation.resume(addresses.firstOrNull())
+            }
 
-        binding.rvPropertyImages.apply {
-            layoutManager = LinearLayoutManager(this@AggiungiProprieta, LinearLayoutManager.HORIZONTAL, false)
-
-            adapter = imageAdapter
-        }
-
+            override fun onError(errorMessage: String?) {
+                mostraErrore(errorMessage ?: getString(R.string.unknown_error))
+                continuation.resume(null)
+            }
+        })
     }
+
 
     private fun setButtons(enabled: Boolean) {
         if (enabled) {

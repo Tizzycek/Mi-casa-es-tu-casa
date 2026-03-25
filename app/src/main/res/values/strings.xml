@@ -46,4 +46,21 @@
     <string name="prenotazioni">Reservations</string>
     <string name="messaggistica">Messaging</string>
     <string name="profilo">Profile</string>
+    <string name="inizio">From</string>
+    <string name="fine">Till</string>
+    <string name="nuova_propriet">Add Property</string>
+    <string name="informazioni_di_base">About</string>
+    <string name="nome_della_propriet">Name</string>
+    <string name="indirizzo_per_la_mappa">Address</string>
+    <string name="posti_disponibili">Available places:</string>
+    <string name="descrizione_della_propriet">Write a description…</string>
+    <string name="parole_chiave">Keywords</string>
+    <string name="immagini">Pictures</string>
+    <string name="aggiungi_foto">+ Add photo</string>
+    <string name="disponibilit_e_prezzi">Availability and prices</string>
+    <string name="aggiungi_periodo">Add date</string>
+    <string name="salva_propriet">Save</string>
+    <string name="date_error">Insert date is not correct</string>
+    <string name="date_overlap">Insert dates cause overlap</string>
+"
 </resources>

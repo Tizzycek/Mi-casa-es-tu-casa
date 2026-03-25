@@ -84,9 +84,9 @@
             android:layout_height="wrap_content"
             android:src="@android:drawable/ic_input_add"
             app:backgroundTint="@color/secondary"
-            app:tint="@color/white"
+            app:tint="?android:attr/colorBackground"
             app:fabSize="normal"
-            android:contentDescription="Aggiungi Proprietà"
+            android:contentDescription="@string/nuova_propriet"
             android:visibility="gone"/>
     </LinearLayout>
 
