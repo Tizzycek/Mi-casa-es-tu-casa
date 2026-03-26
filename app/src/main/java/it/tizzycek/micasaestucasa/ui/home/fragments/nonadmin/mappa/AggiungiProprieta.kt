@@ -24,7 +24,7 @@ import it.tizzycek.micasaestucasa.data.proprieta.Proprieta
 import it.tizzycek.micasaestucasa.databinding.AggiungiProprietaBinding
 import it.tizzycek.micasaestucasa.databinding.ItemAvailabilityBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo
-import it.tizzycek.micasaestucasa.ui.ImageAdapter
+import it.tizzycek.micasaestucasa.ui.adapters.ImageAdapter
 import it.tizzycek.micasaestucasa.ui.mostraErrore
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine

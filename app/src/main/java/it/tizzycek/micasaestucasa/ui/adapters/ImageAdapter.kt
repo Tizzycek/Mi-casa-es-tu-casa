@@ -1,17 +1,13 @@
-package it.tizzycek.micasaestucasa.ui
+package it.tizzycek.micasaestucasa.ui.adapters
 
-import android.net.Uri
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import coil3.load
 import coil3.request.crossfade
+import coil3.request.error
 import coil3.request.placeholder
 import coil3.request.transformations
-import coil3.request.error
 import coil3.transform.RoundedCornersTransformation
 import it.tizzycek.micasaestucasa.R
 import it.tizzycek.micasaestucasa.databinding.ItemImagePreviewBinding

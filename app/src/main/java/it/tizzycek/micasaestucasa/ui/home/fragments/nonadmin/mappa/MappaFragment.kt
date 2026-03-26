@@ -29,6 +29,7 @@ import it.tizzycek.micasaestucasa.data.proprieta.Proprieta
 import it.tizzycek.micasaestucasa.data.utente.TipoUtente
 import it.tizzycek.micasaestucasa.databinding.FragmentMappaBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo
+import it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.DettaglioProprieta
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
@@ -144,9 +145,16 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
         mMap.uiSettings.isMyLocationButtonEnabled = false
         mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
 
-        // TODO: Setta il listener per i marker
         mMap.setOnMarkerClickListener { marker ->
-            Toast.makeText(requireContext(), "Cliccato su ${marker.title}", Toast.LENGTH_SHORT).show()
+            val idProprieta = markerMap[marker]
+            if (idProprieta != null) {
+                val intent = Intent(requireContext(), DettaglioProprieta::class.java).apply {
+                    putExtra("PROPRIETA_ID", idProprieta)
+                }
+                startActivity(intent)
+            } else {
+                Toast.makeText(requireContext(), "Errore: ID non trovato", Toast.LENGTH_SHORT).show() // TODO stringa errore
+            }
             false
         }
     }

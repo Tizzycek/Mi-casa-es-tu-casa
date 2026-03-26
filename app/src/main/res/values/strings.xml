@@ -66,5 +66,6 @@
     <string name="nessuna_immagine">None picture is selected</string>
     <string name="invalid_address">The inserted address is not valid</string>
     <string name="la_mia_posizione">My location</string>
+    <string name="descrizione">Description</string>
     "
 </resources>
