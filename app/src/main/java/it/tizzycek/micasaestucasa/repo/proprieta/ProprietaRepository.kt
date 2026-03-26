@@ -38,9 +38,15 @@ class ProprietaRepository {
         }
     }
 
-    suspend fun getProprieta(): Result<List<Proprieta>> {
+    suspend fun getProprieta(limite: Long? = null): Result<List<Proprieta>> {
         try {
-            val snapshot = firestore.collection(collection).get().await()
+            var query: Query = firestore.collection(collection)
+
+            limite?.let {
+                query = query.limit(limite)
+            }
+
+            val snapshot = query.get().await()
             val proprieta = snapshot.documents.mapNotNull { doc ->
                 doc.toProprieta()
             }
@@ -95,97 +101,27 @@ class ProprietaRepository {
         }
     }
 
-//    suspend fun cercaDisponibili(dal: LocalDate? = null, al: LocalDate? = null, titolo: String? = null, posti: Int? = null, lat: Double? = null, lng: Double? = null, raggioKm: Double = 20.0, paroleChiaveIds: List<String>? = null, prezzoMin: Double? = null, prezzoMax: Double? = null): Result<List<Proprieta>> {
-//        // Serve per fare la ricerca. Prende POTENZIALMENTE tutti i dati.
-//        // Possibilmente fa la query prima. Dove non riesce, smista dopo
-//        // TODO:
-//        return try {
-//            var query: Query
-//            query = firestore.collection(collection)
-//
-//            titolo?.let {
-//                query = query.whereEqualTo("nome", titolo)
-//            }
-//
-//            posti?.let {
-//                query = query.whereGreaterThanOrEqualTo("posti", posti)
-//            }
-//
-//            paroleChiaveIds?.let { ids ->
-//                if (ids.isNotEmpty()) {
-//                    query = query.whereArrayContainsAny("paroleChiaveIds", ids)
-//                }
-//            }
-//
-//            prezzoMin?.let {
-//                query = query.whereGreaterThanOrEqualTo("prezzo", it)
-//            }
-//
-//            prezzoMax?.let {
-//                query = query.whereLessThanOrEqualTo("prezzo", it)
-//            }
-//
-//            query = query.orderBy("prezzo", Query.Direction.ASCENDING).limit(50)
-//
-//            val snapshot = query.get().await()
-//
-//            var risultati = snapshot.documents.mapNotNull { doc ->
-//                doc.toObject(Proprieta::class.java)?.copy(id = doc.id)
-//            }
-//
-//            if (dal != null && al != null) {
-//                risultati = risultati.filter { proprieta ->
-//                    proprieta.isDisponibile(dal, al)
-//                }
-//            }
-//
-//            if (lat != null && lng != null) {
-//                risultati = risultati.filter { prop ->
-//                    calcolaDistanza(lat, lng, prop.latitudine, prop.longitudine) <= raggioKm
-//                }
-//            }
-//
-//            Result.success(risultati)
-//        } catch (e: Exception) {
-//            Result.failure(e)
-//        }
-//    }
 
-    suspend fun cercaDisponibili(
-        lat: Double? = null,
-        lng: Double? = null,
-        raggioKm: Double = 20.0,
-        dal: LocalDate? = null,
-        al: LocalDate? = null,
-        posti: Int? = null,
-        paroleChiaveIds: List<String>? = null,
-        prezzoMin: Double? = null,
-        prezzoMax: Double? = null
-    ): Result<List<Proprieta>> {
+    suspend fun cercaDisponibili(lat: Double? = null, lng: Double? = null, raggioKm: Double = 20.0, dal: LocalDate? = null, al: LocalDate? = null, posti: Int? = null, paroleChiaveIds: List<String>? = null, prezzoMin: Double? = null, prezzoMax: Double? = null): Result<List<Proprieta>> {
         return try {
             var query: Query = firestore.collection(collection)
 
-            // 1. FILTRI LATO SERVER (Firestore) - Riducono drasticamente i dati scaricati
             posti?.let { query = query.whereGreaterThanOrEqualTo("posti", it) }
 
             paroleChiaveIds?.let { ids ->
                 if (ids.isNotEmpty()) query = query.whereArrayContainsAny("paroleChiaveIds", ids)
             }
 
-            // Nota: prezzoMin/Max richiedono un indice se combinati con altri filtri
             prezzoMin?.let { query = query.whereGreaterThanOrEqualTo("prezzo", it) }
 
-            val snapshot = query.limit(100).get().await() // Limite di sicurezza per non scaricare troppo
+            val snapshot = query.limit(100).get().await()
 
-            // 2. FILTRI LATO CLIENT (Kotlin) - Per logica complessa come date e distanza
-            var risultati = snapshot.documents.mapNotNull { it.toProprieta() } // Usa il mapper manuale!
+            var risultati = snapshot.documents.mapNotNull { it.toProprieta() }
 
-            // Filtro date
             if (dal != null && al != null) {
                 risultati = risultati.filter { it.isDisponibile(dal, al) }
             }
 
-            // Filtro distanza (Fondamentale per la mappa)
             if (lat != null && lng != null) {
                 risultati = risultati.filter { prop ->
                     calcolaDistanza(lat, lng, prop.latitudine, prop.longitudine) <= raggioKm
@@ -229,13 +165,13 @@ class ProprietaRepository {
     }
 
     private fun calcolaDistanza(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
-        val R = 6371 // Raggio della Terra in km
+        val r = 6371 // Raggio della Terra in km
         val dLat = Math.toRadians(lat2 - lat1)
         val dLon = Math.toRadians(lon2 - lon1)
         val a = sin(dLat / 2) * sin(dLat / 2) +
                 cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2)) *
                 sin(dLon / 2) * sin(dLon / 2)
         val c = 2 * atan2(sqrt(a), sqrt(1 - a))
-        return R * c
+        return r * c
     }
 }

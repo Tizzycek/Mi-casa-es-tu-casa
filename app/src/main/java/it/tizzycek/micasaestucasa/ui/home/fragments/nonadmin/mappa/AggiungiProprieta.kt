@@ -211,10 +211,10 @@ class AggiungiProprieta: AppCompatActivity() {
                     }
 
                     if (immaginiDaCaricare.isEmpty() && urlsGiaPresenti.isEmpty())
-                        throw Exception("Nessuna immagine da caricare")
+                        throw Exception(getString(R.string.nessuna_immagine))
 
                     val coordinates = requireNotNull(findPlace(indirizzo)) {
-                        throw Exception("indirizzo non valido")
+                        throw Exception(getString(R.string.invalid_address))
                     }
 
                     val proprieta = Proprieta(UUID.randomUUID().toString(), requireNotNull(MainRepo.getUserRepository().getCurrentUser()!!.id), nome, posti.toInt(), coordinates.latitude, coordinates.longitude, descrizione, paroleChiave, urlsGiaPresenti, disponibilita)

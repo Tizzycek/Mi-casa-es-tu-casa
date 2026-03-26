@@ -42,6 +42,8 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
 
     private var authPosition = false
 
+    val user = MainRepo.getUserRepository().getCurrentUser()
+
 
     // launcher richiesta permessi
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
@@ -63,8 +65,6 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupButtons()
-
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
@@ -77,15 +77,96 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
 
         setupMap()
         mMap.setOnCameraIdleListener { loadOnZoom() }
+        setupButtons()
+
     }
 
+    private fun loadOnZoom() {
+        val visualeCorrente = mMap.projection.visibleRegion.latLngBounds
+        val zoomAttuale = mMap.cameraPosition.zoom
+
+        // carica con dettagli solo dopo un certo zoom (se no le chiamate al database costano e si usano troppi dati)
+        if (zoomAttuale > 8f) {
+            caricaProprietaNellaVisuale(visualeCorrente)
+        } else {
+            caricaAnteprime()
+        }
+    }
+
+    private fun caricaProprietaNellaVisuale(bounds: LatLngBounds) {
+        lifecycleScope.launch {
+            binding.progressBar.visibility = View.VISIBLE
+
+            val risultato = if (user?.tipo == TipoUtente.PROPRIETARIO) {
+                MainRepo.getProprietaRepository().caricaProprietaPerProprietario(user.id!!)
+            } else {
+                val centro = bounds.center
+                val raggio = calcolaRaggioApprossimativo(bounds)
+
+                MainRepo.getProprietaRepository().cercaDisponibili(
+                    lat = centro.latitude,
+                    lng = centro.longitude,
+                    raggioKm = raggio
+                )
+            }
+
+            binding.progressBar.visibility = View.GONE
+            risultato.onSuccess { aggiungiProprietaAllaMappa(it) }
+        }
+    }
+
+    private fun caricaAnteprime() {
+        lifecycleScope.launch {
+            binding.progressBar.visibility = View.VISIBLE
+            if (user!!.tipo == TipoUtente.PROPRIETARIO)
+                MainRepo.getProprietaRepository().caricaProprietaPerProprietario(user.id!!)
+            else
+                MainRepo.getProprietaRepository().getProprieta(15)
+
+            binding.progressBar.visibility = View.GONE
+        }
+    }
+
+    // funzione utile per capire quanto grande è la porzione di mappa visibile
+    private fun calcolaRaggioApprossimativo(bounds: LatLngBounds): Double {
+        val results = FloatArray(1)
+        Location.distanceBetween(
+            bounds.center.latitude, bounds.center.longitude,
+            bounds.northeast.latitude, bounds.northeast.longitude,
+            results
+        )
+        return (results[0] / 1000.0) // Convertiamo in KM
+    }
+
+    private fun setupMap() {
+        mMap.uiSettings.isZoomControlsEnabled = false
+        mMap.uiSettings.isCompassEnabled = false
+        mMap.uiSettings.isMyLocationButtonEnabled = false
+        mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
+
+        // TODO: Setta il listener per i marker
+        mMap.setOnMarkerClickListener { marker ->
+            Toast.makeText(requireContext(), "Cliccato su ${marker.title}", Toast.LENGTH_SHORT).show()
+            false
+        }
+    }
+
+    @SuppressLint("MissingPermission")
     private fun setupButtons() {
-        if (MainRepo.getUserRepository().getCurrentUser()!!.tipo == TipoUtente.PROPRIETARIO){
+        if (user!!.tipo == TipoUtente.PROPRIETARIO){
             binding.fabAddProperty.visibility = View.VISIBLE
             binding.fabAddProperty.setOnClickListener {
                 startActivity(Intent(requireContext(), AggiungiProprieta::class.java))
             }
         }
+        if (!authPosition) {
+            binding.btnMyLocation.visibility = View.GONE
+        } else {
+            binding.btnMyLocation.setOnClickListener {
+                focusOnCurrentLocation()
+            }
+        }
+
         binding.searchBarContainer.setOnClickListener {
             Toast.makeText(requireContext(), "Ricerca", Toast.LENGTH_SHORT).show()
         }
@@ -110,6 +191,11 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
 
         mMap.isMyLocationEnabled = true
 
+        focusOnCurrentLocation()
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun focusOnCurrentLocation() {
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
             if (location != null) {
                 val currentLatLng = LatLng(location.latitude, location.longitude)
@@ -119,84 +205,6 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
         }
     }
 
-    private fun setupMap() {
-        mMap.uiSettings.isZoomControlsEnabled = false
-        mMap.uiSettings.isCompassEnabled = false
-        mMap.uiSettings.isMyLocationButtonEnabled = false
-        mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
-
-        // Setta il listener per i marker
-        mMap.setOnMarkerClickListener { marker ->
-            Toast.makeText(requireContext(), "Cliccato su ${marker.title}", Toast.LENGTH_SHORT).show()
-            false
-        }
-    }
-
-//    @SuppressLint("MissingPermission")
-//    private fun caricaProprieta() {
-//        if (authPosition) {
-//            lifecycleScope.launch {
-//                binding.progressBar.visibility = View.VISIBLE
-//                val location = fusedLocationClient.lastLocation.await()
-//                if (location != null) {
-//                    if (MainRepo.getUserRepository().getCurrentUser()?.tipo == TipoUtente.PROPRIETARIO)
-//                        caricaTutte()
-//                    else
-//                        caricaProprietaVicine(location)
-//                }
-//                else {
-//                    caricaTutte()
-//                }
-//            }
-//        }
-//        else
-//            caricaTutte()
-//    }
-
-//    private fun caricaProprietaVicine(location: Location) {
-//
-//        val latLng = LatLng(location.latitude, location.longitude)
-//
-//
-//        lifecycleScope.launch {
-//            val risultato = MainRepo.getProprietaRepository().cercaDisponibili(
-//                lat = latLng.latitude,
-//                lng = latLng.longitude,
-//                raggioKm = 20.0
-//            )
-//
-//            binding.progressBar.visibility = View.GONE
-//
-//            risultato.fold(
-//                onSuccess = { proprieta ->
-//                    aggiungiProprietaAllaMappa(proprieta)
-//                },
-//                onFailure = { errore ->
-//                    Toast.makeText(requireContext(), "Errore: ${errore.message}", Toast.LENGTH_SHORT).show()
-//                }
-//            )
-//        }
-//    }
-
-//    private fun caricaTutte() {
-//        lifecycleScope.launch {
-//            val risultato: Result<List<Proprieta>> = if (MainRepo.getUserRepository().getCurrentUser()?.tipo == TipoUtente.PROPRIETARIO)
-//                MainRepo.getProprietaRepository().caricaProprietaPerProprietario(MainRepo.getUserRepository().getCurrentUser()?.id!!)
-//            else
-//                MainRepo.getProprietaRepository().getProprieta()
-//
-//            binding.progressBar.visibility = View.GONE
-//
-//            risultato.fold(
-//                onSuccess = { proprieta ->
-//                    aggiungiProprietaAllaMappa(proprieta)
-//                },
-//                onFailure = { errore ->
-//                    Toast.makeText(requireContext(), "Errore: ${errore.message}", Toast.LENGTH_SHORT).show()
-//                }
-//            )
-//        }
-//    }
 
     private fun aggiungiProprietaAllaMappa(proprieta: List<Proprieta>) {
         if (!::mMap.isInitialized) return
@@ -212,54 +220,5 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
                 markerMap[it] = requireNotNull(proprieta.id)
             }
         }
-    }
-
-    private fun loadOnZoom() {
-        val visualeCorrente = mMap.projection.visibleRegion.latLngBounds
-        val zoomAttuale = mMap.cameraPosition.zoom
-
-        // Carichiamo solo se lo zoom è abbastanza vicino (evitiamo di caricare tutto il mondo)
-        if (zoomAttuale > 8f) {
-            caricaProprietaNellaVisuale(visualeCorrente)
-        } else {
-            Toast.makeText(requireContext(), "Ingrandisci per vedere le case", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun caricaProprietaNellaVisuale(bounds: LatLngBounds) {
-        val user = MainRepo.getUserRepository().getCurrentUser()
-
-        lifecycleScope.launch {
-            binding.progressBar.visibility = View.VISIBLE
-
-            val risultato = if (user?.tipo == TipoUtente.PROPRIETARIO) {
-                MainRepo.getProprietaRepository().caricaProprietaPerProprietario(user.id!!)
-            } else {
-                // I conduttori caricano solo quello che entra nel "quadrato" della mappa
-                // NOTA: Firestore ha limiti sulle query "box". Usiamo il centro + raggio per ora.
-                val centro = bounds.center
-                val raggio = calcolaRaggioApprossimativo(bounds)
-
-                MainRepo.getProprietaRepository().cercaDisponibili(
-                    lat = centro.latitude,
-                    lng = centro.longitude,
-                    raggioKm = raggio
-                )
-            }
-
-            binding.progressBar.visibility = View.GONE
-            risultato.onSuccess { aggiungiProprietaAllaMappa(it) }
-        }
-    }
-
-    // Funzione utile per capire quanto "grande" è la porzione di mappa visibile
-    private fun calcolaRaggioApprossimativo(bounds: LatLngBounds): Double {
-        val results = FloatArray(1)
-        Location.distanceBetween(
-            bounds.center.latitude, bounds.center.longitude,
-            bounds.northeast.latitude, bounds.northeast.longitude,
-            results
-        )
-        return (results[0] / 1000.0) // Convertiamo in KM
     }
 }

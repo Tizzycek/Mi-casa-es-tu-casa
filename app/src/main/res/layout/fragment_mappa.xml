@@ -73,10 +73,11 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
             android:src="@android:drawable/ic_menu_mylocation"
-            app:backgroundTint="@color/white"
-            app:tint="@color/primary"
+            app:backgroundTint="@color/primary"
+            app:tint="?android:attr/colorBackground"
             app:fabSize="mini"
-            android:contentDescription="La mia posizione" />
+            android:outlineProvider="none"
+            android:contentDescription="@string/la_mia_posizione" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabAddProperty"

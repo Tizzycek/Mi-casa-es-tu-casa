@@ -62,6 +62,9 @@
     <string name="salva_propriet">Save</string>
     <string name="date_error">Insert date is not correct</string>
     <string name="date_overlap">Insert dates cause overlap</string>
-    <string name="cerca_una_propriet">Find an estate...</string>
+    <string name="cerca_una_propriet">Find an estate…</string>
+    <string name="nessuna_immagine">None picture is selected</string>
+    <string name="invalid_address">The inserted address is not valid</string>
+    <string name="la_mia_posizione">My location</string>
     "
 </resources>
