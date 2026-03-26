@@ -67,5 +67,10 @@
     <string name="invalid_address">The inserted address is not valid</string>
     <string name="la_mia_posizione">My location</string>
     <string name="descrizione">Description</string>
+    <string name="prezzo_notte">Price per night</string>
+    <string name="modifica">Modifica</string>
+    <string name="elimina">Elimina"</string>
+    <string name="contatta">Ask the landlord</string>
+    <string name="prenota">Book</string>
     "
 </resources>

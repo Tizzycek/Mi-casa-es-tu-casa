@@ -104,11 +104,7 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
                 val centro = bounds.center
                 val raggio = calcolaRaggioApprossimativo(bounds)
 
-                MainRepo.getProprietaRepository().cercaDisponibili(
-                    lat = centro.latitude,
-                    lng = centro.longitude,
-                    raggioKm = raggio
-                )
+                MainRepo.getProprietaRepository().cercaDisponibili(lat = centro.latitude, lng = centro.longitude, raggioKm = raggio)
             }
 
             binding.progressBar.visibility = View.GONE
@@ -136,7 +132,7 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
             bounds.northeast.latitude, bounds.northeast.longitude,
             results
         )
-        return (results[0] / 1000.0) // Convertiamo in KM
+        return (results[0] / 1000.0) // conversione in KM
     }
 
     private fun setupMap() {
@@ -222,7 +218,8 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
 
         proprieta.forEach { proprieta ->
             val posizione = LatLng(proprieta.latitudine, proprieta.longitudine)
-            val marker = mMap.addMarker(MarkerOptions().position(posizione).title(proprieta.nome).snippet("${proprieta.posti} posti"))
+            val posti = getString(R.string.posti_disponibili) + " ${proprieta.posti}"
+            val marker = mMap.addMarker(MarkerOptions().position(posizione).title(proprieta.nome).snippet(posti))
 
             marker?.let {
                 markerMap[it] = requireNotNull(proprieta.id)

@@ -1,15 +1,22 @@
 package it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin
 
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.util.Log.e
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import it.tizzycek.micasaestucasa.R
+import it.tizzycek.micasaestucasa.data.proprieta.Disponibilita
 import it.tizzycek.micasaestucasa.data.proprieta.Proprieta
+import it.tizzycek.micasaestucasa.data.utente.TipoUtente
 import it.tizzycek.micasaestucasa.databinding.ActivityDettaglioProprietaBinding
+import it.tizzycek.micasaestucasa.databinding.ItemAvailabilityBinding
+import it.tizzycek.micasaestucasa.databinding.ItemDisplayAvailabilityBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo
+import it.tizzycek.micasaestucasa.ui.adapters.DisponibilitaAdapter
 import it.tizzycek.micasaestucasa.ui.adapters.ImageDetailAdapter
 import kotlinx.coroutines.launch
 
@@ -29,6 +36,7 @@ class DettaglioProprieta: AppCompatActivity() {
         } else {
             finish()
         }
+        setupButtons()
     }
 
     private fun caricaDatiPropieta(id: String) {
@@ -41,10 +49,10 @@ class DettaglioProprieta: AppCompatActivity() {
                     if (proprieta != null)
                         mostraDati(proprieta)
                     else
-                        Toast.makeText(this@DettaglioProprieta, "Errore proprietà", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@DettaglioProprieta, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show()
                 },
                 onFailure = { e->
-                    Toast.makeText(this@DettaglioProprieta, "Errore: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@DettaglioProprieta, "${e.message}", Toast.LENGTH_SHORT).show()
                 }
             )
             binding.progressBar.visibility = View.GONE
@@ -53,15 +61,58 @@ class DettaglioProprieta: AppCompatActivity() {
 
     private fun mostraDati(p: Proprieta) {
         binding.tvNome.text = p.nome
-        binding.tvPosti.text = "${p.posti} posti disponibili"
+        val posti = getString(R.string.posti_disponibili) + " ${p.posti}"
+        binding.tvPosti.text = posti
         binding.tvDescrizione.text = p.descrizione
 
         val urls = p.immaginiUrl ?: emptyList()
-        if (urls.isNotEmpty()){
+        if (urls.isNotEmpty()) {
             val adapter = ImageDetailAdapter(urls)
             binding.viewPagerImages.adapter = adapter
         } else {
             binding.viewPagerImages.visibility = View.GONE
+        }
+
+        disponibilitaAdapter(p.disponibilita)
+    }
+
+    private fun disponibilitaAdapter(ld: List<Disponibilita>) {
+        // Imposta il layout manager se non è già impostato nell'XML
+        if (binding.rvDisponibilita.layoutManager == null) {
+            binding.rvDisponibilita.layoutManager = LinearLayoutManager(this)
+        }
+
+        val adapter = DisponibilitaAdapter(ld)
+        binding.rvDisponibilita.adapter = adapter
+    }
+
+    private fun setupButtons() {
+        if (MainRepo.getUserRepository().getCurrentUser()?.tipo == TipoUtente.PROPRIETARIO) {
+            binding.btnSinistro.text = getString(R.string.modifica)
+            binding.btnSinistro.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit_24px, 0, 0, 0)
+            binding.btnSinistro.setOnClickListener {
+                Toast.makeText(this, "Modifica", Toast.LENGTH_SHORT).show()
+            }
+
+            binding.btnDestro.text = getString(R.string.elimina)
+            binding.btnDestro.setCompoundDrawablesWithIntrinsicBounds(R.drawable.delete_24px, 0, 0, 0)
+            binding.btnDestro.setBackgroundColor(ContextCompat.getColor(this, R.color.red))
+            binding.btnDestro.setOnClickListener {
+                Toast.makeText(this, "Elimina", Toast.LENGTH_SHORT).show()
+            }
+        }
+        else {
+            binding.btnSinistro.text = getString(R.string.contatta)
+            binding.btnSinistro.setCompoundDrawablesWithIntrinsicBounds(R.drawable.forward_to_inbox_24px, 0, 0, 0)
+            binding.btnSinistro.setOnClickListener {
+                Toast.makeText(this, "Contatta l'host", Toast.LENGTH_SHORT).show()
+            }
+
+            binding.btnDestro.text = getString(R.string.prenota)
+            binding.btnDestro.setCompoundDrawablesWithIntrinsicBounds(R.drawable.event_upcoming_24px, 0, 0, 0)
+            binding.btnDestro.setOnClickListener {
+                Toast.makeText(this, "Prenota", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
