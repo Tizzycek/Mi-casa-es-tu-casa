@@ -11,8 +11,6 @@ import android.widget.ArrayAdapter
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
@@ -25,7 +23,8 @@ import it.tizzycek.micasaestucasa.databinding.AggiungiProprietaBinding
 import it.tizzycek.micasaestucasa.databinding.ItemAvailabilityBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo
 import it.tizzycek.micasaestucasa.ui.adapters.ImageAdapter
-import it.tizzycek.micasaestucasa.ui.mostraErrore
+import it.tizzycek.micasaestucasa.utils.mostraErrore
+import it.tizzycek.micasaestucasa.utils.setupParoleChiave
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import java.time.LocalDate
@@ -57,43 +56,8 @@ class AggiungiProprieta: AppCompatActivity() {
     }
 
     private fun getKeyWords() {
-        lifecycleScope.launch {
-            MainRepo.getParoleChiave().getParoleChiave().fold(
-                onSuccess = { listaParole ->
-                    binding.cgKeywords.removeAllViews()
-
-                    listaParole.filter { it.attiva }.forEach { parolaOggetto ->
-                        val chip = Chip(this@AggiungiProprieta) 
-                        chip.text = parolaOggetto.parola
-
-                        chip.tag = parolaOggetto
-                        keywordList.add(chip)
-
-                        chip.isCheckable = true
-                        chip.isChecked = false
-                        chip.setChipBackgroundColorResource(R.color.secondary_dark)
-
-                        chip.chipIcon = ContextCompat.getDrawable(this@AggiungiProprieta, R.drawable.check_small_24px)
-                        chip.isChipIconVisible = false
-
-                        chip.setOnCheckedChangeListener { button, isChecked ->
-                            if (isChecked) {
-                                chip.isCheckedIconVisible = true
-                                chip.setChipBackgroundColorResource(R.color.secondary_light)
-                            }
-                            else{
-                                chip.isCheckedIconVisible = false
-                                chip.setChipBackgroundColorResource(R.color.secondary_dark)
-                            }
-                        }
-
-                        binding.cgKeywords.addView(chip)
-                    }
-                },
-                onFailure = { errore ->
-                    mostraErrore("Errore nel caricamento filtri: ${errore.message}")
-                }
-            )
+        binding.cgKeywords.setupParoleChiave(lifecycleScope) { selectedIds ->
+            keywordList.addAll(selectedIds)
         }
     }
 

@@ -112,8 +112,6 @@ class ProprietaRepository {
                 if (ids.isNotEmpty()) query = query.whereArrayContainsAny("paroleChiaveIds", ids)
             }
 
-            prezzoMin?.let { query = query.whereGreaterThanOrEqualTo("prezzo", it) }
-
             val snapshot = query.limit(100).get().await()
 
             var risultati = snapshot.documents.mapNotNull { it.toProprieta() }
@@ -128,37 +126,15 @@ class ProprietaRepository {
                 }
             }
 
-            Result.success(risultati)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
-    // TODO: da vedere se è utile
-    suspend fun cercaProprietaPerParoleChiave(parole: List<String>, lat: Double? = null, lng: Double? = null, raggioKm: Double = 20.0): Result<List<Proprieta>> {
-        return try {
-            // Firestore può cercare array con "array-contains-any"
-            val snapshot = firestore.collection(collection)
-                .whereEqualTo("paroleChiave", parole) // Attenzione: vuole match esatto
-                .whereArrayContainsAny("paroleChiave", parole) // Per match parziale
-                .limit(50)
-                .get()
-                .await()
-
-            val risultati = snapshot.documents.mapNotNull { doc ->
-                doc.toObject(Proprieta::class.java)?.copy(id = doc.id)
-            }
-
-            // Filtra per distanza se abbiamo coordinate
-            val filtrati = if (lat != null && lng != null) {
-                risultati.filter { prop ->
-                    calcolaDistanza(lat, lng, prop.latitudine, prop.longitudine) <= raggioKm
+            if (prezzoMin != null && prezzoMax != null) {
+                risultati = risultati.filter { prop ->
+                    prop.disponibilita.any { dis ->
+                        dis.prezzo in prezzoMin..prezzoMax
+                    }
                 }
-            } else {
-                risultati
             }
 
-            Result.success(filtrati)
+            Result.success(risultati)
         } catch (e: Exception) {
             Result.failure(e)
         }

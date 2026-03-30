@@ -9,7 +9,7 @@ import it.tizzycek.micasaestucasa.R
 import it.tizzycek.micasaestucasa.databinding.LoginBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo
 import it.tizzycek.micasaestucasa.ui.home.FragmentManager
-import it.tizzycek.micasaestucasa.ui.mostraErrore
+import it.tizzycek.micasaestucasa.utils.mostraErrore
 import kotlinx.coroutines.launch
 
 class LoginActivity() : AppCompatActivity() {

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +33,7 @@ import it.tizzycek.micasaestucasa.repo.MainRepo
 import it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.DettaglioProprieta
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import java.time.LocalDate
 
 class MappaFragment: Fragment(), OnMapReadyCallback {
     private lateinit var binding: FragmentMappaBinding
@@ -149,7 +151,7 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
                 }
                 startActivity(intent)
             } else {
-                Toast.makeText(requireContext(), "Errore: ID non trovato", Toast.LENGTH_SHORT).show() // TODO stringa errore
+                Toast.makeText(requireContext(), getString(R.string.no_property_found), Toast.LENGTH_SHORT).show()
             }
             false
         }
@@ -172,7 +174,36 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
         }
 
         binding.searchBarContainer.setOnClickListener {
-            Toast.makeText(requireContext(), "Ricerca", Toast.LENGTH_SHORT).show()
+            val sheet = FiltriRicercaSheet { filtri ->
+                // Questa parte viene eseguita quando l'utente preme "Applica" nel Bottom Sheet
+                eseguiRicercaFiltrata(filtri)
+            }
+            sheet.show(childFragmentManager, "FiltriRicerca")
+        }
+    }
+
+    private fun eseguiRicercaFiltrata(f: Map<String, Any?>) {
+        var risultato: Result<List<Proprieta>>
+        lifecycleScope.launch {
+            binding.progressBar.visibility = View.VISIBLE
+
+            risultato = MainRepo.getProprietaRepository().cercaDisponibili(
+                dal = f["dal"] as LocalDate?,
+                al = f["al"] as LocalDate?,
+                posti = f["posti"] as Int?,
+                prezzoMax = f["prezzoMax"] as Double?,
+                prezzoMin = f["prezzoMin"] as Double?,
+                paroleChiaveIds = f["paroleChiaveIds"] as List<String>
+            )
+            binding.progressBar.visibility = View.GONE
+            risultato.fold(
+                onSuccess = {
+                    aggiungiProprietaAllaMappa(it)
+                    zoomRisultati(it)
+                            },
+                onFailure = { Toast.makeText(requireContext(), getString(R.string.no_property_found), Toast.LENGTH_LONG).show()
+                    }
+            )
         }
     }
 
@@ -223,6 +254,24 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
 
             marker?.let {
                 markerMap[it] = requireNotNull(proprieta.id)
+            }
+        }
+    }
+
+    private fun zoomRisultati(proprieta: List<Proprieta>) {
+        if (!::mMap.isInitialized || proprieta.isEmpty()) return
+
+        val builder = LatLngBounds.Builder()
+        for (p in proprieta) {
+            builder.include(LatLng(p.latitudine, p.longitudine))
+        }
+        val bounds = builder.build()
+
+        try {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 200))
+            } catch (e: Exception) {
+            mMap.setOnMapLoadedCallback {
+                mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 200))
             }
         }
     }

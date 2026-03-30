@@ -1,4 +1,4 @@
-package it.tizzycek.micasaestucasa.ui
+package it.tizzycek.micasaestucasa.utils
 
 import android.app.Activity
 import androidx.core.content.ContextCompat

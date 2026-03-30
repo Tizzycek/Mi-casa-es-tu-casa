@@ -72,5 +72,14 @@
     <string name="elimina">Elimina"</string>
     <string name="contatta">Ask the landlord</string>
     <string name="prenota">Book</string>
+
+    <string name="no_property_found">No property found</string>
+    <string name="filtri">Filters</string>
+    <string name="chiudi">Close</string>
+    <string name="date">Dates</string>
+    <string name="seleziona_date">Choose dates</string>
+    <string name="ospiti">Guest(s)</string>
+    <string name="mostra_risultati">Find an accomodation</string>
+
     "
 </resources>

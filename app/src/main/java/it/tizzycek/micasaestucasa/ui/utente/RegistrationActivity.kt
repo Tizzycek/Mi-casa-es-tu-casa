@@ -12,7 +12,7 @@ import it.tizzycek.micasaestucasa.data.utente.TipoUtente
 import it.tizzycek.micasaestucasa.databinding.SignupBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo
 import it.tizzycek.micasaestucasa.ui.home.FragmentManager
-import it.tizzycek.micasaestucasa.ui.mostraErrore
+import it.tizzycek.micasaestucasa.utils.mostraErrore
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.Calendar
