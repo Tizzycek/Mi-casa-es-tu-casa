@@ -12,6 +12,7 @@ import it.tizzycek.micasaestucasa.R
 import it.tizzycek.micasaestucasa.data.proprieta.Disponibilita
 import it.tizzycek.micasaestucasa.data.proprieta.Proprieta
 import it.tizzycek.micasaestucasa.data.utente.TipoUtente
+import it.tizzycek.micasaestucasa.data.utente.Utente
 import it.tizzycek.micasaestucasa.databinding.ActivityDettaglioProprietaBinding
 import it.tizzycek.micasaestucasa.databinding.ItemAvailabilityBinding
 import it.tizzycek.micasaestucasa.databinding.ItemDisplayAvailabilityBinding
@@ -59,10 +60,18 @@ class DettaglioProprieta: AppCompatActivity() {
         }
     }
 
-    private fun mostraDati(p: Proprieta) {
+    private suspend fun mostraDati(p: Proprieta) {
         binding.tvNome.text = p.nome
+
+        // TODO: rendere il profilo cliccabile
+        if (MainRepo.getUserRepository().getCurrentUser()!!.tipo != TipoUtente.PROPRIETARIO) {
+            val locatore = MainRepo.getUserRepository().beccaDatiUtente(p.proprietarioId)
+            binding.tvLocatore.text = locatore!!.nome + " " + locatore!!.cognome
+        }
+
         val posti = getString(R.string.posti_disponibili) + " ${p.posti}"
         binding.tvPosti.text = posti
+
         binding.tvDescrizione.text = p.descrizione
 
         val urls = p.immaginiUrl ?: emptyList()

@@ -33,7 +33,7 @@ class UserRepository {
     }
 
     // deserializza da firebase
-    private suspend fun beccaDatiUtente(uid: String?): Utente? {
+    suspend fun beccaDatiUtente(uid: String?): Utente? {
         val id = requireNotNull(uid) {
             "UID cannot be NULL"
         }

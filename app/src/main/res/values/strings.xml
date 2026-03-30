@@ -80,6 +80,7 @@
     <string name="seleziona_date">Choose dates</string>
     <string name="ospiti">Guest(s)</string>
     <string name="mostra_risultati">Find an accomodation</string>
+    <string name="ospitati_da">Hosted by</string>
 
     "
 </resources>
