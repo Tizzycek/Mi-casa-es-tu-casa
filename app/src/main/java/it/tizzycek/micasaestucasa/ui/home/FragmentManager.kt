@@ -73,9 +73,21 @@ class FragmentManager: AppCompatActivity() {
             menu.add(0, R.id.profiloFragment, 3, getString(R.string.profilo)).setIcon(R.drawable.account_circle_24px)
         }
 
+        when (tipo) {
+            TipoUtente.PROPRIETARIO -> {
+                binding.bottomNavigation.itemTextColor = getColorStateList(R.color.primary_dark)
+                binding.bottomNavigation.itemIconTintList = getColorStateList(R.color.primary)
+            }
+            TipoUtente.AFFITTUARIO -> {
+                binding.bottomNavigation.itemTextColor = getColorStateList(R.color.secondary)
+                binding.bottomNavigation.itemIconTintList = getColorStateList(R.color.secondary_dark)
+            } TipoUtente.ADMIN -> {
+
+            }
+        }
         binding.bottomNavigation.labelVisibilityMode = NavigationBarView.LABEL_VISIBILITY_LABELED
-        binding.bottomNavigation.itemTextColor = getColorStateList(R.color.primary_dark)
-        binding.bottomNavigation.itemIconTintList = getColorStateList(R.color.primary)
+        binding.bottomNavigation.backgroundTintList = getColorStateList(R.color.backgroundColor)
+
     }
 
     override fun onSupportNavigateUp(): Boolean {

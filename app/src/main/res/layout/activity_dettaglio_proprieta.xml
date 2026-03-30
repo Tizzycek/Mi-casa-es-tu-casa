@@ -101,7 +101,7 @@
         android:layout_height="72dp"
         android:layout_gravity="bottom"
         android:orientation="horizontal"
-        android:background="@android:color/white"
+        android:background="?android:attr/colorBackground"
         android:elevation="8dp"
         android:paddingHorizontal="16dp"
         android:paddingVertical="8dp"
