@@ -93,11 +93,27 @@ class ProprietaRepository {
         }
     }
 
-    suspend fun getProprietaDisponibili(dal: LocalDate, al: LocalDate, posti: Int, lat: Double, lng: Double, raggioKm: Double = 20.0): Result<List<Proprieta>> {
-        return getProprieta().map { lista ->
-            lista.filter { proprieta ->
-                proprieta.isDisponibile(dal, al) && proprieta.posti <= posti && calcolaDistanza(lat, lng, proprieta.latitudine, proprieta.longitudine) <= raggioKm
+    suspend fun eliminaProprieta(id: String): Result<Boolean> {
+        return try {
+            val document = firestore.collection(collection).document(id).get().await()
+            val proprieta = document.toProprieta()
+
+            if (proprieta != null) {
+                // multithread
+                val deleteImage = proprieta.immaginiUrl?.map { url ->
+                    coroutineScope {
+                        async {
+                            storageRef.getReferenceFromUrl(url).delete().await()
+                        }
+                    }
+                }
+                deleteImage?.awaitAll()
             }
+            firestore.collection(collection).document(id).delete().await()
+
+            Result.success(true)
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 

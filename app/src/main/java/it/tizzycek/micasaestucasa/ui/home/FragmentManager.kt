@@ -75,12 +75,12 @@ class FragmentManager: AppCompatActivity() {
 
         when (tipo) {
             TipoUtente.PROPRIETARIO -> {
-                binding.bottomNavigation.itemTextColor = getColorStateList(R.color.primary_dark)
+                binding.bottomNavigation.itemTextColor = getColorStateList(R.color.primary)
                 binding.bottomNavigation.itemIconTintList = getColorStateList(R.color.primary)
             }
             TipoUtente.AFFITTUARIO -> {
                 binding.bottomNavigation.itemTextColor = getColorStateList(R.color.secondary)
-                binding.bottomNavigation.itemIconTintList = getColorStateList(R.color.secondary_dark)
+                binding.bottomNavigation.itemIconTintList = getColorStateList(R.color.secondary)
             } TipoUtente.ADMIN -> {
 
             }

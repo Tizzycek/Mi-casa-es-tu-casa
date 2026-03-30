@@ -1,6 +1,7 @@
 package it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.mappa
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
 import android.net.Uri
@@ -186,6 +187,11 @@ class AggiungiProprieta: AppCompatActivity() {
                     val risultato = MainRepo.getProprietaRepository().aggiungiProprieta(proprieta, immaginiDaCaricare)
                     risultato.fold(
                         onSuccess = {
+                            val intent = Intent()
+                            intent.putExtra("LATITUDINE", coordinates.latitude)
+                            intent.putExtra("LONGITUDINE", coordinates.longitude)
+                            setResult(RESULT_OK, intent)
+
                             finish()
                         },
                         onFailure = { errore ->

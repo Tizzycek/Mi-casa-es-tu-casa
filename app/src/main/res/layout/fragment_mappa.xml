@@ -84,7 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@android:drawable/ic_input_add"
-            app:backgroundTint="@color/secondary"
+            app:backgroundTint="@color/secondary_dark"
             app:tint="?android:attr/colorBackground"
             app:fabSize="normal"
             android:contentDescription="@string/nuova_propriet"

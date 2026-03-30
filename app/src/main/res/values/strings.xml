@@ -68,10 +68,15 @@
     <string name="la_mia_posizione">My location</string>
     <string name="descrizione">Description</string>
     <string name="prezzo_notte">Price per night</string>
-    <string name="modifica">Modifica</string>
-    <string name="elimina">Elimina"</string>
+    <string name="modifica">Edit</string>
+    <string name="elimina">Delete"</string>
+    <string name="annulla">Cancel</string>
     <string name="contatta">Ask the landlord</string>
     <string name="prenota">Book</string>
+    <string name="permesso_negato">Permission denied</string>
+    <string name="deleted">The item was deleted successfully</string>
+    <string name="sei_sicuro_elimina">Are you sure you want to delete this item?</string>
+    <string name="tu">you</string>
 
     <string name="no_property_found">No property found</string>
     <string name="filtri">Filters</string>
@@ -79,7 +84,7 @@
     <string name="date">Dates</string>
     <string name="seleziona_date">Choose dates</string>
     <string name="ospiti">Guest(s)</string>
-    <string name="mostra_risultati">Find an accomodation</string>
+    <string name="mostra_risultati">Find an accommodation</string>
     <string name="ospitati_da">Hosted by</string>
 
     "

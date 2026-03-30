@@ -2,15 +2,16 @@ package it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.mappa
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
@@ -32,7 +33,6 @@ import it.tizzycek.micasaestucasa.databinding.FragmentMappaBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo
 import it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.DettaglioProprieta
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
 
 class MappaFragment: Fragment(), OnMapReadyCallback {
@@ -45,7 +45,7 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
 
     private var authPosition = false
 
-    val user = MainRepo.getUserRepository().getCurrentUser()
+    private val user = MainRepo.getUserRepository().getCurrentUser()
 
 
     // launcher richiesta permessi
@@ -56,8 +56,29 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
         if (fineLocationGranted || coarseLocationGranted) {
             abilitaPosizioneUtente()
         } else {
-            Toast.makeText(requireContext(), "Permesso negato", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.permesso_negato), Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private val activityResultNuovaProprieta = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            loadCoordinates(result)
+        }
+    }
+
+    private val activityResultDettaglioProprieta = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) { // se modifico gli ricarico le coordinate, altrimenti solo generico
+            loadCoordinates(result)
+        } else {
+            loadOnZoom()
+        }
+    }
+
+    private fun loadCoordinates(result: ActivityResult?) {
+        val latitudine = result?.data?.getDoubleExtra("LATITUDINE", 0.0)
+        val longitudine = result?.data?.getDoubleExtra("LONGITUDINE", 0.0)
+        if (latitudine != null && longitudine != null)
+            addPropertyAndFocus(latitudine, longitudine)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, s: Bundle?): View {
@@ -81,7 +102,6 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
         setupMap()
         mMap.setOnCameraIdleListener { loadOnZoom() }
         setupButtons()
-
     }
 
     private fun loadOnZoom() {
@@ -146,10 +166,10 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
         mMap.setOnMarkerClickListener { marker ->
             val idProprieta = markerMap[marker]
             if (idProprieta != null) {
-                val intent = Intent(requireContext(), DettaglioProprieta::class.java).apply {
-                    putExtra("PROPRIETA_ID", idProprieta)
-                }
-                startActivity(intent)
+                val intent = Intent(requireContext(), DettaglioProprieta::class.java)
+                intent.putExtra("PROPRIETA_ID", idProprieta)
+
+                activityResultDettaglioProprieta.launch(intent)
             } else {
                 Toast.makeText(requireContext(), getString(R.string.no_property_found), Toast.LENGTH_SHORT).show()
             }
@@ -162,7 +182,8 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
         if (user!!.tipo == TipoUtente.PROPRIETARIO){
             binding.fabAddProperty.visibility = View.VISIBLE
             binding.fabAddProperty.setOnClickListener {
-                startActivity(Intent(requireContext(), AggiungiProprieta::class.java))
+                val intent = Intent(requireContext(), AggiungiProprieta::class.java)
+                activityResultNuovaProprieta.launch(intent)
             }
         }
         if (!authPosition) {
@@ -175,10 +196,23 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
 
         binding.searchBarContainer.setOnClickListener {
             val sheet = FiltriRicercaSheet { filtri ->
-                // Questa parte viene eseguita quando l'utente preme "Applica" nel Bottom Sheet
+                // Questa parte viene eseguita quando l'utente preme "esegui ricerca" nel Bottom Sheet
                 eseguiRicercaFiltrata(filtri)
             }
             sheet.show(childFragmentManager, "FiltriRicerca")
+        }
+    }
+
+    private fun addPropertyAndFocus(latitudine: Double, longitudine: Double) {
+        val builder = LatLngBounds.Builder().include(LatLng(latitudine, longitudine)).build()
+        try {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder, 200))
+        } catch (e: Exception) {
+            mMap.setOnMapLoadedCallback {
+                mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder, 200))
+            }
+        } finally {
+            caricaProprietaNellaVisuale(builder)
         }
     }
 

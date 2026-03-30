@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import it.tizzycek.micasaestucasa.R
 import it.tizzycek.micasaestucasa.data.proprieta.Disponibilita
 import it.tizzycek.micasaestucasa.data.proprieta.Proprieta
@@ -19,6 +20,7 @@ import it.tizzycek.micasaestucasa.databinding.ItemDisplayAvailabilityBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo
 import it.tizzycek.micasaestucasa.ui.adapters.DisponibilitaAdapter
 import it.tizzycek.micasaestucasa.ui.adapters.ImageDetailAdapter
+import it.tizzycek.micasaestucasa.utils.mostraErrore
 import kotlinx.coroutines.launch
 
 class DettaglioProprieta: AppCompatActivity() {
@@ -67,7 +69,10 @@ class DettaglioProprieta: AppCompatActivity() {
         if (MainRepo.getUserRepository().getCurrentUser()!!.tipo != TipoUtente.PROPRIETARIO) {
             val locatore = MainRepo.getUserRepository().beccaDatiUtente(p.proprietarioId)
             binding.tvLocatore.text = locatore!!.nome + " " + locatore!!.cognome
+        } else {
+            binding.tvLocatore.text = getString(R.string.tu)
         }
+
 
         val posti = getString(R.string.posti_disponibili) + " ${p.posti}"
         binding.tvPosti.text = posti
@@ -107,7 +112,7 @@ class DettaglioProprieta: AppCompatActivity() {
             binding.btnDestro.setCompoundDrawablesWithIntrinsicBounds(R.drawable.delete_24px, 0, 0, 0)
             binding.btnDestro.setBackgroundColor(ContextCompat.getColor(this, R.color.red))
             binding.btnDestro.setOnClickListener {
-                Toast.makeText(this, "Elimina", Toast.LENGTH_SHORT).show()
+                eliminaProprieta()
             }
         }
         else {
@@ -123,5 +128,27 @@ class DettaglioProprieta: AppCompatActivity() {
                 Toast.makeText(this, "Prenota", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun eliminaProprieta() {
+        MaterialAlertDialogBuilder(this).setTitle(R.string.elimina).setMessage(R.string.sei_sicuro_elimina)
+            .setNegativeButton(R.string.annulla) { dialog, _ ->
+                dialog.dismiss()
+            }.setPositiveButton(R.string.elimina) { _, _ ->
+                lifecycleScope.launch {
+                    binding.progressBar.visibility = View.VISIBLE
+                    val res = MainRepo.getProprietaRepository().eliminaProprieta(idProprieta!!)
+                    binding.progressBar.visibility = View.GONE
+                    res.fold(
+                        onSuccess = {
+                            Toast.makeText(this@DettaglioProprieta, getString(R.string.deleted), Toast.LENGTH_LONG).show()
+                            finish()
+                        },
+                        onFailure = { e ->
+                            mostraErrore(e.message ?: getString(R.string.unknown_error))
+                        }
+                    )
+                }
+            }.show()
     }
 }
