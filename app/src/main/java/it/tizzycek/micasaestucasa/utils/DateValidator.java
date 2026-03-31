@@ -1,4 +1,4 @@
-package it.tizzycek.micasaestucasa.data;
+package it.tizzycek.micasaestucasa.utils;
 
 import java.time.LocalDate;
 import java.util.Comparator;

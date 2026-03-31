@@ -21,6 +21,7 @@ import it.tizzycek.micasaestucasa.repo.MainRepo
 import it.tizzycek.micasaestucasa.ui.adapters.DisponibilitaAdapter
 import it.tizzycek.micasaestucasa.ui.adapters.ImageDetailAdapter
 import it.tizzycek.micasaestucasa.utils.mostraErrore
+import it.tizzycek.micasaestucasa.utils.paroleChiaveProprieta
 import kotlinx.coroutines.launch
 
 class DettaglioProprieta: AppCompatActivity() {
@@ -78,6 +79,9 @@ class DettaglioProprieta: AppCompatActivity() {
         binding.tvPosti.text = posti
 
         binding.tvDescrizione.text = p.descrizione
+
+        binding.cgKeywords.paroleChiaveProprieta(lifecycleScope, p.paroleChiaveIds)
+
 
         val urls = p.immaginiUrl ?: emptyList()
         if (urls.isNotEmpty()) {

@@ -16,7 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
 import it.tizzycek.micasaestucasa.R
-import it.tizzycek.micasaestucasa.data.DateValidator
+import it.tizzycek.micasaestucasa.utils.DateValidator
 import it.tizzycek.micasaestucasa.data.parolechiave.ParoleChiave
 import it.tizzycek.micasaestucasa.data.proprieta.Disponibilita
 import it.tizzycek.micasaestucasa.data.proprieta.Proprieta

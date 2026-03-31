@@ -57,3 +57,27 @@ fun ChipGroup.setupParoleChiave(scope: CoroutineScope, onSelectionChanged: (List
         )
     }
 }
+
+fun ChipGroup.paroleChiaveProprieta(scope: CoroutineScope, listaParole: List<String>) {
+    scope.launch {
+        MainRepo.getParoleChiave().getParoleChiave().fold(
+            onSuccess = { parole ->
+                this@paroleChiaveProprieta.removeAllViews()
+                parole.filter { listaParole.contains(it.id) }.forEach {
+                    val chip = Chip(context)
+                    chip.text = it.parola
+                    chip.isCheckable = false
+                    chip.setChipBackgroundColorResource(R.color.secondary_dark)
+                    chip.chipIcon = ContextCompat.getDrawable(context, R.drawable.check_small_24px)
+                    chip.isChipIconVisible = false
+
+                    this@paroleChiaveProprieta.addView(chip)
+                }
+            },
+            onFailure = {
+                throw Exception("Errore nel caricamento parole chiave: ${it.message}")
+            }
+        )
+
+    }
+}
