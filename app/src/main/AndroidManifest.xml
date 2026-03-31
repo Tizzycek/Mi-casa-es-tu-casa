@@ -29,7 +29,7 @@
             android:exported="false" />
         <activity android:name=".ui.home.FragmentManager"
             android:exported="false" />
-        <activity android:name=".ui.home.fragments.nonadmin.mappa.AggiungiProprieta"
+        <activity android:name=".ui.home.fragments.nonadmin.mappa.AggiungiModificaProprieta"
             android:exported="false"/>
         <activity android:name=".ui.home.fragments.nonadmin.DettaglioProprieta"
             android:exported="false"/>

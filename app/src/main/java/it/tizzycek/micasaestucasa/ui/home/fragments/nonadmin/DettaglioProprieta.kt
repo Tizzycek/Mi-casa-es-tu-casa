@@ -1,7 +1,7 @@
 package it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -13,13 +13,11 @@ import it.tizzycek.micasaestucasa.R
 import it.tizzycek.micasaestucasa.data.proprieta.Disponibilita
 import it.tizzycek.micasaestucasa.data.proprieta.Proprieta
 import it.tizzycek.micasaestucasa.data.utente.TipoUtente
-import it.tizzycek.micasaestucasa.data.utente.Utente
 import it.tizzycek.micasaestucasa.databinding.ActivityDettaglioProprietaBinding
-import it.tizzycek.micasaestucasa.databinding.ItemAvailabilityBinding
-import it.tizzycek.micasaestucasa.databinding.ItemDisplayAvailabilityBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo
 import it.tizzycek.micasaestucasa.ui.adapters.DisponibilitaAdapter
 import it.tizzycek.micasaestucasa.ui.adapters.ImageDetailAdapter
+import it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.mappa.AggiungiModificaProprieta
 import it.tizzycek.micasaestucasa.utils.mostraErrore
 import it.tizzycek.micasaestucasa.utils.paroleChiaveProprieta
 import kotlinx.coroutines.launch
@@ -43,6 +41,15 @@ class DettaglioProprieta: AppCompatActivity() {
         setupButtons()
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (idProprieta != null) {
+            caricaDatiPropieta(idProprieta!!)
+        } else {
+            finish()
+        }
+    }
+
     private fun caricaDatiPropieta(id: String) {
         lifecycleScope.launch {
             binding.progressBar.visibility = View.VISIBLE
@@ -53,10 +60,10 @@ class DettaglioProprieta: AppCompatActivity() {
                     if (proprieta != null)
                         mostraDati(proprieta)
                     else
-                        Toast.makeText(this@DettaglioProprieta, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@DettaglioProprieta, getString(R.string.unknown_error), Toast.LENGTH_LONG).show()
                 },
                 onFailure = { e->
-                    Toast.makeText(this@DettaglioProprieta, "${e.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@DettaglioProprieta, "${e.message}", Toast.LENGTH_LONG).show()
                 }
             )
             binding.progressBar.visibility = View.GONE
@@ -95,7 +102,6 @@ class DettaglioProprieta: AppCompatActivity() {
     }
 
     private fun disponibilitaAdapter(ld: List<Disponibilita>) {
-        // Imposta il layout manager se non è già impostato nell'XML
         if (binding.rvDisponibilita.layoutManager == null) {
             binding.rvDisponibilita.layoutManager = LinearLayoutManager(this)
         }
@@ -109,7 +115,9 @@ class DettaglioProprieta: AppCompatActivity() {
             binding.btnSinistro.text = getString(R.string.modifica)
             binding.btnSinistro.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit_24px, 0, 0, 0)
             binding.btnSinistro.setOnClickListener {
-                Toast.makeText(this, "Modifica", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, AggiungiModificaProprieta::class.java)
+                intent.putExtra("PROPERTY_ID", idProprieta)
+                startActivity(intent)
             }
 
             binding.btnDestro.text = getString(R.string.elimina)

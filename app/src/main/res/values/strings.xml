@@ -49,6 +49,7 @@
     <string name="inizio">From</string>
     <string name="fine">Till</string>
     <string name="nuova_propriet">Add Property</string>
+    <string name="modifica_proprieta">Edit Property</string>
     <string name="informazioni_di_base">About</string>
     <string name="nome_della_propriet">Name</string>
     <string name="indirizzo_per_la_mappa">Address</string>

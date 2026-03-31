@@ -93,6 +93,38 @@ class ProprietaRepository {
         }
     }
 
+    suspend fun aggiornaProprieta(proprieta: Proprieta, immagini: List<ByteArray>, immaginiDaEliminare: List<String>): Result<Boolean> = coroutineScope {
+        try {
+            if (immaginiDaEliminare.isNotEmpty()) {
+                val deleteTask = immaginiDaEliminare.map { url ->
+                    async {
+                        storageRef.getReferenceFromUrl(url).delete().await()
+                    }
+                }
+                deleteTask.awaitAll()
+            }
+
+            val uploadTasks = immagini.withIndex().map { (index, bytes) ->
+                async {
+                    val imageName = "${UUID.randomUUID()}_$index.jpg"
+                    val ref = storageRef.reference.child(collection).child(imageName)
+                    ref.putBytes(bytes).await()
+                    ref.downloadUrl.await().toString()
+                }
+            }
+            val nuoviUrl = uploadTasks.awaitAll()
+            val listaFinale = (proprieta.immaginiUrl ?: emptyList()) + nuoviUrl
+            proprieta.immaginiUrl = listaFinale
+
+            firestore.collection(collection).document(requireNotNull(proprieta.id)).set(proprieta.toHashMap()).await()
+
+            Result.success(true)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+
     suspend fun eliminaProprieta(id: String): Result<Boolean> {
         return try {
             val document = firestore.collection(collection).document(id).get().await()

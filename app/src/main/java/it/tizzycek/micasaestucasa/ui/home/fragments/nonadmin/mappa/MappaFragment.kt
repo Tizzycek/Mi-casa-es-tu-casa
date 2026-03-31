@@ -182,7 +182,7 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
         if (user!!.tipo == TipoUtente.PROPRIETARIO){
             binding.fabAddProperty.visibility = View.VISIBLE
             binding.fabAddProperty.setOnClickListener {
-                val intent = Intent(requireContext(), AggiungiProprieta::class.java)
+                val intent = Intent(requireContext(), AggiungiModificaProprieta::class.java)
                 activityResultNuovaProprieta.launch(intent)
             }
         }
