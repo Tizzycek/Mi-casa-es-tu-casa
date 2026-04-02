@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import it.tizzycek.micasaestucasa.R
+import it.tizzycek.micasaestucasa.data.prenotazioni.Prenotazioni
 import it.tizzycek.micasaestucasa.data.proprieta.Disponibilita
 import it.tizzycek.micasaestucasa.data.proprieta.Proprieta
 import it.tizzycek.micasaestucasa.data.utente.TipoUtente
@@ -18,13 +19,19 @@ import it.tizzycek.micasaestucasa.repo.MainRepo
 import it.tizzycek.micasaestucasa.ui.adapters.DisponibilitaAdapter
 import it.tizzycek.micasaestucasa.ui.adapters.ImageDetailAdapter
 import it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.mappa.AggiungiModificaProprieta
+import it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.mappa.PrenotazioneSheet
 import it.tizzycek.micasaestucasa.utils.mostraErrore
 import it.tizzycek.micasaestucasa.utils.paroleChiaveProprieta
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.util.UUID
 
 class DettaglioProprieta: AppCompatActivity() {
     private lateinit var binding: ActivityDettaglioProprietaBinding
     private var idProprieta: String? = null
+    private var proprietarioId: String = ""
+    private var listaDisponibilita: List<Disponibilita> = emptyList()
+    private var numeroOspiti: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,9 +67,10 @@ class DettaglioProprieta: AppCompatActivity() {
                     if (proprieta != null)
                         mostraDati(proprieta)
                     else
-                        Toast.makeText(this@DettaglioProprieta, getString(R.string.unknown_error), Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@DettaglioProprieta, getString(R.string.unknown_error), Toast.LENGTH_LONG)
+                            .show()
                 },
-                onFailure = { e->
+                onFailure = { e ->
                     Toast.makeText(this@DettaglioProprieta, "${e.message}", Toast.LENGTH_LONG).show()
                 }
             )
@@ -72,6 +80,8 @@ class DettaglioProprieta: AppCompatActivity() {
 
     private suspend fun mostraDati(p: Proprieta) {
         binding.tvNome.text = p.nome
+        proprietarioId = p.proprietarioId
+        numeroOspiti = p.posti
 
         // TODO: rendere il profilo cliccabile
         if (MainRepo.getUserRepository().getCurrentUser()!!.tipo != TipoUtente.PROPRIETARIO) {
@@ -102,6 +112,7 @@ class DettaglioProprieta: AppCompatActivity() {
     }
 
     private fun disponibilitaAdapter(ld: List<Disponibilita>) {
+        listaDisponibilita = ld
         if (binding.rvDisponibilita.layoutManager == null) {
             binding.rvDisponibilita.layoutManager = LinearLayoutManager(this)
         }
@@ -126,8 +137,7 @@ class DettaglioProprieta: AppCompatActivity() {
             binding.btnDestro.setOnClickListener {
                 eliminaProprieta()
             }
-        }
-        else {
+        } else {
             binding.btnSinistro.text = getString(R.string.contatta)
             binding.btnSinistro.setCompoundDrawablesWithIntrinsicBounds(R.drawable.forward_to_inbox_24px, 0, 0, 0)
             binding.btnSinistro.setOnClickListener {
@@ -137,7 +147,10 @@ class DettaglioProprieta: AppCompatActivity() {
             binding.btnDestro.text = getString(R.string.prenota)
             binding.btnDestro.setCompoundDrawablesWithIntrinsicBounds(R.drawable.event_upcoming_24px, 0, 0, 0)
             binding.btnDestro.setOnClickListener {
-                Toast.makeText(this, "Prenota", Toast.LENGTH_SHORT).show()
+                val sheet = PrenotazioneSheet(listaDisponibilita, numeroOspiti) { prenotazione ->
+                    gestionePrenotazione(prenotazione)
+                }
+                sheet.show(supportFragmentManager, "PrenotazioneSheet")
             }
         }
     }
@@ -153,7 +166,8 @@ class DettaglioProprieta: AppCompatActivity() {
                     binding.progressBar.visibility = View.GONE
                     res.fold(
                         onSuccess = {
-                            Toast.makeText(this@DettaglioProprieta, getString(R.string.deleted), Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@DettaglioProprieta, getString(R.string.deleted), Toast.LENGTH_LONG)
+                                .show()
                             finish()
                         },
                         onFailure = { e ->
@@ -162,5 +176,23 @@ class DettaglioProprieta: AppCompatActivity() {
                     )
                 }
             }.show()
+    }
+
+    private fun gestionePrenotazione(pl: Map<String, Any>) {
+        val prenotazione = Prenotazioni(UUID.randomUUID().toString(), proprietarioId, MainRepo.getUserRepository().getCurrentUser()!!.id!!, pl["dataInizio"] as LocalDate, pl["dataFine"] as LocalDate, pl["ospiti"] as Int)
+
+        lifecycleScope.launch {
+            binding.progressBar.visibility = View.VISIBLE
+            val risultato = MainRepo.getPrenotazioniRepository().aggiungiPrenotazione(prenotazione)
+            binding.progressBar.visibility = View.GONE
+            risultato.fold(
+                onSuccess = {
+                    Toast.makeText(this@DettaglioProprieta, getString(R.string.prenotazione_effettuata), Toast.LENGTH_LONG).show()
+                },
+                onFailure = { e ->
+                    mostraErrore(e.message ?: getString(R.string.unknown_error))
+                }
+            )
+        }
     }
 }

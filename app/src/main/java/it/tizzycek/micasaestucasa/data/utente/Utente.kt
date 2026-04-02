@@ -21,6 +21,7 @@ data class Utente (var id: String?, val email: String, val nome: String, val cog
         return today.year - nascita.year >= 18
     }
 
+    // TODO: perché lo stato è string e non int
     companion object {
         fun Utente.toHashMap(): Map<String, Any?> {
             return hashMapOf(

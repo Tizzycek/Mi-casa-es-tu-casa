@@ -8,6 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
 import com.google.android.material.datepicker.MaterialDatePicker
+import it.tizzycek.micasaestucasa.R
 import it.tizzycek.micasaestucasa.data.parolechiave.ParoleChiave
 import it.tizzycek.micasaestucasa.databinding.LayoutFiltriRicercaBinding
 import it.tizzycek.micasaestucasa.utils.setupParoleChiave
@@ -88,8 +89,9 @@ class FiltriRicercaSheet(val onFiltriApplicati: (Map<String, Any?>) -> Unit) : B
 
     private fun setupDatePicker() {
         binding.cardDateRange.setOnClickListener {
+            binding.cardDateRange.isEnabled = false // TODO: test
             val builder = MaterialDatePicker.Builder.dateRangePicker()
-            builder.setTitleText("Seleziona il periodo")
+            builder.setTitleText(getString(R.string.seleziona_date))
 
             val picker = builder.build()
             picker.show(childFragmentManager, "range_picker")
@@ -109,6 +111,7 @@ class FiltriRicercaSheet(val onFiltriApplicati: (Map<String, Any?>) -> Unit) : B
 
 
                 binding.tvDateRange.text = "$dataInizio - $dataFine"
+                binding.cardDateRange.isEnabled = true
             }
         }
     }
