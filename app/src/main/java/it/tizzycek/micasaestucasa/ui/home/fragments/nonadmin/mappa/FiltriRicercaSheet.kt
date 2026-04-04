@@ -89,7 +89,7 @@ class FiltriRicercaSheet(val onFiltriApplicati: (Map<String, Any?>) -> Unit) : B
 
     private fun setupDatePicker() {
         binding.cardDateRange.setOnClickListener {
-            binding.cardDateRange.isEnabled = false // TODO: test
+            binding.cardDateRange.isEnabled = false
             val builder = MaterialDatePicker.Builder.dateRangePicker()
             builder.setTitleText(getString(R.string.seleziona_date))
 

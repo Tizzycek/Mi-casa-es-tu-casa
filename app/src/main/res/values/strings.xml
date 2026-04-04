@@ -99,5 +99,14 @@
     <string name="periodo_soggiorno">Period of stay</string>
     <string name="completa_prenotazione">Complete the reservation</string>
 
+    <string name="accettata">Accepted</string>
+    <string name="accetta">Approve</string>
+    <string name="rifiutata">Rejected</string>
+    <string name="rifiuta">Drop</string>
+    <string name="in_attesa">Pending</string>
+    <string name="annullata">Cancelled</string>
+    <string name="pending_loading">Loading…</string>
+    <string name="esito_prenotazione">Booking request correctly</string>
+
     "
 </resources>

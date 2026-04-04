@@ -17,6 +17,7 @@ import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.time.temporal.ChronoUnit
+import java.util.Currency
 
 class PrenotazioneSheet(val listaDisponibilita: List<Disponibilita>, val ospiti: Int, val onPrenotazioneApplicata: (Map<String, Any>) -> Unit) : BottomSheetDialogFragment() {
 
@@ -25,6 +26,11 @@ class PrenotazioneSheet(val listaDisponibilita: List<Disponibilita>, val ospiti:
     private var guestCount = 1
     private var dataInizio: LocalDate? = null
     private var dataFine: LocalDate? = null
+
+    private var totale: Double? = 0.0
+
+    private var currency: Currency? = null
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = LayoutPrenotazioneBinding.inflate(inflater, container, false)
@@ -57,8 +63,10 @@ class PrenotazioneSheet(val listaDisponibilita: List<Disponibilita>, val ospiti:
         binding.btnConfirmBooking.setOnClickListener {
             val inizio = dataInizio
             val fine = dataFine
+            val tot = totale
+            val valuta = currency
 
-            if (inizio == null || fine == null) {
+            if (inizio == null || fine == null || tot == null || valuta == null) {
                 requireActivity().mostraErrore(getString(R.string.campo_obbligatorio))
                 return@setOnClickListener
             }
@@ -66,7 +74,9 @@ class PrenotazioneSheet(val listaDisponibilita: List<Disponibilita>, val ospiti:
             val a = mapOf(
                 "dataInizio" to inizio,
                 "dataFine" to fine,
-                "ospiti" to guestCount
+                "ospiti" to guestCount,
+                "totale" to tot,
+                "valuta" to valuta
             )
             onPrenotazioneApplicata(a)
             dismiss()
@@ -137,10 +147,11 @@ class PrenotazioneSheet(val listaDisponibilita: List<Disponibilita>, val ospiti:
         val disp = trovaPeriodoCorrispondente(inizio, fine)
 
         if (disp != null && notti > 0) {
-            val subtotale = disp.prezzo * notti
+            totale = disp.prezzo * notti
+            currency = disp.valuta
             val simbolo = disp.valuta.symbol
-            binding.tvSubtotal.text = "$simbolo ${"%.2f".format(subtotale)}"
-            binding.tvTotalAmount.text = "$simbolo ${"%.2f".format(subtotale)}"
+            binding.tvSubtotal.text = "$simbolo ${"%.2f".format(totale)}"
+            binding.tvTotalAmount.text = "$simbolo ${"%.2f".format(totale)}"
         } else {
             binding.tvSubtotal.text = getString(R.string.non_disponibile)
             binding.tvTotalAmount.text = getString(R.string.non_disponibile)
