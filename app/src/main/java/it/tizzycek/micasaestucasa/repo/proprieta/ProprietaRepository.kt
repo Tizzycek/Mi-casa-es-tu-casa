@@ -3,7 +3,9 @@ package it.tizzycek.micasaestucasa.repo.proprieta
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
+import it.tizzycek.micasaestucasa.data.proprieta.Disponibilita
 import it.tizzycek.micasaestucasa.data.proprieta.Proprieta
+import it.tizzycek.micasaestucasa.data.proprieta.Disponibilita.Companion.toDisponibilita
 import it.tizzycek.micasaestucasa.data.proprieta.Proprieta.Companion.toHashMap
 import it.tizzycek.micasaestucasa.data.proprieta.Proprieta.Companion.toProprieta
 import kotlinx.coroutines.async
@@ -93,7 +95,11 @@ class ProprietaRepository {
         }
     }
 
-    suspend fun aggiornaProprieta(proprieta: Proprieta, immagini: List<ByteArray>, immaginiDaEliminare: List<String>): Result<Boolean> = coroutineScope {
+    suspend fun aggiornaProprieta(
+        proprieta: Proprieta,
+        immagini: List<ByteArray>,
+        immaginiDaEliminare: List<String>
+    ): Result<Boolean> = coroutineScope {
         try {
             if (immaginiDaEliminare.isNotEmpty()) {
                 val deleteTask = immaginiDaEliminare.map { url ->
@@ -149,6 +155,39 @@ class ProprietaRepository {
         }
     }
 
+    /**
+     * Atomically reads the current disponibilita list, applies [trasforma] to it,
+     * and writes the result back in a single Firestore transaction.
+     *
+     * Using a transaction ensures that two concurrent approvals for the same property
+     * never overwrite each other: if a conflict is detected Firestore retries the
+     * operation automatically against the already-committed state.
+     *
+     * If [trasforma] throws (e.g. "dates no longer available") the transaction is
+     * aborted immediately without a retry and the exception is returned as a failure.
+     */
+    suspend fun aggiornaDisponibilitaTransazionale(id: String, trasforma: (List<Disponibilita>) -> List<Disponibilita>): Result<List<Disponibilita>> {
+        return try {
+            val docRef = firestore.collection(collection).document(id)
+            val nuovaDisponibilita = firestore.runTransaction { transaction ->
+                val snapshot = transaction.get(docRef)
+                val listaAttuale = (snapshot.data?.get("disponibilita") as? List<Map<String, Any?>>)
+                    ?.map { with(Disponibilita) { it.toDisponibilita() } }
+                    ?: emptyList()
+
+                val nuova = trasforma(listaAttuale)
+
+                val mappata = nuova.map { dis -> with(Disponibilita) { dis.toHashMap() } }
+                transaction.update(docRef, "disponibilita", mappata)
+
+                nuova
+            }.await()
+
+            Result.success(nuovaDisponibilita)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 
     suspend fun cercaDisponibili(lat: Double? = null, lng: Double? = null, raggioKm: Double = 20.0, dal: LocalDate? = null, al: LocalDate? = null, posti: Int? = null, paroleChiaveIds: List<String>? = null, prezzoMin: Double? = null, prezzoMax: Double? = null): Result<List<Proprieta>> {
         return try {

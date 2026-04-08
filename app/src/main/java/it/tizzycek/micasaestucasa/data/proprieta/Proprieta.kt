@@ -5,7 +5,7 @@ import it.tizzycek.micasaestucasa.data.proprieta.Disponibilita.Companion.toDispo
 import it.tizzycek.micasaestucasa.data.proprieta.Disponibilita.Companion.toHashMap
 import java.time.LocalDate
 
-data class Proprieta(var id: String?, val proprietarioId: String, var nome: String, var posti: Int, var latitudine: Double, var longitudine: Double, var descrizione: String, var paroleChiaveIds: List<String> = emptyList(), var immaginiUrl: List<String>? = emptyList(), val disponibilita: List<Disponibilita> = emptyList()) {
+data class Proprieta(var id: String?, val proprietarioId: String, var nome: String, var posti: Int, var latitudine: Double, var longitudine: Double, var descrizione: String, var paroleChiaveIds: List<String> = emptyList(), var immaginiUrl: List<String>? = emptyList(), var disponibilita: List<Disponibilita> = emptyList()) {
 
     fun isDisponibile(dal: LocalDate, al: LocalDate): Boolean {
         val periodiCoprenti = disponibilita.filter { disp ->

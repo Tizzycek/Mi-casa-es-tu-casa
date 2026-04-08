@@ -41,7 +41,9 @@ class PrenotazioniFragment: Fragment() {
 
             risultato.fold(
                 onSuccess = {
-                    listaPrenotazioni = it
+                    listaPrenotazioni = it.sortedByDescending { prenotazioni ->
+                        prenotazioni.dataPrenotazione
+                    }
 
                     val adapter = PrenotazioniAdapter(listaPrenotazioni, viewLifecycleOwner, utente.tipo)
                     binding.rvPrenotazioni.adapter = adapter

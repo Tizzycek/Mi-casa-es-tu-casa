@@ -180,7 +180,7 @@ class DettaglioProprieta: AppCompatActivity() {
     }
 
     private fun gestionePrenotazione(pl: Map<String, Any>) {
-        val prenotazione = Prenotazioni(UUID.randomUUID().toString(), proprietarioId, MainRepo.getUserRepository().getCurrentUser()!!.id!!, idProprieta!!, pl["dataInizio"] as LocalDate, pl["dataFine"] as LocalDate, pl["ospiti"] as Int, pl["totale"] as Double, pl["valuta"] as Currency)
+        val prenotazione = Prenotazioni(UUID.randomUUID().toString(), proprietarioId, MainRepo.getUserRepository().getCurrentUser()!!.id!!, idProprieta!!, pl["dataInizio"] as LocalDate, pl["dataFine"] as LocalDate, pl["ospiti"] as Int, null, null, pl["totale"] as Double, pl["valuta"] as Currency, dataPrenotazione = LocalDate.now())
 
         lifecycleScope.launch {
             binding.progressBar.visibility = View.VISIBLE

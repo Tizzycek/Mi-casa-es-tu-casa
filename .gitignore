@@ -13,3 +13,7 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+fisso.bat
+portatile.bat
+local-legacy.properties

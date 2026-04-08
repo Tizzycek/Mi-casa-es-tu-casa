@@ -91,7 +91,7 @@
     <string name="non_disponibile">Not available</string>
     <string name="nessuna_disponibilita">No availability periods defined for this property</string>
     <string name="range_non_valido">The selected period spans across unavailable dates. Please choose dates within a single availability window</string>
-    <string name="prenotazione_effettuata">The booking was successfully completed</string>
+    <string name="prenotazione_effettuata">The booking request was successfully completed</string>
     <string name="conferma_prenotazione">Send a booking request</string>
     <string name="totale">Total amount</string>
     <string name="totale_parziale">Subtotal</string>
@@ -106,7 +106,7 @@
     <string name="in_attesa">Pending</string>
     <string name="annullata">Cancelled</string>
     <string name="pending_loading">Loading…</string>
-    <string name="esito_prenotazione">Booking request correctly</string>
+    <string name="esito_prenotazione">Booking request successfully</string>
 
     "
 </resources>

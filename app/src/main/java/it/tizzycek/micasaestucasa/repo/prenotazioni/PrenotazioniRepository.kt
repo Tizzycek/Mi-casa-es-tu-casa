@@ -43,4 +43,14 @@ class PrenotazioniRepository {
             Result.failure(e)
         }
     }
+
+    suspend fun aggiornaPrenotazione(p: Prenotazioni): Result<Boolean> {
+        return try {
+            firestore.collection(collection).document(p.id).set(p.toHashMap()).await()
+            Result.success(true)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 }
