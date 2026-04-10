@@ -52,11 +52,166 @@
             android:paddingHorizontal="16dp"
             android:paddingBottom="16dp">
 
-            <!-- date -->
+            <!-- Località / Indirizzo -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/indirizzo_per_la_mappa"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="?android:attr/colorBackground"
+                android:foreground="?attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@android:drawable/ic_menu_mylocation"
+                        app:tint="@color/primary" />
+
+                    <EditText
+                        android:id="@+id/etLocation"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="8dp"
+                        android:hint="@string/inserisci_indirizzo"
+                        android:textSize="14sp"
+                        android:background="@null"
+                        android:paddingVertical="8dp"
+                        android:inputType="textPostalAddress|textAutoComplete"
+                        android:maxLines="1"
+                        android:importantForAutofill="yes"
+                        />
+
+                    <ImageView
+                        android:id="@+id/btnClearLocation"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@android:drawable/ic_menu_close_clear_cancel"
+                        android:visibility="visible"
+                        app:tint="@android:color/darker_gray"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="4dp"
+                        android:contentDescription="cancella" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Raggio di ricerca (visibile solo quando c'è una località) -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardRadius"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="1dp"
+                app:cardBackgroundColor="?android:attr/colorBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="8dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@android:drawable/ic_menu_compass"
+                            android:layout_marginEnd="8dp"
+                            app:tint="@color/primary" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="raggio di ricerca"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tvRadiusValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="20 km"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/primary" />
+
+                    </LinearLayout>
+
+                    <com.google.android.material.slider.Slider
+                        android:id="@+id/sliderRadius"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:valueFrom="1"
+                        android:valueTo="100"
+                        android:value="20"
+                        android:stepSize="1"
+                        app:labelBehavior="gone"
+                        app:trackColorActive="@color/primary"
+                        app:trackColorInactive="@color/light_gray"
+                        app:thumbColor="@color/primary"
+                        app:haloColor="@color/primary_light" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="4dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="1 km"
+                            android:textSize="12sp"
+                            android:textColor="@android:color/darker_gray" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="100 km"
+                            android:textSize="12sp"
+                            android:textColor="@android:color/darker_gray"
+                            android:gravity="end" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Date -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
                 android:layout_marginBottom="8dp"
                 android:text="@string/date"
                 android:textSize="16sp"
@@ -103,7 +258,7 @@
 
             </androidx.cardview.widget.CardView>
 
-            <!-- ospiti -->
+            <!-- Ospiti -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -126,6 +281,13 @@
                     android:padding="16dp"
                     android:gravity="center_vertical">
 
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="12dp"
+                        android:src="@android:drawable/ic_menu_add"
+                        app:tint="@color/primary" />
+
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -133,56 +295,23 @@
                         android:text="@string/posti_disponibili"
                         android:textSize="14sp" />
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
-
-                        <!--com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnMinusGuests"
-                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:text="-"
-                            android:textSize="20sp"
-                            app:cornerRadius="20dp" />
-
-                        <TextView
-                            android:id="@+id/tvGuestCount"
-                            android:layout_width="48dp"
-                            android:layout_height="wrap_content"
-                            android:text="1"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:gravity="center" />
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnPlusGuests"
-                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:text="+"
-                            android:textSize="20sp"
-                            app:cornerRadius="20dp" /-->
-                        <EditText
-                            android:id="@+id/tvGuestCount"
-                            android:layout_width="80dp"
-                            android:layout_height="wrap_content"
-                            android:hint="1"
-                            android:inputType="number"
-                            android:text="1"
-                            android:gravity="center"
-                            android:padding="10dp"
-                            android:background="@drawable/edittext_background"/>
-
-                    </LinearLayout>
+                    <EditText
+                        android:id="@+id/etGuestCount"
+                        android:layout_width="80dp"
+                        android:layout_height="40dp"
+                        android:hint="1"
+                        android:inputType="number"
+                        android:text="1"
+                        android:gravity="center"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:background="@drawable/edittext_background" />
 
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
 
-            <!-- Sezione Prezzo -->
+            <!-- Prezzo -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -248,7 +377,7 @@
 
             </androidx.cardview.widget.CardView>
 
-            <!-- parole chiave -->
+            <!-- Parole chiave -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -285,20 +414,27 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:background="?android:attr/colorBackground"
-        android:elevation="8dp">
+        android:elevation="8dp"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/light_gray" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnResetFilters"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:text="@string/reset"
+            app:cornerRadius="8dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnShowResults"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_margin="16dp"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="2"
             android:text="@string/mostra_risultati"
             app:backgroundTint="@color/primary"
             android:textColor="@color/backgroundColor"

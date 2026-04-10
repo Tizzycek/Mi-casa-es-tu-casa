@@ -121,6 +121,9 @@ class PrenotazioniAdapter(private val items: List<Prenotazioni>, private val lif
             } else {
                 if (tipoUtente == TipoUtente.PROPRIETARIO) {
                     if (prenotazione.statoPrenotazione == StatoPrenotazione.IN_ATTESA) {
+                        binding.btnSinistro.isEnabled = true
+                        binding.btnDestro.isEnabled = true
+
                         binding.btnSinistro.setText(R.string.rifiuta)
                         binding.btnSinistro.setCompoundDrawablesWithIntrinsicBounds(R.drawable.delete_24px, 0, 0, 0)
                         binding.btnSinistro.setBackgroundColor(ContextCompat.getColor(binding.root.context, android.R.color.holo_red_dark))
@@ -157,9 +160,11 @@ class PrenotazioniAdapter(private val items: List<Prenotazioni>, private val lif
                         binding.btnDestro.isEnabled = false
                         binding.btnDestro.setBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.light_gray))
                     } else {
+                        binding.btnSinistro.isEnabled = true
                         binding.btnSinistro.setOnClickListener {
                             onPrenotazioneAnnullata(lifecycleOwner, prenotazione)
                         }
+                        binding.btnDestro.isEnabled = true
                         binding.btnDestro.setOnClickListener {
                             onPrenotazioneModificata(prenotazione, lifecycleOwner)
                         }

@@ -24,16 +24,15 @@ import it.tizzycek.micasaestucasa.databinding.ItemAvailabilityBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo
 import it.tizzycek.micasaestucasa.ui.adapters.ImageAdapter
 import it.tizzycek.micasaestucasa.utils.DateValidator
+import it.tizzycek.micasaestucasa.utils.findPlace
 import it.tizzycek.micasaestucasa.utils.mostraErrore
 import it.tizzycek.micasaestucasa.utils.setupParoleChiave
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.suspendCancellableCoroutine
 import java.time.LocalDate
 import java.util.Calendar
 import java.util.Currency
 import java.util.Locale
 import java.util.UUID
-import kotlin.coroutines.resume
 
 class AggiungiModificaProprieta: AppCompatActivity() {
     private lateinit var binding: AggiungiModificaProprietaBinding
@@ -277,22 +276,6 @@ class AggiungiModificaProprieta: AppCompatActivity() {
         } else {
             return availabilityList
         }
-    }
-
-    suspend fun findPlace(address: String): Address? = suspendCancellableCoroutine { continuation ->
-        val geocoder = Geocoder(this, Locale.getDefault())
-
-        geocoder.getFromLocationName(address, 1, object : Geocoder.GeocodeListener {
-            override fun onGeocode(addresses: MutableList<Address>) {
-                // Resume restituisce il risultato alla coroutine che sta aspettando
-                continuation.resume(addresses.firstOrNull())
-            }
-
-            override fun onError(errorMessage: String?) {
-                mostraErrore(errorMessage ?: getString(R.string.unknown_error))
-                continuation.resume(null)
-            }
-        })
     }
 
 

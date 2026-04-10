@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Address
 import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -34,6 +35,8 @@ import it.tizzycek.micasaestucasa.repo.MainRepo
 import it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.DettaglioProprieta
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import it.tizzycek.micasaestucasa.utils.findPlace
+
 
 class MappaFragment: Fragment(), OnMapReadyCallback {
     private lateinit var binding: FragmentMappaBinding
@@ -221,14 +224,21 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
         lifecycleScope.launch {
             binding.progressBar.visibility = View.VISIBLE
 
+            val address = f["indirizzo"] as? String
+            val coordinates = address?.let { requireContext().findPlace(it) }
+
+
             risultato = MainRepo.getProprietaRepository().cercaDisponibili(
                 dal = f["dal"] as LocalDate?,
                 al = f["al"] as LocalDate?,
                 posti = f["posti"] as Int?,
                 prezzoMax = f["prezzoMax"] as Double?,
                 prezzoMin = f["prezzoMin"] as Double?,
-                paroleChiaveIds = f["paroleChiaveIds"] as List<String>
+                paroleChiaveIds = f["paroleChiaveIds"] as List<String>,
+                lat = coordinates?.latitude,
+                lng = coordinates?.longitude
             )
+
             binding.progressBar.visibility = View.GONE
             risultato.fold(
                 onSuccess = {
@@ -236,7 +246,7 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
                     zoomRisultati(it)
                             },
                 onFailure = { Toast.makeText(requireContext(), getString(R.string.no_property_found), Toast.LENGTH_LONG).show()
-                    }
+                }
             )
         }
     }

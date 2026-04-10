@@ -72,7 +72,7 @@ class FiltriRicercaSheet(val onFiltriApplicati: (Map<String, Any?>) -> Unit) : B
             val filtri = mapOf(
                 "dal" to dataInizio,
                 "al" to dataFine,
-                "posti" to binding.tvGuestCount.text?.toString()?.toIntOrNull(),
+                "posti" to binding.etGuestCount.text?.toString()?.toIntOrNull(),
                 "prezzoMin" to binding.tvMinPrice.text?.toString()?.toDoubleOrNull(),
                 "prezzoMax" to binding.tvMaxPrice.text?.toString()?.toDoubleOrNull(),
                 "paroleChiaveIds" to paroleChiave.mapNotNull { chip ->
@@ -80,10 +80,26 @@ class FiltriRicercaSheet(val onFiltriApplicati: (Map<String, Any?>) -> Unit) : B
                         is ParoleChiave -> tag.id
                         else -> null
                     }
-                }
+                },
+                "indirizzo" to binding.etLocation.text?.toString()
             )
             onFiltriApplicati(filtri)
             dismiss()
+        }
+
+        binding.btnClearLocation.setOnClickListener {
+            binding.etLocation.setText("")
+        }
+
+        binding.btnResetFilters.setOnClickListener {
+            binding.etGuestCount.setText("1")
+            binding.tvDateRange.text = getString(R.string.seleziona_date)
+            binding.tvMinPrice.text = "0"
+            binding.tvMaxPrice.text = "500"
+            binding.rangeSliderPrice.values = listOf(0f, 500f)
+            binding.cgKeywords.clearCheck()
+            paroleSelezionatePerRicerca = emptyList()
+            binding.etLocation.setText("")
         }
     }
 

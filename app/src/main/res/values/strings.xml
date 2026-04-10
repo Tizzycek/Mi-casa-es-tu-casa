@@ -53,6 +53,7 @@
     <string name="informazioni_di_base">About</string>
     <string name="nome_della_propriet">Name</string>
     <string name="indirizzo_per_la_mappa">Address</string>
+    <string name="inserisci_indirizzo">Write an address</string>
     <string name="posti_disponibili">Available places:</string>
     <string name="descrizione_della_propriet">Write a description…</string>
     <string name="parole_chiave">Keywords</string>
@@ -85,6 +86,7 @@
     <string name="date">Dates</string>
     <string name="seleziona_date">Choose dates</string>
     <string name="ospiti">Guest(s)</string>
+    <string name="reset">Reset</string>
     <string name="mostra_risultati">Find an accommodation</string>
     <string name="ospitati_da">Hosted by</string>
     <string name="keywords_dettaglio">Here you can find</string>
