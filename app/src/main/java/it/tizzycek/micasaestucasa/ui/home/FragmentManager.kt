@@ -15,6 +15,7 @@ import it.tizzycek.micasaestucasa.data.utente.TipoUtente
 import it.tizzycek.micasaestucasa.databinding.ActivityHomeBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo
 import it.tizzycek.micasaestucasa.ui.utente.LoginActivity
+import it.tizzycek.micasaestucasa.utils.notifiche.NotificationHelper
 
 class FragmentManager: AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
@@ -25,6 +26,9 @@ class FragmentManager: AppCompatActivity() {
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val notificationHelper = NotificationHelper(this)
+        notificationHelper.checkNotificationPermission()
 
         // doppio controllo se loggato
         val utente = MainRepo.getUserRepository().getCurrentUser() ?: run {

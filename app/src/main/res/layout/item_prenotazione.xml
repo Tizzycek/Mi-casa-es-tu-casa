@@ -116,6 +116,15 @@
                 app:strokeColor="@android:color/holo_red_dark" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRecensione"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Scrivi una recensione"
+                android:visibility="gone"
+                app:backgroundTint="@color/primary" />
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnDestro"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

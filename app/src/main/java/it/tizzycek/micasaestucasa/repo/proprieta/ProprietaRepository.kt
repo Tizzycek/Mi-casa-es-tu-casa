@@ -26,6 +26,8 @@ class ProprietaRepository {
 
     private val collection = "proprieta"
 
+    private val cacheProprieta = mutableMapOf<String, Proprieta>() // TODO: implementare meglio
+
     suspend fun caricaProprietaPerProprietario(id: String): Result<List<Proprieta>> {
         return try {
             val snapshot = firestore.collection(collection).whereEqualTo("proprietarioId", id).get().await()
@@ -59,6 +61,7 @@ class ProprietaRepository {
     }
 
     suspend fun getProprieta(id: String): Result<Proprieta?> {
+        if (cacheProprieta.containsKey(id)) return Result.success(cacheProprieta[id])
         return try {
             val doc = firestore.collection(collection).document(id).get().await()
             if (!doc.exists())

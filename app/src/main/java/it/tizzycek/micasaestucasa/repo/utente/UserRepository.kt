@@ -4,14 +4,17 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
-import it.tizzycek.micasaestucasa.data.recensioni.Statistiche
-import it.tizzycek.micasaestucasa.data.utente.Stato
+import com.google.firebase.messaging.FirebaseMessaging
 import it.tizzycek.micasaestucasa.data.utente.TipoUtente
 import it.tizzycek.micasaestucasa.data.utente.Utente
 import it.tizzycek.micasaestucasa.data.utente.Utente.Companion.toHashMap
 import it.tizzycek.micasaestucasa.data.utente.Utente.Companion.toUtente
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
+import java.util.Locale
 
 class UserRepository {
     private val auth = FirebaseAuth.getInstance()
@@ -27,7 +30,11 @@ class UserRepository {
     suspend fun login(email: String, password: String): Result<Boolean> {
         return try {
             auth.signInWithEmailAndPassword(email, password).await()
-            utente = beccaDatiUtente(auth.currentUser?.uid)
+            val uid = auth.currentUser?.uid ?: throw Exception("UID nullo")
+            utente = beccaDatiUtente(uid)
+
+            aggiornaTokenFCM(uid)
+            
             Result.success(true)
         } catch (e: Exception) {
             Result.failure(e)
@@ -79,13 +86,36 @@ class UserRepository {
     }
 
     suspend fun caricaUtente(): Utente? {
+        if (this.utente != null) return this.utente
         val firebaseUser = auth.currentUser
         if (firebaseUser != null) {
-
             val dati = beccaDatiUtente(firebaseUser.uid)
             this.utente = dati
+            aggiornaTokenFCM(firebaseUser.uid)
             return dati
         }
         return null
+    }
+
+    private fun aggiornaTokenFCM(uid: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val token = FirebaseMessaging.getInstance().token.await()
+                val lingua = Locale.getDefault().language
+                val mapAggiornamento = mapOf(
+                    "fcmToken" to token,
+                    "lingua" to lingua,
+                    "tipoUtente" to utente?.tipo
+                )
+
+                FirebaseFirestore.getInstance().collection("utenti")
+                    .document(uid).update(mapAggiornamento).await()
+
+                utente?.fcmToken = token
+                println("FCM: Token aggiornato con successo")
+            } catch (e: Exception) {
+                println("FCM: Errore silenzioso (normale in emulatore): ${e.message}")
+            }
+        }
     }
 }

@@ -2,7 +2,6 @@ package it.tizzycek.micasaestucasa.ui.adapters
 
 import android.content.Intent
 import android.graphics.Paint
-import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +23,7 @@ import it.tizzycek.micasaestucasa.repo.MainRepo
 import it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.DettaglioProprieta
 import it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.mappa.PrenotazioneSheet
 import it.tizzycek.micasaestucasa.utils.DateValidator
+import it.tizzycek.micasaestucasa.utils.PrenotazioneLogic
 import it.tizzycek.micasaestucasa.utils.mostraErrore
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -53,9 +53,14 @@ class PrenotazioniAdapter(private val items: List<Prenotazioni>, private val lif
                         binding.tvNomeProprieta.text = prop?.nome ?: "_"
                     },
                     onFailure = {
-                        binding.tvNomeProprieta.setText(R.string.unknown_error)
+                        binding.tvNomeProprieta.setText(R.string.non_disponibile)
                     }
                 )
+            }
+
+            // dovrebbe rifiutare automaticamente le prenotazioni latenti che iniziano dopo la data odierna
+            if (DateValidator.isBeforeToday(prenotazione.dataInizio) && prenotazione.statoPrenotazione == StatoPrenotazione.IN_ATTESA) {
+                onPrenotazioneRifiutata(lifecycleOwner, prenotazione)
             }
 
             when (prenotazione.statoPrenotazione) {
@@ -99,49 +104,65 @@ class PrenotazioniAdapter(private val items: List<Prenotazioni>, private val lif
         }
 
         private fun configureButtons(tipoUtente: TipoUtente, lifecycleOwner: LifecycleOwner, prenotazione: Prenotazioni) {
-            if (tipoUtente == TipoUtente.PROPRIETARIO) {
-                if (prenotazione.statoPrenotazione == StatoPrenotazione.IN_ATTESA) {
-                    binding.btnSinistro.setText(R.string.rifiuta)
-                    binding.btnSinistro.setCompoundDrawablesWithIntrinsicBounds(R.drawable.delete_24px, 0, 0, 0)
+            if (DateValidator.isBeforeToday(prenotazione.dataFine) && prenotazione.statoPrenotazione == StatoPrenotazione.ACCETTATA) {
+                binding.btnSinistro.visibility = View.GONE
+                binding.btnDestro.visibility = View.GONE
+
+                binding.btnRecensione.visibility = View.VISIBLE
+
+                /*if (MainRepo.getUserRepository().getCurrentUser()!!.id == MainRepo.) {
+                    binding.btnRecensione.setOnClickListener {
+
+                    }
+                } else {*/
+                    binding.btnRecensione.isEnabled = false
+                    binding.btnRecensione.setBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.gray))
+                //}
+            } else {
+                if (tipoUtente == TipoUtente.PROPRIETARIO) {
+                    if (prenotazione.statoPrenotazione == StatoPrenotazione.IN_ATTESA) {
+                        binding.btnSinistro.setText(R.string.rifiuta)
+                        binding.btnSinistro.setCompoundDrawablesWithIntrinsicBounds(R.drawable.delete_24px, 0, 0, 0)
+                        binding.btnSinistro.setBackgroundColor(ContextCompat.getColor(binding.root.context, android.R.color.holo_red_dark))
+                        binding.btnSinistro.setStrokeColorResource(android.R.color.holo_red_dark)
+
+                        binding.btnDestro.setText(R.string.accetta)
+                        binding.btnDestro.setCompoundDrawablesWithIntrinsicBounds(R.drawable.check_24px, 0, 0, 0)
+                        binding.btnDestro.setBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.emerald_green))
+
+                        binding.btnSinistro.setOnClickListener {
+                            onPrenotazioneRifiutata(lifecycleOwner, prenotazione)
+                        }
+
+                        binding.btnDestro.setOnClickListener {
+                            onPrenotazioneConfermata(lifecycleOwner, prenotazione)
+                        }
+                    } else {
+                        binding.btnSinistro.visibility = View.GONE
+                        binding.btnDestro.visibility = View.GONE
+                    }
+                } else {
+                    binding.btnSinistro.setText(R.string.annulla)
+                    binding.btnSinistro.setCompoundDrawablesWithIntrinsicBounds(R.drawable.cancel_24px, 0, 0, 0)
                     binding.btnSinistro.setBackgroundColor(ContextCompat.getColor(binding.root.context, android.R.color.holo_red_dark))
                     binding.btnSinistro.setStrokeColorResource(android.R.color.holo_red_dark)
 
-                    binding.btnDestro.setText(R.string.accetta)
-                    binding.btnDestro.setCompoundDrawablesWithIntrinsicBounds(R.drawable.check_24px, 0, 0, 0)
-                    binding.btnDestro.setBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.emerald_green))
+                    binding.btnDestro.setText(R.string.modifica)
+                    binding.btnDestro.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit_24px, 0, 0, 0)
+                    binding.btnDestro.setBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.primary))
 
-                    binding.btnSinistro.setOnClickListener {
-                        onPrenotazioneRifiutata(lifecycleOwner, prenotazione)
-                    }
-
-                    binding.btnDestro.setOnClickListener {
-                        onPrenotazioneConfermata(lifecycleOwner, prenotazione)
-                    }
-                } else {
-                    binding.btnSinistro.visibility = View.GONE
-                    binding.btnDestro.visibility = View.GONE
-                }
-            } else {
-                binding.btnSinistro.setText(R.string.annulla)
-                binding.btnSinistro.setCompoundDrawablesWithIntrinsicBounds(R.drawable.cancel_24px, 0, 0, 0)
-                binding.btnSinistro.setBackgroundColor(ContextCompat.getColor(binding.root.context, android.R.color.holo_red_dark))
-                binding.btnSinistro.setStrokeColorResource(android.R.color.holo_red_dark)
-
-                binding.btnDestro.setText(R.string.modifica)
-                binding.btnDestro.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit_24px, 0, 0, 0)
-                binding.btnDestro.setBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.primary))
-
-                if (prenotazione.statoPrenotazione == StatoPrenotazione.RIFIUTATA || prenotazione.statoPrenotazione == StatoPrenotazione.ANNULLATA) {
-                    binding.btnSinistro.isEnabled = false
-                    binding.btnSinistro.setBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.gray))
-                    binding.btnDestro.isEnabled = false
-                    binding.btnDestro.setBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.light_gray))
-                } else {
-                    binding.btnSinistro.setOnClickListener {
-                        onPrenotazioneAnnullata(lifecycleOwner, prenotazione)
-                    }
-                    binding.btnDestro.setOnClickListener {
-                        onPrenotazioneModificata(prenotazione, lifecycleOwner)
+                    if (prenotazione.statoPrenotazione == StatoPrenotazione.RIFIUTATA || prenotazione.statoPrenotazione == StatoPrenotazione.ANNULLATA || (prenotazione.statoPrenotazione == StatoPrenotazione.ACCETTATA && DateValidator.isBeforeToday(prenotazione.dataInizio))) {
+                        binding.btnSinistro.isEnabled = false
+                        binding.btnSinistro.setBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.gray))
+                        binding.btnDestro.isEnabled = false
+                        binding.btnDestro.setBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.light_gray))
+                    } else {
+                        binding.btnSinistro.setOnClickListener {
+                            onPrenotazioneAnnullata(lifecycleOwner, prenotazione)
+                        }
+                        binding.btnDestro.setOnClickListener {
+                            onPrenotazioneModificata(prenotazione, lifecycleOwner)
+                        }
                     }
                 }
             }
@@ -156,7 +177,7 @@ class PrenotazioniAdapter(private val items: List<Prenotazioni>, private val lif
 
             val bloccoDaAggiungere = Disponibilita(id = "TEMP", dataInizio = prenotazione.dataInizio, dataFine = prenotazione.dataFine, prezzo = prezzoGiorno, valuta = prenotazione.valuta)
 
-            val listaPerCalendario = unisciDisponibilita(prop.disponibilita + bloccoDaAggiungere)
+            val listaPerCalendario = PrenotazioneLogic.unisciDisponibilita(prop.disponibilita + bloccoDaAggiungere)
 
             val sheet = PrenotazioneSheet(listaPerCalendario, prop.posti) { datiNuovi ->
                 processaRichiestaModifica(prenotazione, datiNuovi, lifecycleOwner)
@@ -209,7 +230,7 @@ class PrenotazioniAdapter(private val items: List<Prenotazioni>, private val lif
                     // meglio aggiornare tutto (se è modificata non c'è da scrivere altro)
                     val risultatoAggiornamento = MainRepo.getProprietaRepository()
                         .aggiornaDisponibilitaTransazionale(p.proprietaId) { listaAttuale ->
-                            computaNuovaDisponibilita(listaAttuale, p)
+                            PrenotazioneLogic.computaNuovaDisponibilita(listaAttuale, p)
                         }
 
                     risultatoAggiornamento.fold(
@@ -286,7 +307,7 @@ class PrenotazioniAdapter(private val items: List<Prenotazioni>, private val lif
 
                         val risultatoRipristino = MainRepo.getProprietaRepository().aggiornaDisponibilitaTransazionale(p.proprietaId) { listaAttuale ->
                                 val bloccoDaRipristinare = Disponibilita(id = UUID.randomUUID().toString(), dataInizio = p.dataInizio, dataFine = p.dataFine, prezzo = prezzoGiorno, valuta = p.valuta)
-                                unisciDisponibilita(listaAttuale + bloccoDaRipristinare)
+                            PrenotazioneLogic.unisciDisponibilita(listaAttuale + bloccoDaRipristinare)
                             }
 
                         if (risultatoRipristino.isFailure) {
@@ -343,98 +364,6 @@ class PrenotazioniAdapter(private val items: List<Prenotazioni>, private val lif
             }
         }
 
-        /**
-         * Decides whether the old blocked dates need to be restored before blocking
-         * the new ones (booking was ACCETTATA before being edited) or whether they
-         * are still present in the availability, and we can just block the new dates
-         * directly (booking was IN_ATTESA when edited, so they were never removed).
-         *
-         * This is the single entry-point called by onPrenotazioneConfermata so that
-         * both Bug 1 (stale proprieta) and Bug 2 (wrong routing for edited bookings)
-         * are handled in one place with fresh Firestore data.
-         */
-        private fun computaNuovaDisponibilita(listaAttuale: List<Disponibilita>, p: Prenotazioni): List<Disponibilita> {
-            val vecchiaInizio = p.vecchiaDataInizio
-            val vecchiaFine = p.vecchiaDataFine
-
-            return if (vecchiaInizio != null && vecchiaFine != null) {
-                // controlla che le date vecchie ci siano (ovvero che la prenotazione era in attesa, e le date sono ancora lì da modificare).
-                val vecchieDateAncorePresenti = listaAttuale.any { disp ->
-                    !vecchiaInizio.isBefore(disp.dataInizio) && !vecchiaFine.isAfter(disp.dataFine)
-                }
-                if (vecchieDateAncorePresenti) {
-                    // non c'è niente da fare, a parte aggiornare
-                    aggiornaListaDisponibilita(listaAttuale, p)
-                } else {
-                    // bisogna ripristinare e sottrarre il nuovo range, perché le date sono occupate
-                    eseguiModificaPrenotazioneCompleta(listaAttuale, p)
-                }
-            } else {
-                // prenotazione nuova
-                aggiornaListaDisponibilita(listaAttuale, p)
-            }
-        }
-
-        private fun aggiornaListaDisponibilita(listaAttuale: List<Disponibilita>, prenotazione: Prenotazioni): List<Disponibilita> {
-            val inizioP = prenotazione.dataInizio
-            val fineP = prenotazione.dataFine
-            val nuovaLista = mutableListOf<Disponibilita>()
-
-            var bloccoTrovato = false
-
-            for (disp in listaAttuale) {
-                // Se il blocco non ha intersezioni con la prenotazione, lo teniamo così com'è
-                if (fineP.isBefore(disp.dataInizio) || inizioP.isAfter(disp.dataFine)) {
-                    nuovaLista.add(disp)
-                    continue
-                }
-
-                // Se arriviamo qui, c'è un'intersezione. Segnamo che abbiamo trovato dove tagliare.
-                bloccoTrovato = true
-
-                // Caso 1: C'è un pezzo che avanza PRIMA della prenotazione
-                if (disp.dataInizio.isBefore(inizioP)) {
-                    nuovaLista.add(disp.copy(id = UUID.randomUUID().toString(), dataFine = inizioP.minusDays(1)))
-                }
-
-                // Caso 2: C'è un pezzo che avanza DOPO della prenotazione
-                if (disp.dataFine.isAfter(fineP)) {
-                    nuovaLista.add(disp.copy(id = UUID.randomUUID().toString(), dataInizio = fineP.plusDays(1)))
-                }
-            }
-
-            if (!bloccoTrovato) throw Exception("Le date selezionate non sono più disponibili.")
-
-            return nuovaLista.sortedBy { it.dataInizio }
-        }
-
-        private fun unisciDisponibilita(lista: List<Disponibilita>): List<Disponibilita> {
-            if (lista.size < 2) return lista
-
-            val ordinate = lista.sortedBy { it.dataInizio }
-            val risultato = mutableListOf<Disponibilita>()
-
-            var corrente = ordinate[0].copy()
-
-            for (i in 1 until ordinate.size) {
-                val successiva = ordinate[i]
-
-                // controllo dei settori (se hanno stessa valuta e prezzo, per attaccarli)
-                val giorniDifferenza = ChronoUnit.DAYS.between(corrente.dataFine, successiva.dataInizio)
-                val stessoPrezzo = corrente.prezzo == successiva.prezzo && corrente.valuta == successiva.valuta
-
-                if (giorniDifferenza == 1L && stessoPrezzo) {
-                    corrente.dataFine = successiva.dataFine
-                } else {
-                    risultato.add(corrente)
-                    corrente = successiva.copy()
-                }
-            }
-
-            risultato.add(corrente)
-            return risultato
-        }
-
         private fun processaRichiestaModifica(prenotazione: Prenotazioni, datiNuovi: Map<String, Any>, lifecycleOwner: LifecycleOwner) {
             val nuovaDataInizio = datiNuovi["dataInizio"] as LocalDate
             val nuovaDataFine = datiNuovi["dataFine"] as LocalDate
@@ -465,46 +394,7 @@ class PrenotazioniAdapter(private val items: List<Prenotazioni>, private val lif
             }
         }
 
-        private fun eseguiModificaPrenotazioneCompleta(listaAttuale: List<Disponibilita>, prenotazione: Prenotazioni): List<Disponibilita> {
-            val vecchiaInizio = prenotazione.vecchiaDataInizio!!
-            val vecchiaFine = prenotazione.vecchiaDataFine!!
 
-            //    Il prezzo per notte corretto è quello del blocco originale da cui la
-            //    prenotazione era stata ritagliata.  Quel blocco non esiste più in
-            //    listaAttuale, ma i suoi vicini immediati (il blocco che termina il
-            //    giorno prima dell'inizio vecchio e/o quello che inizia il giorno dopo
-            //    la fine vecchia) conservano lo stesso prezzo.
-            //    Se entrambi i vicini concordano → usiamo quel prezzo.
-            //    Se c'è un solo vicino → usiamo il suo prezzo.
-            //    Se i vicini hanno prezzi diversi o non esistono (prenotazione che
-            //    copriva tutta la disponibilità) → fallback al calcolo proporzionale
-            //    sul totale della nuova prenotazione (comportamento precedente).
-            val vicini = listaAttuale.filter { disp ->
-                disp.dataFine == vecchiaInizio.minusDays(1) || disp.dataInizio == vecchiaFine.plusDays(1)
-            }
-            val nottiVecchie = ChronoUnit.DAYS.between(vecchiaInizio, vecchiaFine)
-            val prezzoGiorno = when {
-                vicini.isNotEmpty() && vicini.all { it.prezzo == vicini[0].prezzo } ->
-                    vicini[0].prezzo
-
-                else ->
-                    prenotazione.prezzoTotale / if (nottiVecchie > 0) nottiVecchie else 1
-            }
-
-            val bloccoDaRipristinare = Disponibilita(
-                id = UUID.randomUUID().toString(),
-                dataInizio = vecchiaInizio,
-                dataFine = vecchiaFine,
-                prezzo = prezzoGiorno,
-                valuta = prenotazione.valuta
-            )
-
-            // merge
-            val listaRipristinata = unisciDisponibilita(listaAttuale + bloccoDaRipristinare)
-
-            // split nuovo
-            return aggiornaListaDisponibilita(listaRipristinata, prenotazione)
-        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

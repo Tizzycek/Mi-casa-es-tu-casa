@@ -27,7 +27,7 @@
     <string name="invalid_email">This is not a valid email address</string>
     <string name="campo_obbligatorio">Required field</string>
     <string name="password_minima">Password must be at least 6 characters</string>
-    <string name="unknown_error">Errore sconosciuto</string>
+    <string name="unknown_error">Unknown error</string>
     <string name="invalid_age">"Age must be over 18"</string>
     <string name="error_registration_success">Registration completed but login failed</string>
     <string name="data_missing">Please, fill all the fields</string>

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import it.tizzycek.micasaestucasa.R
 import it.tizzycek.micasaestucasa.data.prenotazioni.Prenotazioni
+import it.tizzycek.micasaestucasa.data.prenotazioni.StatoPrenotazione
 import it.tizzycek.micasaestucasa.data.proprieta.Disponibilita
 import it.tizzycek.micasaestucasa.data.proprieta.Proprieta
 import it.tizzycek.micasaestucasa.data.utente.TipoUtente
@@ -20,6 +21,7 @@ import it.tizzycek.micasaestucasa.ui.adapters.DisponibilitaAdapter
 import it.tizzycek.micasaestucasa.ui.adapters.ImageDetailAdapter
 import it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.mappa.AggiungiModificaProprieta
 import it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.mappa.PrenotazioneSheet
+import it.tizzycek.micasaestucasa.utils.DateValidator
 import it.tizzycek.micasaestucasa.utils.mostraErrore
 import it.tizzycek.micasaestucasa.utils.paroleChiaveProprieta
 import kotlinx.coroutines.launch
@@ -72,7 +74,7 @@ class DettaglioProprieta: AppCompatActivity() {
                             .show()
                 },
                 onFailure = { e ->
-                    Toast.makeText(this@DettaglioProprieta, "${e.message}", Toast.LENGTH_LONG).show()
+                    mostraErrore(e.message ?: getString(R.string.unknown_error))
                 }
             )
             binding.progressBar.visibility = View.GONE
@@ -169,6 +171,7 @@ class DettaglioProprieta: AppCompatActivity() {
                         onSuccess = {
                             Toast.makeText(this@DettaglioProprieta, getString(R.string.deleted), Toast.LENGTH_LONG)
                                 .show()
+                            rifiutaPrenotazioni(idProprieta!!) // rifiuta le prenotazioni non ancora accettate
                             finish()
                         },
                         onFailure = { e ->
@@ -194,6 +197,14 @@ class DettaglioProprieta: AppCompatActivity() {
                     mostraErrore(e.message ?: getString(R.string.unknown_error))
                 }
             )
+        }
+    }
+
+    private suspend fun rifiutaPrenotazioni(idProprieta: String)  {
+        val prenotazioni = MainRepo.getPrenotazioniRepository().getPrenotazioni(idProprieta)
+        for (p in prenotazioni.getOrThrow()) {
+            if (!DateValidator.isBeforeToday(p.dataInizio))
+                MainRepo.getPrenotazioniRepository().cambiaStatoPrenotazione(p, StatoPrenotazione.RIFIUTATA)
         }
     }
 }

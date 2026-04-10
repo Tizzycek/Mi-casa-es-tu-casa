@@ -35,6 +35,18 @@ class PrenotazioniRepository {
         }
     }
 
+    suspend fun getPrenotazioni(idProprieta: String): Result<List<Prenotazioni>> {
+        return try {
+            val querySnapshot = firestore.collection(collection).whereEqualTo("proprietaId", idProprieta).get().await()
+            val listaPrenotazioni = querySnapshot.documents.mapNotNull { pren ->
+                pren.toPrenotazioni()
+            }
+            Result.success(listaPrenotazioni)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     suspend fun cambiaStatoPrenotazione(p: Prenotazioni, nuovoStato: StatoPrenotazione): Result<Boolean> {
         return try {
             firestore.collection(collection).document(p.id).update("statoPrenotazione", nuovoStato.toString()).await()
