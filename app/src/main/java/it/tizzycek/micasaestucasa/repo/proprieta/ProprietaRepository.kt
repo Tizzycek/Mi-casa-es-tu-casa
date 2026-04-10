@@ -128,6 +128,8 @@ class ProprietaRepository {
 
             firestore.collection(collection).document(requireNotNull(proprieta.id)).set(proprieta.toHashMap()).await()
 
+            cacheProprieta.remove(proprieta.id)
+
             Result.success(true)
         } catch (e: Exception) {
             Result.failure(e)
