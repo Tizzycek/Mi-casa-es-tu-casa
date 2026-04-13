@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="?android:attr/colorBackground"
+    tools:context=".ui.utente.RecensioniActivity">
+
+    <!-- Header con info utente -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="?android:attr/colorBackground">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <!-- Avatar con iniziali -->
+            <FrameLayout
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/avatarInitialsTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/avatar_circle_background"
+                    android:gravity="center"
+                    android:textColor="?android:attr/colorBackground"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    tools:text="MR"/>
+
+                <ImageView
+                    android:id="@+id/badgeImageView"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="bottom|end"
+                    android:src="@drawable/ic_badge"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
+            </FrameLayout>
+
+            <!-- Info utente -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="8dp"
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/nomeCognomeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="Mario Rossi"/>
+
+                <!-- Stelle e numero recensioni in orizzontale -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="4dp">
+
+                    <RatingBar
+                        android:id="@+id/mediaRatingBar"
+                        style="?android:attr/ratingBarStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:isIndicator="true"
+                        android:numStars="5"
+                        android:progressTint="@color/primary"
+                        android:stepSize="0.5"
+                        tools:rating="4.5"/>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="4dp">
+
+
+                <TextView
+                    android:id="@+id/mediaValoreTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textSize="14sp"
+                    tools:text="4.5"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?android:attr/textColorHint"
+                    android:textSize="14sp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:text="•"/>
+
+                <TextView
+                    android:id="@+id/numeroRecensioniTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textSize="14sp"
+                    tools:text="15 recensioni"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- TODO Bottone segnala (in alto a destra nell'header) -->
+            <Button
+                android:id="@+id/btnSegnala"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:text="@string/segnala"
+                android:textAllCaps="false"
+                android:textSize="12sp"
+                android:textColor="@color/backgroundColor"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="0dp"
+                app:strokeColor="@android:color/holo_red_dark"
+                android:icon="@drawable/report_24px"
+                app:iconSize="16dp"
+                app:iconTint="@color/backgroundColor"
+                android:backgroundTint="@android:color/holo_red_dark"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Barra per ordinamento e titolo -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="8dp"
+        android:gravity="center_vertical">
+
+        <!-- Titolo sezione recensioni -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/recensioni"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="?android:attr/textColorPrimary"/>
+
+        <!-- Layout ordinamento -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/spinner_background"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="8dp">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/sort_24px"
+                android:tint="?android:attr/textColorSecondary"
+                android:layout_marginEnd="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ordina_per"
+                android:textSize="14sp"
+                android:textColor="?android:attr/textColorSecondary"
+                android:layout_marginEnd="4dp"/>
+
+            <Spinner
+                android:id="@+id/spinnerOrdinamento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:popupBackground="?android:attr/colorBackgroundFloating"
+                android:dropDownVerticalOffset="8dp"
+                android:paddingEnd="24dp"
+                android:spinnerMode="dropdown"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- RecyclerView per le recensioni -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recensioniRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:padding="8dp"
+        tools:listitem="@layout/item_recensione"/>
+
+    <!-- Empty state -->
+<!--    <LinearLayout-->
+<!--        android:id="@+id/emptyStateLayout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="1"-->
+<!--        android:orientation="vertical"-->
+<!--        android:gravity="center"-->
+<!--        android:visibility="gone"-->
+<!--        tools:visibility="visible">-->
+
+<!--        <ImageView-->
+<!--            android:layout_width="80dp"-->
+<!--            android:layout_height="80dp"-->
+<!--            android:src="@drawable/ic_empty_reviews"-->
+<!--            android:tint="?android:attr/textColorHint"-->
+<!--            android:layout_marginBottom="16dp"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/emptyStateTextView"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/nessuna_recensione"-->
+<!--            android:textColor="?android:attr/textColorSecondary"-->
+<!--            android:textSize="16sp"-->
+<!--            android:gravity="center"/>-->
+
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/nessuna_recensione_desc"-->
+<!--            android:textColor="?android:attr/textColorHint"-->
+<!--            android:textSize="14sp"-->
+<!--            android:gravity="center"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:paddingHorizontal="32dp"/>-->
+<!--    </LinearLayout>-->
+
+    <!-- Progress Bar -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_margin="16dp"
+        android:visibility="gone"
+        android:indeterminateTint="@color/primary"/>
+
+</LinearLayout>

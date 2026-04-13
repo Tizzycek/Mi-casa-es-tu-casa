@@ -120,5 +120,14 @@
     <string name="conferma_password">Confirm password</string>
     <string name="updated_user">User updated successfully</string>
     <string name="invalid_password">Confirmed password is different from new password</string>
+    <string name="segnala">Report</string>
+    <string name="recensioni">Reviews</string>
+
+    <string name="ordina_per">Sort by</string>
+    <string-array name="ordinamenti_recensioni">
+        <item>Most recent</item>
+        <item>Best</item>
+        <item>Worst</item>
+    </string-array>
 
 </resources>

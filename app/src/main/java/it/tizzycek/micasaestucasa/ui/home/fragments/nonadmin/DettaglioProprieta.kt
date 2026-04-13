@@ -25,6 +25,7 @@ import it.tizzycek.micasaestucasa.utils.DateValidator
 import it.tizzycek.micasaestucasa.utils.mostraErrore
 import it.tizzycek.micasaestucasa.utils.paroleChiaveProprieta
 import kotlinx.coroutines.launch
+import java.time.Instant
 import java.time.LocalDate
 import java.util.Currency
 import java.util.UUID
@@ -183,7 +184,7 @@ class DettaglioProprieta: AppCompatActivity() {
     }
 
     private fun gestionePrenotazione(pl: Map<String, Any>) {
-        val prenotazione = Prenotazioni(UUID.randomUUID().toString(), proprietarioId, MainRepo.getUserRepository().getCurrentUser()!!.id!!, idProprieta!!, pl["dataInizio"] as LocalDate, pl["dataFine"] as LocalDate, pl["ospiti"] as Int, null, null, pl["totale"] as Double, pl["valuta"] as Currency, dataPrenotazione = LocalDate.now())
+        val prenotazione = Prenotazioni(UUID.randomUUID().toString(), proprietarioId, MainRepo.getUserRepository().getCurrentUser()!!.id!!, idProprieta!!, pl["dataInizio"] as LocalDate, pl["dataFine"] as LocalDate, pl["ospiti"] as Int, null, null, pl["totale"] as Double, pl["valuta"] as Currency, dataPrenotazione = Instant.now())
 
         lifecycleScope.launch {
             binding.progressBar.visibility = View.VISIBLE

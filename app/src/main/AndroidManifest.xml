@@ -34,7 +34,9 @@
             android:exported="false"/>
         <activity android:name=".ui.home.fragments.nonadmin.DettaglioProprieta"
             android:exported="false"/>
-        <activity android:name=".ui.home.fragments.nonadmin.profilo.ModificaProfilo"
+        <activity android:name=".ui.utente.ModificaProfilo"
+            android:exported="false"/>
+        <activity android:name=".ui.utente.RecensioniActivity"
             android:exported="false"/>
         <activity
             android:name=".MainActivity"

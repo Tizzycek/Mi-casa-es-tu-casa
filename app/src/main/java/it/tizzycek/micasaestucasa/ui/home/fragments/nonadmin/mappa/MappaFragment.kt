@@ -58,8 +58,6 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
 
         if (fineLocationGranted || coarseLocationGranted) {
             abilitaPosizioneUtente()
-        } else {
-            Toast.makeText(requireContext(), getString(R.string.permesso_negato), Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="4dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="?android:attr/colorBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <!-- Header recensione: stelle e data -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
+
+            <RatingBar
+                android:id="@+id/recensioneRatingBar"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:progressTint="@color/secondary"
+                android:stepSize="0.5"
+                tools:rating="4"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/dataTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="?android:attr/textColorHint"
+                android:textSize="12sp"
+                tools:text="12 Apr 2026"/>
+        </LinearLayout>
+
+        <!-- Testo recensione -->
+        <TextView
+            android:id="@+id/testoRecensioneTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="14sp"
+            android:maxLines="4"
+            android:ellipsize="end"
+            tools:text="Ottimo servizio! Il professionista è stato puntuale e molto competente. Lo consiglio vivamente a tutti."/>
+
+        <!-- Bottone "Leggi di più" (visibile solo se testo lungo) -->
+        <TextView
+            android:id="@+id/leggiDiPiuTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Leggi di più"
+            android:textColor="@color/primary"
+            android:textSize="12sp"
+            android:layout_marginTop="4dp"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

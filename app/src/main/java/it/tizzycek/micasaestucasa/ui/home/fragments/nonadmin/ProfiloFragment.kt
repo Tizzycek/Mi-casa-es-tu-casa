@@ -1,4 +1,4 @@
-package it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.profilo
+package it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,6 +11,8 @@ import it.tizzycek.micasaestucasa.data.utente.Utente
 import it.tizzycek.micasaestucasa.databinding.FragmentProfiloBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo
 import it.tizzycek.micasaestucasa.ui.utente.LoginActivity
+import it.tizzycek.micasaestucasa.ui.utente.ModificaProfilo
+import it.tizzycek.micasaestucasa.ui.utente.RecensioniActivity
 
 class ProfiloFragment: Fragment() {
     private lateinit var utente: Utente
@@ -43,18 +45,19 @@ class ProfiloFragment: Fragment() {
         binding.modificaUtenteLayout.setOnClickListener {
             startActivity(Intent(requireContext(), ModificaProfilo::class.java))
         }
-        // Esempio di navigazione verso un altro fragment
+
+        binding.visualizzaRecensioniLayout.setOnClickListener {
+            startActivity(Intent(requireContext(), RecensioniActivity::class.java))
+        }
 
     }
 
     private fun setFields() {
-        binding.avatarInitialsTextView.text =
-            utente.nome[0].toString() + utente.cognome[0].toString()
+        binding.avatarInitialsTextView.text = utente.nome[0].toString() + utente.cognome[0].toString()
         binding.nomeCognomeTextView.text = utente.nome + " " + utente.cognome
         binding.mediaRatingBar.rating = utente.statistiche.mediaRecensioni.toFloat()
         binding.mediaValoreTextView.text = utente.statistiche.mediaRecensioni.toString() + "/5"
-        binding.numeroRecensioniTextView.text =
-            getString(R.string.numero_recensioni, utente.statistiche.totaleRecensioni)
+        binding.numeroRecensioniTextView.text = getString(R.string.numero_recensioni, utente.statistiche.totaleRecensioni)
     }
 
     override fun onDestroyView() {

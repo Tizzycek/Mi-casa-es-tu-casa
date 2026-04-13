@@ -1,7 +1,6 @@
-package it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.profilo
+package it.tizzycek.micasaestucasa.ui.utente
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -14,7 +13,6 @@ import it.tizzycek.micasaestucasa.utils.DateValidator
 import it.tizzycek.micasaestucasa.utils.mostraErrore
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.util.Calendar
 
 class ModificaProfilo: AppCompatActivity() {
     private lateinit var binding: EditProfileBinding

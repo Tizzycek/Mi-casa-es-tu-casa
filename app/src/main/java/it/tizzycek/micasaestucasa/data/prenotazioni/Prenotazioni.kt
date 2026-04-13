@@ -1,10 +1,11 @@
 package it.tizzycek.micasaestucasa.data.prenotazioni
 
 import com.google.firebase.firestore.DocumentSnapshot
+import java.time.Instant
 import java.time.LocalDate
 import java.util.Currency
 
-data class Prenotazioni(val id: String, val proprietarioId: String, val affittuarioId: String, val proprietaId: String, val dataInizio: LocalDate, val dataFine: LocalDate, val ospiti: Int, var vecchiaDataInizio: LocalDate? = null, var vecchiaDataFine: LocalDate? = null, val prezzoTotale: Double, val valuta: Currency, var statoPrenotazione: StatoPrenotazione = StatoPrenotazione.IN_ATTESA, var dataPrenotazione: LocalDate) {
+data class Prenotazioni(val id: String, val proprietarioId: String, val affittuarioId: String, val proprietaId: String, val dataInizio: LocalDate, val dataFine: LocalDate, val ospiti: Int, var vecchiaDataInizio: LocalDate? = null, var vecchiaDataFine: LocalDate? = null, val prezzoTotale: Double, val valuta: Currency, var statoPrenotazione: StatoPrenotazione = StatoPrenotazione.IN_ATTESA, var dataPrenotazione: Instant) {
     companion object {
         fun Prenotazioni.toHashMap(): Map<String, Any> {
             return hashMapOf(
@@ -39,7 +40,7 @@ data class Prenotazioni(val id: String, val proprietarioId: String, val affittua
                 prezzoTotale = data["prezzoTotale"] as Double,
                 valuta = Currency.getInstance(data["valuta"] as String),
                 statoPrenotazione = StatoPrenotazione.valueOf(data["statoPrenotazione"] as String),
-                dataPrenotazione = LocalDate.parse(data["dataPrenotazione"] as String)
+                dataPrenotazione = Instant.parse(data["dataPrenotazione"] as String)
             )
         }
     }
