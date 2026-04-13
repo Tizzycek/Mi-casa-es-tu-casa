@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Cerchio esterno con bordo dorato -->
+    <path
+        android:pathData="M12,2C6.48,2 2,6.48 2,12s4.48,10 10,10 10,-4.48 10,-10S17.52,2 12,2z"
+        android:fillColor="#FFD700"/>
+
+    <!-- Cerchio interno con gradiente -->
+    <path
+        android:pathData="M12,4C7.58,4 4,7.58 4,12s3.58,8 8,8 8,-3.58 8,-8 -3.58,-8 -8,-8z"
+        android:fillColor="#FFA000"/>
+
+    <!-- Scudo centrale -->
+    <path
+        android:pathData="M12,6L7,8v4c0,3 5,6 5,6s5,-3 5,-6V8L12,6z"
+        android:fillColor="#FFF8E1"/>
+
+    <!-- Stella centrale -->
+    <path
+        android:pathData="M12,10.5L13.5,13.5L17,14L14.5,16.5L15,20L12,18.2L9,20L9.5,16.5L7,14L10.5,13.5L12,10.5z"
+        android:fillColor="#FFD700"/>
+
+    <!-- Piccolo brillantino in alto a destra -->
+    <path
+        android:pathData="M17.5,5.5L18,4.5L19,5L18,5.5L19,6L18,5.5L17.5,6L17.5,5.5z"
+        android:fillColor="#FFE082"/>
+
+</vector>

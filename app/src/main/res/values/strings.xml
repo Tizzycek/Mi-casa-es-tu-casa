@@ -110,5 +110,15 @@
     <string name="pending_loading">Loading…</string>
     <string name="esito_prenotazione">Booking request successfully</string>
 
-    "
+    <string name="visualizza_recensioni">Show reviews</string>
+    <string name="modifica_utente">Edit user</string>
+    <string name="numero_recensioni">%1$d reviews</string>
+    <string name="aggiorna_dati">Update data</string>
+    <string name="nuova_password_opzionale">New password</string>
+    <string name="conferma_nuova_password">Confirm new password</string>
+    <string name="lascia_vuoto_per_mantenere">Leave empty to keep</string>
+    <string name="conferma_password">Confirm password</string>
+    <string name="updated_user">User updated successfully</string>
+    <string name="invalid_password">Confirmed password is different from new password</string>
+
 </resources>

@@ -121,6 +121,9 @@ class PrenotazioniAdapter(private val items: List<Prenotazioni>, private val lif
             } else {
                 if (tipoUtente == TipoUtente.PROPRIETARIO) {
                     if (prenotazione.statoPrenotazione == StatoPrenotazione.IN_ATTESA) {
+                        binding.btnSinistro.visibility = View.VISIBLE
+                        binding.btnDestro.visibility = View.VISIBLE
+
                         binding.btnSinistro.isEnabled = true
                         binding.btnDestro.isEnabled = true
 

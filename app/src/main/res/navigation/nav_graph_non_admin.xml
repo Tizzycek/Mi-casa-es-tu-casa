@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/profiloFragment"
-        android:name="it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.ProfiloFragment"
+        android:name="it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.profilo.ProfiloFragment"
         android:label="@string/profilo"
         tools:layout="@layout/fragment_profilo" />
 

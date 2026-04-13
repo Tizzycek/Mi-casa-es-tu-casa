@@ -67,6 +67,23 @@ class UserRepository {
         }
     }
 
+    suspend fun update(nome: String, cognome: String, nascita: LocalDate, nuovaPassword: String): Result<Boolean> {
+        return try {
+            if (nuovaPassword.isNotEmpty()) {
+                auth.currentUser?.updatePassword(nuovaPassword)?.await()
+            }
+
+            val nuovoUtente = Utente(utente?.id!!, utente!!.email, nome, cognome, nascita, utente!!.stato, utente!!.tipo, utente!!.statistiche, utente!!.fcmToken)
+            salvaUtenteSuFirestore(nuovoUtente)
+
+            utente = nuovoUtente
+
+            Result.success(true)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     // serializza su firebase
     private suspend fun salvaUtenteSuFirestore(utente: Utente?) {
         val uid = requireNotNull(utente?.id) {

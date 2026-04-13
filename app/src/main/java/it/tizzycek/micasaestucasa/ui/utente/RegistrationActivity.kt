@@ -12,6 +12,7 @@ import it.tizzycek.micasaestucasa.data.utente.TipoUtente
 import it.tizzycek.micasaestucasa.databinding.SignupBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo
 import it.tizzycek.micasaestucasa.ui.home.FragmentManager
+import it.tizzycek.micasaestucasa.utils.DateValidator
 import it.tizzycek.micasaestucasa.utils.mostraErrore
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -150,11 +151,10 @@ class RegistrationActivity: AppCompatActivity() {
     }
 
     private fun validData(email: String, nascita: LocalDate, tipoUtente: TipoUtente): Boolean {
-        val today = LocalDate.now()
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             mostraErrore(R.string.invalid_email)
             return false
-        } else if (today.year - nascita.year < 18) {
+        } else if (DateValidator.isValidBirthDate(nascita)) {
             mostraErrore(R.string.invalid_age)
             return false
         } else if (tipoUtente == TipoUtente.ADMIN) {
