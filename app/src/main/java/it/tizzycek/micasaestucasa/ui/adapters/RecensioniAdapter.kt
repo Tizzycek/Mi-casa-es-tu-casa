@@ -6,18 +6,25 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import it.tizzycek.micasaestucasa.data.recensioni.Recensione
 import it.tizzycek.micasaestucasa.databinding.ItemRecensioneBinding
+import it.tizzycek.micasaestucasa.utils.DateValidator
 
-class RecensioniAdapter(private val listaRecensioni: List<Recensione>): RecyclerView.Adapter<RecensioniAdapter.ViewHolder>() {
+class RecensioniAdapter(private var listaRecensioni: List<Recensione>?): RecyclerView.Adapter<RecensioniAdapter.ViewHolder>() {
+
+    fun updateData(nuovaLista: List<Recensione>) {
+        this.listaRecensioni = nuovaLista
+        notifyDataSetChanged()
+    }
+
     class ViewHolder(private val binding: ItemRecensioneBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(recensione: Recensione) {
             binding.recensioneRatingBar.rating = recensione.voto.toFloat()
-            binding.dataTextView.text = recensione.dataCreazione.toString()
+            binding.dataTextView.text = DateValidator.formatDate(recensione.dataCreazione)
             binding.testoRecensioneTextView.text = recensione.descrizione
         }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(listaRecensioni[position])
+        listaRecensioni?.let { holder.bind(it[position]) }
     }
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
@@ -26,6 +33,6 @@ class RecensioniAdapter(private val listaRecensioni: List<Recensione>): Recycler
     }
 
     override fun getItemCount(): Int {
-        return listaRecensioni.size
+        return listaRecensioni?.size ?: 0
     }
 }

@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.findFragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
@@ -17,11 +18,13 @@ import it.tizzycek.micasaestucasa.data.prenotazioni.Prenotazioni
 import it.tizzycek.micasaestucasa.data.prenotazioni.StatoPrenotazione
 import it.tizzycek.micasaestucasa.data.proprieta.Disponibilita
 import it.tizzycek.micasaestucasa.data.proprieta.Proprieta
+import it.tizzycek.micasaestucasa.data.recensioni.Recensione
 import it.tizzycek.micasaestucasa.data.utente.TipoUtente
 import it.tizzycek.micasaestucasa.databinding.ItemPrenotazioneBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo
 import it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.DettaglioProprieta
 import it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.mappa.PrenotazioneSheet
+import it.tizzycek.micasaestucasa.ui.utente.NuovaRecensioneSheet
 import it.tizzycek.micasaestucasa.utils.DateValidator
 import it.tizzycek.micasaestucasa.utils.PrenotazioneLogic
 import it.tizzycek.micasaestucasa.utils.mostraErrore
@@ -110,14 +113,19 @@ class PrenotazioniAdapter(private val items: List<Prenotazioni>, private val lif
 
                 binding.btnRecensione.visibility = View.VISIBLE
 
-                /*if (MainRepo.getUserRepository().getCurrentUser()!!.id == MainRepo.) {
+                if ((tipoUtente == TipoUtente.PROPRIETARIO && prenotazione.daRecensire.daRecensireProprietario) || (tipoUtente == TipoUtente.AFFITTUARIO && prenotazione.daRecensire.daRecensireAffittuario)) {
+                    binding.btnRecensione.isEnabled = true
                     binding.btnRecensione.setOnClickListener {
-
+                        val sheet = NuovaRecensioneSheet { recensione ->
+                            newRecensione(recensione, prenotazione, tipoUtente)
+                        }
+                        sheet.show((binding.root.context as FragmentActivity).supportFragmentManager, "NuovaRecensioneSheet")
                     }
-                } else {*/
+                } else {
                     binding.btnRecensione.isEnabled = false
                     binding.btnRecensione.setBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.gray))
-                //}
+                }
+
             } else {
                 if (tipoUtente == TipoUtente.PROPRIETARIO) {
                     if (prenotazione.statoPrenotazione == StatoPrenotazione.IN_ATTESA) {
@@ -379,7 +387,7 @@ class PrenotazioniAdapter(private val items: List<Prenotazioni>, private val lif
             val nuovoPrezzo = datiNuovi["totale"] as Double
             val nuovaValuta = datiNuovi["valuta"] as Currency
 
-            val richiestaModifica = Prenotazioni(id = prenotazione.id, proprietarioId = prenotazione.proprietarioId, affittuarioId = prenotazione.affittuarioId, proprietaId = prenotazione.proprietaId, dataInizio = nuovaDataInizio, dataFine = nuovaDataFine, ospiti = nuoviOspiti, vecchiaDataInizio = prenotazione.dataInizio, vecchiaDataFine = prenotazione.dataFine, prezzoTotale = nuovoPrezzo, valuta = nuovaValuta, statoPrenotazione = StatoPrenotazione.IN_ATTESA, dataPrenotazione = prenotazione.dataPrenotazione)
+            val richiestaModifica = Prenotazioni(id = prenotazione.id, proprietarioId = prenotazione.proprietarioId, affittuarioId = prenotazione.affittuarioId, proprietaId = prenotazione.proprietaId, dataInizio = nuovaDataInizio, dataFine = nuovaDataFine, ospiti = nuoviOspiti, vecchiaDataInizio = prenotazione.dataInizio, vecchiaDataFine = prenotazione.dataFine, prezzoTotale = nuovoPrezzo, valuta = nuovaValuta, statoPrenotazione = StatoPrenotazione.IN_ATTESA, dataPrenotazione = prenotazione.dataPrenotazione, daRecensire = prenotazione.daRecensire)
 
             lifecycleOwner.lifecycleScope.launch {
                 val risultato = MainRepo.getPrenotazioniRepository().aggiornaPrenotazione(richiestaModifica)
@@ -402,7 +410,48 @@ class PrenotazioniAdapter(private val items: List<Prenotazioni>, private val lif
             }
         }
 
+        private fun newRecensione(recensione: Recensione, p: Prenotazioni, tipoUtente: TipoUtente) {
+            binding.btnRecensione.isEnabled = false
+            binding.btnRecensione.setBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.gray))
+            binding.progressBar.visibility = View.VISIBLE
 
+            lifecycleOwner.lifecycleScope.launch {
+                try {
+                    val idUtente = if (tipoUtente == TipoUtente.PROPRIETARIO) p.affittuarioId else p.proprietarioId
+
+                    // 1. Prendi statistiche
+                    val statistica = MainRepo.getStatisticheRepository().getStatistiche(idUtente).getOrThrow()
+
+                    // 2. Aggiorna statistiche
+                    statistica.aggiungiRecensione(recensione)
+                    MainRepo.getStatisticheRepository().aggiornaStatistiche(idUtente, statistica).getOrThrow()
+
+                    if (tipoUtente == TipoUtente.PROPRIETARIO)
+                        p.daRecensire = p.daRecensire.copy(daRecensireProprietario = false)
+                    else
+                        p.daRecensire = p.daRecensire.copy(daRecensireAffittuario = false)
+
+                    // 3. Segna prenotazione come fatta
+                    val fine = MainRepo.getPrenotazioniRepository().aggiornaPrenotazione(p)
+
+                    if (fine.isFailure) {
+                        statistica.rimuoviRecensione(recensione)
+                        MainRepo.getStatisticheRepository().aggiornaStatistiche(idUtente, statistica)
+                        throw fine.exceptionOrNull() ?: Exception("Errore prenotazione")
+                    }
+
+                    Toast.makeText(binding.root.context, "Recensione completata!", Toast.LENGTH_LONG).show()
+                    // finish() o dismiss()
+
+                } catch (e: Exception) {
+                    binding.root.mostraErrore(e.message ?: binding.root.context.getString(R.string.unknown_error))
+                    binding.btnRecensione.isEnabled = true
+                    binding.btnRecensione.setBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.primary))
+                } finally {
+                    binding.progressBar.visibility = View.GONE
+                }
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

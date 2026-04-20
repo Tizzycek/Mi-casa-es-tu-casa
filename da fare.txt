@@ -1,0 +1,6 @@
+differenziare click prenotazioni
+inserire profilo cliccabile proprietà
+
+recensioni cliccabili con nome utente e apertura
+
+tastiera con nuova recensione

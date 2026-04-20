@@ -84,7 +84,7 @@
                         android:layout_height="wrap_content"
                         android:isIndicator="true"
                         android:numStars="5"
-                        android:progressTint="@color/primary"
+                        android:progressTint="@color/secondary"
                         android:stepSize="0.5"
                         tools:rating="4.5"/>
 

@@ -9,6 +9,7 @@ import it.tizzycek.micasaestucasa.data.utente.TipoUtente
 import it.tizzycek.micasaestucasa.data.utente.Utente
 import it.tizzycek.micasaestucasa.data.utente.Utente.Companion.toHashMap
 import it.tizzycek.micasaestucasa.data.utente.Utente.Companion.toUtente
+import it.tizzycek.micasaestucasa.repo.MainRepo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -61,6 +62,8 @@ class UserRepository {
             auth.createUserWithEmailAndPassword(email, password).await()
             utente?.id = auth.currentUser?.uid
             salvaUtenteSuFirestore(utente)
+
+            MainRepo.getStatisticheRepository().inizializzaStatistiche(utente?.id!!)
             Result.success(true)
         } catch (e: Exception) {
             Result.failure(e)
@@ -73,7 +76,7 @@ class UserRepository {
                 auth.currentUser?.updatePassword(nuovaPassword)?.await()
             }
 
-            val nuovoUtente = Utente(utente?.id!!, utente!!.email, nome, cognome, nascita, utente!!.stato, utente!!.tipo, utente!!.statistiche, utente!!.fcmToken)
+            val nuovoUtente = Utente(utente?.id!!, utente!!.email, nome, cognome, nascita, utente!!.stato, utente!!.tipo, utente!!.fcmToken)
             salvaUtenteSuFirestore(nuovoUtente)
 
             utente = nuovoUtente

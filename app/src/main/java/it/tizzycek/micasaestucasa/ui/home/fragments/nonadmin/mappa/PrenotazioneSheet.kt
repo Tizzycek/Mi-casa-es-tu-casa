@@ -67,7 +67,7 @@ class PrenotazioneSheet(val listaDisponibilita: List<Disponibilita>, val ospiti:
             val valuta = currency
 
             if (inizio == null || fine == null || tot == null || valuta == null) {
-                requireActivity().mostraErrore(getString(R.string.campo_obbligatorio))
+                binding.root.mostraErrore(getString(R.string.campo_obbligatorio))
                 return@setOnClickListener
             }
 
@@ -119,7 +119,7 @@ class PrenotazioneSheet(val listaDisponibilita: List<Disponibilita>, val ospiti:
             // Guard: the picker validates individual dates but not the whole range,
             // so a selection spanning a gap between two windows must be rejected here
             if (trovaPeriodoCorrispondente(inizio, fine) == null) {
-                requireActivity().mostraErrore(R.string.range_non_valido)
+                binding.root.mostraErrore(getString(R.string.range_non_valido))
                 return@addOnPositiveButtonClickListener
             }
 

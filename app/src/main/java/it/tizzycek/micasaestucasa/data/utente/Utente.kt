@@ -7,7 +7,7 @@ import it.tizzycek.micasaestucasa.data.recensioni.Statistiche.Companion.toHashMa
 import it.tizzycek.micasaestucasa.data.recensioni.Statistiche.Companion.toStatistiche
 import java.time.LocalDate
 
-data class Utente (var id: String?, val email: String, val nome: String, val cognome: String, val nascita: LocalDate, var stato: Stato = Stato.OK, val tipo: TipoUtente, var statistiche: Statistiche = Statistiche(), var fcmToken: String? = null) {
+data class Utente (var id: String?, val email: String, val nome: String, val cognome: String, val nascita: LocalDate, var stato: Stato = Stato.OK, val tipo: TipoUtente, var fcmToken: String? = null) {
     init {
         require(Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             "Not a valid Email"
@@ -32,7 +32,6 @@ data class Utente (var id: String?, val email: String, val nome: String, val cog
                 "nascita" to nascita.toString(),
                 "tipo" to tipo,
                 "stato" to stato.code,
-                "statistiche" to statistiche.toHashMap(),
                 "fcmToken" to fcmToken
             )
         }
@@ -47,7 +46,6 @@ data class Utente (var id: String?, val email: String, val nome: String, val cog
                 nascita = LocalDate.parse(data["nascita"] as String),
                 tipo = TipoUtente.valueOf(data["tipo"] as? String ?: "AFFITTUARIO"),
                 stato = Stato.valueOf(data["stato"] as? String ?: "OK"),
-                statistiche = (data["statistiche"] as? Map<String, Any?>)?.toStatistiche() ?: Statistiche(0.0, 0),
                 fcmToken = data["fcmToken"] as? String
             )
         }

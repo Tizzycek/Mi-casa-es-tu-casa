@@ -4,23 +4,21 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.result.registerForActivityResult
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import it.tizzycek.micasaestucasa.R
-import it.tizzycek.micasaestucasa.data.recensioni.Recensione
+import it.tizzycek.micasaestucasa.data.recensioni.Statistiche
 import it.tizzycek.micasaestucasa.data.utente.Utente
 import it.tizzycek.micasaestucasa.databinding.ActivityRecensioniBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo
-import it.tizzycek.micasaestucasa.ui.adapters.PrenotazioniAdapter
 import it.tizzycek.micasaestucasa.ui.adapters.RecensioniAdapter
+import it.tizzycek.micasaestucasa.utils.mostraErrore
 import kotlinx.coroutines.launch
 
 class RecensioniActivity: AppCompatActivity() {
     private lateinit var binding: ActivityRecensioniBinding
     private lateinit var adapter: RecensioniAdapter
-    private lateinit var listaRecensioni: List<Recensione>
+    private var statistiche: Statistiche? = null
 
     private lateinit var utente: Utente
 
@@ -28,78 +26,105 @@ class RecensioniActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRecensioniBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        setUserInfo()
-        setupSpinner()
-        setupRecyclerView()
     }
 
-
-    private fun setupRecyclerView() {
-        adapter = RecensioniAdapter(listaRecensioni)
-        binding.recensioniRecyclerView.adapter = adapter
-    }
 
     override fun onResume() {
         super.onResume()
-        setUserInfo()
+        loadData()
+        setupRecyclerView()
+        setupSpinner()
     }
 
-    private fun setUserInfo() {
-        loadUser()
-
-        binding.avatarInitialsTextView.text = utente.nome[0].toString() + utente.cognome[0].toString()
-        binding.nomeCognomeTextView.text = utente.nome + " " + utente.cognome
-        binding.mediaRatingBar.rating = utente.statistiche.mediaRecensioni.toFloat()
-        binding.mediaValoreTextView.text = utente.statistiche.mediaRecensioni.toString() + "/5"
-        binding.numeroRecensioniTextView.text = getString(R.string.numero_recensioni, utente.statistiche.totaleRecensioni)
+    private fun setupRecyclerView() {
+        adapter = RecensioniAdapter(statistiche?.listaRecensioni)
+        binding.recensioniRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
+        binding.recensioniRecyclerView.adapter = adapter
     }
 
-    private fun loadUser() {
-        val idUtente = intent.getStringExtra("idUtente")
-        if (idUtente != null) {
-            binding.progressBar.visibility = View.VISIBLE
+    private fun loadData() {
+        binding.progressBar.visibility = View.VISIBLE
 
-            lifecycleScope.launch {
-                utente = MainRepo.getUserRepository().beccaDatiUtente(idUtente)!!
+        lifecycleScope.launch {
 
-                binding.progressBar.visibility = View.GONE
+            try {
+                val idUtente = intent.getStringExtra("idUtente")
+                utente = if (idUtente != null) {
+                    binding.btnSegnala.visibility = View.VISIBLE
+                    MainRepo.getUserRepository().beccaDatiUtente(idUtente)!!
+                } else {
+                    MainRepo.getUserRepository().getCurrentUser()!!
+                }
+
+                binding.avatarInitialsTextView.text = utente.nome[0].toString() + utente.cognome[0].toString()
+                binding.nomeCognomeTextView.text = utente.nome + " " + utente.cognome
+
+                val resultList = MainRepo.getStatisticheRepository().getStatistiche(utente.id!!)
+                resultList.fold(
+                    onSuccess = { stat ->
+                        statistiche = stat
+                        updateStatisticheUI()
+                    }, onFailure = { e ->
+                        mostraErrore(e.message ?: getString(R.string.unknown_error))
+                    }
+                )
+            } catch (e: Exception) {
+                mostraErrore(e.message ?: getString(R.string.unknown_error))
             }
-        } else {
-            utente = MainRepo.getUserRepository().getCurrentUser()!!
-        }
 
-        listaRecensioni = utente.statistiche.listaRecensioni
+            binding.progressBar.visibility = View.GONE
+        }
     }
+
+    private fun updateStatisticheUI() {
+        statistiche?.let { s ->
+            binding.mediaRatingBar.rating = s.mediaRecensioni.toFloat()
+            binding.mediaValoreTextView.text = String.format("%.1f/5", statistiche?.mediaRecensioni)
+            binding.numeroRecensioniTextView.text = getString(R.string.numero_recensioni, s.totaleRecensioni)
+
+            statistiche?.let {
+                if (it.mediaRecensioni >= 4.5 && it.totaleRecensioni >= 10)
+                    binding.badgeImageView.visibility = View.VISIBLE
+            }
+
+            // Notifica l'adapter con la nuova lista
+            adapter.updateData(s.listaRecensioni)
+        }
+    }
+
 
     private fun setupSpinner() {
         val ordinamenti = resources.getStringArray(R.array.ordinamenti_recensioni)
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, ordinamenti)
+        val arrAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, ordinamenti)
 
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinnerOrdinamento.adapter = adapter
+        arrAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerOrdinamento.adapter = arrAdapter
 
         binding.spinnerOrdinamento.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val stats = statistiche ?: return
                 when (position) {
                     0 -> {
-                        listaRecensioni = listaRecensioni.sortedByDescending { it.dataCreazione }
+                        stats.listaRecensioni = statistiche?.listaRecensioni!!.sortedByDescending { r -> r.dataCreazione }
                         adapter.notifyDataSetChanged()
                         binding.recensioniRecyclerView.scrollToPosition(0)
                     }
                     1 -> {
-                        listaRecensioni = listaRecensioni.sortedByDescending { it.voto }
+                        stats.listaRecensioni = statistiche?.listaRecensioni!!.sortedByDescending { r -> r.voto }
                         adapter.notifyDataSetChanged()
                     }
                     2 -> {
-                        listaRecensioni = listaRecensioni.sortedBy { it.voto }
+                        stats.listaRecensioni = statistiche?.listaRecensioni!!.sortedBy { r -> r.voto }
                         adapter.notifyDataSetChanged()
                     }
                 }
+                this@RecensioniActivity.adapter.updateData(stats.listaRecensioni)
+                binding.recensioniRecyclerView.scrollToPosition(0)
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                listaRecensioni = listaRecensioni.sortedByDescending { it.dataCreazione }
-                adapter.notifyDataSetChanged()
+                val stats = statistiche ?: return
+                stats.listaRecensioni = stats.listaRecensioni.sortedByDescending { it.dataCreazione }
+                this@RecensioniActivity.adapter.updateData(stats.listaRecensioni)
             }
         }
     }

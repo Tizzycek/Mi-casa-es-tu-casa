@@ -124,6 +124,12 @@
     <string name="recensioni">Reviews</string>
 
     <string name="ordina_per">Sort by</string>
+    <string name="scrivi_una_recensione">Write a review</string>
+    <string name="come_valuti_esperienza">How do you feel about your sojourning?</string>
+    <string name="il_tuo_voto">Your mark</string>
+    <string name="scrivi_la_tua_recensione">Write your review</string>
+    <string name="racconta_esperienza">Tell about your experience</string>
+    <string name="pubblica">Publish</string>
     <string-array name="ordinamenti_recensioni">
         <item>Most recent</item>
         <item>Best</item>

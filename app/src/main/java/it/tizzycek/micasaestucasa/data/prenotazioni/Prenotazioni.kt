@@ -1,11 +1,13 @@
 package it.tizzycek.micasaestucasa.data.prenotazioni
 
 import com.google.firebase.firestore.DocumentSnapshot
+import it.tizzycek.micasaestucasa.data.prenotazioni.StatoRecensioni.Companion.toHashMap
+import it.tizzycek.micasaestucasa.data.prenotazioni.StatoRecensioni.Companion.toStatoRecensioni
 import java.time.Instant
 import java.time.LocalDate
 import java.util.Currency
 
-data class Prenotazioni(val id: String, val proprietarioId: String, val affittuarioId: String, val proprietaId: String, val dataInizio: LocalDate, val dataFine: LocalDate, val ospiti: Int, var vecchiaDataInizio: LocalDate? = null, var vecchiaDataFine: LocalDate? = null, val prezzoTotale: Double, val valuta: Currency, var statoPrenotazione: StatoPrenotazione = StatoPrenotazione.IN_ATTESA, var dataPrenotazione: Instant) {
+data class Prenotazioni(val id: String, val proprietarioId: String, val affittuarioId: String, val proprietaId: String, val dataInizio: LocalDate, val dataFine: LocalDate, val ospiti: Int, var vecchiaDataInizio: LocalDate? = null, var vecchiaDataFine: LocalDate? = null, val prezzoTotale: Double, val valuta: Currency, var statoPrenotazione: StatoPrenotazione = StatoPrenotazione.IN_ATTESA, var dataPrenotazione: Instant, var daRecensire: StatoRecensioni = StatoRecensioni()) {
     companion object {
         fun Prenotazioni.toHashMap(): Map<String, Any> {
             return hashMapOf(
@@ -21,7 +23,8 @@ data class Prenotazioni(val id: String, val proprietarioId: String, val affittua
                 "prezzoTotale" to prezzoTotale,
                 "valuta" to valuta.currencyCode,
                 "statoPrenotazione" to statoPrenotazione.toString(),
-                "dataPrenotazione" to dataPrenotazione.toString()
+                "dataPrenotazione" to dataPrenotazione.toString(),
+                "daRecensire" to daRecensire.toHashMap()
             )
         }
 
@@ -40,7 +43,8 @@ data class Prenotazioni(val id: String, val proprietarioId: String, val affittua
                 prezzoTotale = data["prezzoTotale"] as Double,
                 valuta = Currency.getInstance(data["valuta"] as String),
                 statoPrenotazione = StatoPrenotazione.valueOf(data["statoPrenotazione"] as String),
-                dataPrenotazione = Instant.parse(data["dataPrenotazione"] as String)
+                dataPrenotazione = Instant.parse(data["dataPrenotazione"] as String),
+                daRecensire = (data["daRecensire"] as Map<String, Any?>).toStatoRecensioni()
             )
         }
     }

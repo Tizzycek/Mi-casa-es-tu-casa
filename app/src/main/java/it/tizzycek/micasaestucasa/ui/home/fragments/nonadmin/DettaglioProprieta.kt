@@ -41,6 +41,10 @@ class DettaglioProprieta: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDettaglioProprietaBinding.inflate(layoutInflater)
         setContentView(binding.root)
+    }
+
+    override fun onResume() {
+        super.onResume()
 
         idProprieta = intent.getStringExtra("PROPRIETA_ID")
 
@@ -50,15 +54,6 @@ class DettaglioProprieta: AppCompatActivity() {
             finish()
         }
         setupButtons()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (idProprieta != null) {
-            caricaDatiPropieta(idProprieta!!)
-        } else {
-            finish()
-        }
     }
 
     private fun caricaDatiPropieta(id: String) {
@@ -186,10 +181,12 @@ class DettaglioProprieta: AppCompatActivity() {
     private fun gestionePrenotazione(pl: Map<String, Any>) {
         val prenotazione = Prenotazioni(UUID.randomUUID().toString(), proprietarioId, MainRepo.getUserRepository().getCurrentUser()!!.id!!, idProprieta!!, pl["dataInizio"] as LocalDate, pl["dataFine"] as LocalDate, pl["ospiti"] as Int, null, null, pl["totale"] as Double, pl["valuta"] as Currency, dataPrenotazione = Instant.now())
 
+        binding.progressBar.visibility = View.VISIBLE
+        binding.btnDestro.isEnabled = false
+        binding.btnSinistro.isEnabled = false
+
         lifecycleScope.launch {
-            binding.progressBar.visibility = View.VISIBLE
             val risultato = MainRepo.getPrenotazioniRepository().aggiungiPrenotazione(prenotazione)
-            binding.progressBar.visibility = View.GONE
             risultato.fold(
                 onSuccess = {
                     Toast.makeText(this@DettaglioProprieta, getString(R.string.prenotazione_effettuata), Toast.LENGTH_LONG).show()
@@ -198,6 +195,9 @@ class DettaglioProprieta: AppCompatActivity() {
                     mostraErrore(e.message ?: getString(R.string.unknown_error))
                 }
             )
+            binding.progressBar.visibility = View.GONE
+            binding.btnDestro.isEnabled = true
+            binding.btnSinistro.isEnabled = true
         }
     }
 

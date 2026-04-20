@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.location.Address
 import android.location.Geocoder
+import android.view.View
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import it.tizzycek.micasaestucasa.R
@@ -20,6 +21,13 @@ fun Activity.mostraErrore(messaggio: String) {
 
 fun Activity.mostraErrore(resId: Int) {
     mostraErrore(getString(resId))
+}
+
+fun View.mostraErrore(messaggio: String) {
+    Snackbar.make(this, messaggio, Snackbar.LENGTH_LONG)
+        .setBackgroundTint(ContextCompat.getColor(context, R.color.red))
+        .setTextColor(ContextCompat.getColor(context, R.color.white))
+        .show()
 }
 
 suspend fun Context.findPlace(address: String): Address? = suspendCancellableCoroutine { continuation ->

@@ -6,6 +6,7 @@ import it.tizzycek.micasaestucasa.data.proprieta.Proprieta
 import it.tizzycek.micasaestucasa.repo.parolechiave.ParoleChiaveRepository
 import it.tizzycek.micasaestucasa.repo.prenotazioni.PrenotazioniRepository
 import it.tizzycek.micasaestucasa.repo.proprieta.ProprietaRepository
+import it.tizzycek.micasaestucasa.repo.utente.StatisticheRepository
 import it.tizzycek.micasaestucasa.repo.utente.UserRepository
 
 object MainRepo {
@@ -16,6 +17,9 @@ object MainRepo {
     private val paroleChiaveRepository = ParoleChiaveRepository()
 
     private val prenotazioniRepository = PrenotazioniRepository()
+
+    private val statisticheRepository = StatisticheRepository()
+
 
     fun getUserRepository(): UserRepository {
         return userRepository
@@ -31,5 +35,9 @@ object MainRepo {
 
     fun getPrenotazioniRepository(): PrenotazioniRepository {
         return prenotazioniRepository
+    }
+
+    fun getStatisticheRepository(): StatisticheRepository {
+        return statisticheRepository
     }
 }

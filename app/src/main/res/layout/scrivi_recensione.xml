@@ -1,93 +1,222 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="24dp">
+    android:padding="24dp"
+    android:background="?android:attr/colorBackground">
 
+    <!-- Drag handle -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:background="?android:attr/textColorHint"
+        android:alpha="0.4"/>
+
+    <!-- Titolo -->
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Scrivi una recensione"
+        android:text="@string/scrivi_una_recensione"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:layout_marginBottom="16dp" />
+        android:textColor="?android:attr/textColorPrimary"
+        android:layout_marginBottom="16dp"/>
 
+    <!-- Info professionista/utente da recensire -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="20dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/avatarInitialsTextView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/avatar_circle_background"
+            android:gravity="center"
+            android:textColor="?android:attr/colorBackground"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="MR"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/nomeDestinatarioTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="Mario Rossi"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/come_valuti_esperienza"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="14sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Rating Bar -->
     <TextView
-        android:id="@+id/tvReviewPropertyName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/il_tuo_voto"
+        android:textSize="14sp"
+        android:textColor="?android:attr/textColorSecondary"
+        android:layout_marginBottom="8dp"/>
+
+    <RatingBar
+        android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Per: Villa Rosa"
-        android:textSize="14sp"
-        android:textColor="@color/primary"
-        android:layout_marginBottom="16dp" />
+        android:numStars="5"
+        android:stepSize="1.0"
+        android:progressTint="@color/secondary"
+        android:layout_marginBottom="20dp"
+        android:rating="0"/>
 
+    <!-- Testo recensione -->
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Il tuo voto"
+        android:text="@string/scrivi_la_tua_recensione"
         android:textSize="14sp"
-        android:layout_marginBottom="8dp" />
-
-<!--    <RatingBar-->
-<!--        android:id="@+id/rbReviewInput"-->
-<!--        style="@style/Widget.App.RatingBar"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:numStars="5"-->
-<!--        android:rating="0"-->
-<!--        android:layout_marginBottom="16dp" />-->
+        android:textColor="?android:attr/textColorSecondary"
+        android:layout_marginBottom="8dp"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="La tua recensione"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:hint="@string/racconta_esperienza"
         app:counterEnabled="true"
-        app:counterMaxLength="500">
+        app:counterMaxLength="500"
+        app:boxBackgroundMode="outline"
+        app:boxBackgroundColor="?android:attr/colorBackground"
+        app:hintTextColor="@color/primary"
+        android:layout_marginBottom="8dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etReviewContent"
+            android:id="@+id/testoRecensioneEditText"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:gravity="top"
-            android:inputType="textMultiLine" />
-
+            android:layout_height="wrap_content"
+            android:minHeight="120dp"
+            android:maxLength="500"
+            android:gravity="top|start"
+            android:inputType="textMultiLine"
+            android:padding="12dp"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="La tua recensione sarà pubblica e visibile a tutti gli utenti."
-        android:textSize="12sp"
-        android:textColor="@android:color/darker_gray" />
+    <!-- Suggerimenti rapidi (opzionale) -->
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/suggerimenti_rapidi"-->
+<!--        android:textSize="12sp"-->
+<!--        android:textColor="?android:attr/textColorHint"-->
+<!--        android:layout_marginBottom="8dp"/>-->
 
+<!--    <com.google.android.flexbox.FlexboxLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginBottom="20dp"-->
+<!--        app:flexWrap="wrap">-->
+
+<!--        <com.google.android.material.chip.Chip-->
+<!--            android:id="@+id/chipPuntuale"-->
+<!--            style="@style/Widget.Material3.Chip.Suggestion"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="👍 Puntuale"-->
+<!--            android:checkable="true"-->
+<!--            android:layout_marginEnd="8dp"-->
+<!--            android:layout_marginBottom="8dp"/>-->
+
+<!--        <com.google.android.material.chip.Chip-->
+<!--            android:id="@+id/chipProfessionale"-->
+<!--            style="@style/Widget.Material3.Chip.Suggestion"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="⭐ Professionale"-->
+<!--            android:checkable="true"-->
+<!--            android:layout_marginEnd="8dp"-->
+<!--            android:layout_marginBottom="8dp"/>-->
+
+<!--        <com.google.android.material.chip.Chip-->
+<!--            android:id="@+id/chipCortese"-->
+<!--            style="@style/Widget.Material3.Chip.Suggestion"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="😊 Cortese"-->
+<!--            android:checkable="true"-->
+<!--            android:layout_marginEnd="8dp"-->
+<!--            android:layout_marginBottom="8dp"/>-->
+
+<!--        <com.google.android.material.chip.Chip-->
+<!--            android:id="@+id/chipQualita"-->
+<!--            style="@style/Widget.Material3.Chip.Suggestion"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="🏆 Qualità eccellente"-->
+<!--            android:checkable="true"-->
+<!--            android:layout_marginEnd="8dp"-->
+<!--            android:layout_marginBottom="8dp"/>-->
+<!--    </com.google.android.flexbox.FlexboxLayout>-->
+
+
+
+    <!-- Bottoni azione -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnCancelReview"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        <Button
+            android:id="@+id/btnAnnulla"
+            style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="52dp"
             android:layout_weight="1"
             android:layout_marginEnd="8dp"
-            android:text="Annulla" />
+            android:text="@string/annulla"
+            android:textAllCaps="false"/>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSubmitReview"
+        <Button
+            android:id="@+id/btnPubblica"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="52dp"
             android:layout_weight="1"
-            android:text="Pubblica"
-            app:backgroundTint="@color/primary" />
-
+            android:layout_marginStart="8dp"
+            android:text="@string/pubblica"
+            android:textAllCaps="false"
+            android:backgroundTint="@color/primary"
+            android:textColor="?android:attr/colorBackground"/>
     </LinearLayout>
+
+    <!-- Progress indicator -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
+        android:indeterminateTint="@color/primary"/>
 
 </LinearLayout>

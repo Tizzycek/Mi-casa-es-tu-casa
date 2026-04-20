@@ -102,6 +102,13 @@
                 android:layout_marginBottom="32dp"
                 tools:text="15 recensioni"/>
 
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
             <!-- Divider -->
             <View
                 android:layout_width="match_parent"
