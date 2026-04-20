@@ -46,7 +46,7 @@ class NuovaRecensioneSheet(val onRecensione: (Recensione) -> Unit): BottomSheetD
         if (testo.isEmpty() || voto == 0f) {
             binding.root.mostraErrore(getString(R.string.data_missing))
         } else {
-            val recensione = Recensione(UUID.randomUUID().toString(), utente.id!!, voto.toInt(), testo)
+            val recensione = Recensione(UUID.randomUUID().toString(), utente.id!!, utente.nome + " " + utente.cognome, voto.toInt(), testo)
             onRecensione(recensione)
             dismiss()
         }

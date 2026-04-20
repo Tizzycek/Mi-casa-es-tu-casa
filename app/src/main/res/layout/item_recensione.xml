@@ -24,16 +24,16 @@
             android:orientation="horizontal"
             android:layout_marginBottom="8dp">
 
-            <RatingBar
-                android:id="@+id/recensioneRatingBar"
-                style="?android:attr/ratingBarStyleSmall"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:isIndicator="true"
-                android:numStars="5"
-                android:progressTint="@color/secondary"
-                android:stepSize="0.5"
-                tools:rating="4"/>
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="?android:attr/textColorPrimary"
+                tools:text="nome utente"
+                android:id="@+id/nomeUtenteTextView"
+                />
+
 
             <Space
                 android:layout_width="0dp"
@@ -49,6 +49,26 @@
                 tools:text="12 Apr 2026"/>
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
+
+            <RatingBar
+                android:id="@+id/recensioneRatingBar"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:progressTint="@color/secondary"
+                android:stepSize="0.5"
+                tools:rating="4"/>
+
+
+        </LinearLayout>
+
         <!-- Testo recensione -->
         <TextView
             android:id="@+id/testoRecensioneTextView"
@@ -58,8 +78,7 @@
             android:textSize="14sp"
             android:maxLines="4"
             android:ellipsize="end"
-            tools:text="Ottimo servizio! Il professionista è stato puntuale e molto competente. Lo consiglio vivamente a tutti."/>
-
+            tools:text="testo di prova"/>
         <!-- Bottone "Leggi di più" (visibile solo se testo lungo) -->
         <TextView
             android:id="@+id/leggiDiPiuTextView"

@@ -25,6 +25,7 @@ import it.tizzycek.micasaestucasa.repo.MainRepo
 import it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.DettaglioProprieta
 import it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.mappa.PrenotazioneSheet
 import it.tizzycek.micasaestucasa.ui.utente.NuovaRecensioneSheet
+import it.tizzycek.micasaestucasa.ui.utente.RecensioniActivity
 import it.tizzycek.micasaestucasa.utils.DateValidator
 import it.tizzycek.micasaestucasa.utils.PrenotazioneLogic
 import it.tizzycek.micasaestucasa.utils.mostraErrore
@@ -97,10 +98,18 @@ class PrenotazioniAdapter(private val items: List<Prenotazioni>, private val lif
             binding.tvDateRangeItem.text = "${prenotazione.dataInizio} - ${prenotazione.dataFine}"
             binding.tvPrezzoTotale.text = "${prenotazione.valuta.symbol} ${"%.2f".format(prenotazione.prezzoTotale)}"
 
-            binding.root.setOnClickListener {
-                val intent = Intent(binding.root.context, DettaglioProprieta::class.java)
-                intent.putExtra("PROPRIETA_ID", prenotazione.proprietaId)
-                startActivity(binding.root.context, intent, null)
+            if (tipoUtente == TipoUtente.PROPRIETARIO) {
+                binding.root.setOnClickListener {
+                    val intent = Intent(binding.root.context, RecensioniActivity::class.java)
+                    intent.putExtra("idUtente", prenotazione.affittuarioId)
+                    startActivity(binding.root.context, intent, null)
+                }
+            } else {
+                binding.root.setOnClickListener {
+                    val intent = Intent(binding.root.context, DettaglioProprieta::class.java)
+                    intent.putExtra("PROPRIETA_ID", prenotazione.proprietaId)
+                    startActivity(binding.root.context, intent, null)
+                }
             }
 
             configureButtons(tipoUtente, lifecycleOwner, prenotazione)
@@ -437,11 +446,10 @@ class PrenotazioniAdapter(private val items: List<Prenotazioni>, private val lif
                     if (fine.isFailure) {
                         statistica.rimuoviRecensione(recensione)
                         MainRepo.getStatisticheRepository().aggiornaStatistiche(idUtente, statistica)
-                        throw fine.exceptionOrNull() ?: Exception("Errore prenotazione")
+                        throw fine.exceptionOrNull() ?: Exception("Review error")
                     }
 
-                    Toast.makeText(binding.root.context, "Recensione completata!", Toast.LENGTH_LONG).show()
-                    // finish() o dismiss()
+                    Toast.makeText(binding.root.context, binding.root.context.getString(R.string.recensita), Toast.LENGTH_LONG).show()
 
                 } catch (e: Exception) {
                     binding.root.mostraErrore(e.message ?: binding.root.context.getString(R.string.unknown_error))

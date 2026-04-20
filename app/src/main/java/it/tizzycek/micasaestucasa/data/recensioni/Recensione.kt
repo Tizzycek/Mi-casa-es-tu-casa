@@ -2,7 +2,7 @@ package it.tizzycek.micasaestucasa.data.recensioni
 
 import java.time.Instant
 
-data class Recensione(val id: String, val autoreId: String, val voto: Int, val descrizione: String, val dataCreazione: Instant = Instant.now()) {
+data class Recensione(val id: String, val autoreId: String, val nomeAutore: String, val voto: Int, val descrizione: String, val dataCreazione: Instant = Instant.now()) {
     init {
         require (voto in 1..5) {
             "Mark must be between 1 and 5"
@@ -14,6 +14,7 @@ data class Recensione(val id: String, val autoreId: String, val voto: Int, val d
             return hashMapOf(
                 "id" to id,
                 "autoreId" to autoreId,
+                "nomeAutore" to nomeAutore,
                 "voto" to voto,
                 "descrizione" to descrizione,
                 "dataCreazione" to com.google.firebase.Timestamp(java.util.Date.from(dataCreazione))// conversione Instant in Timestamp di Firebase
@@ -34,6 +35,7 @@ data class Recensione(val id: String, val autoreId: String, val voto: Int, val d
             return Recensione(
                 id = this["id"] as String,
                 autoreId = this["autoreId"] as String,
+                nomeAutore = this["nomeAutore"] as String,
                 voto = (this["voto"] as Number).toInt(),
                 descrizione = this["descrizione"] as String,
                 dataCreazione = dataCreazione

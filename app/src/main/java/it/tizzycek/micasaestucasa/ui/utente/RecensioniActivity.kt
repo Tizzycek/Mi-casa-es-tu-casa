@@ -1,5 +1,6 @@
 package it.tizzycek.micasaestucasa.ui.utente
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -37,7 +38,15 @@ class RecensioniActivity: AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        adapter = RecensioniAdapter(statistiche?.listaRecensioni)
+        adapter = RecensioniAdapter(statistiche?.listaRecensioni) { idAutoreCliccato ->
+            // 1. Usa l'Activity corretta (es. ProfiloActivity, non RecensioniActivity stessa)
+            val intent = Intent(this, RecensioniActivity::class.java)
+
+            // 2. Passa SOLO l'ID di chi ha scritto la recensione cliccata
+            intent.putExtra("idUtente", idAutoreCliccato)
+
+            startActivity(intent)
+        }
         binding.recensioniRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
         binding.recensioniRecyclerView.adapter = adapter
     }

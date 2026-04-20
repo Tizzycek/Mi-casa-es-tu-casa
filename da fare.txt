@@ -1,6 +1,7 @@
-differenziare click prenotazioni
-inserire profilo cliccabile proprietà
+differenziare click prenotazioni -> OK
+inserire profilo cliccabile proprietà -> OK
 
-recensioni cliccabili con nome utente e apertura
+recensioni cliccabili con nome utente e apertura -> OK
 
-tastiera con nuova recensione
+tastiera con nuova recensione (claude possibilmente)
+segnalazioni con bottom sheet e stesso problema

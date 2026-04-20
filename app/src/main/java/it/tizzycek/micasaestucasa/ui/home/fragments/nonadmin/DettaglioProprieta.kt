@@ -21,6 +21,7 @@ import it.tizzycek.micasaestucasa.ui.adapters.DisponibilitaAdapter
 import it.tizzycek.micasaestucasa.ui.adapters.ImageDetailAdapter
 import it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.mappa.AggiungiModificaProprieta
 import it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.mappa.PrenotazioneSheet
+import it.tizzycek.micasaestucasa.ui.utente.RecensioniActivity
 import it.tizzycek.micasaestucasa.utils.DateValidator
 import it.tizzycek.micasaestucasa.utils.mostraErrore
 import it.tizzycek.micasaestucasa.utils.paroleChiaveProprieta
@@ -82,12 +83,19 @@ class DettaglioProprieta: AppCompatActivity() {
         proprietarioId = p.proprietarioId
         numeroOspiti = p.posti
 
-        // TODO: rendere il profilo cliccabile
         if (MainRepo.getUserRepository().getCurrentUser()!!.tipo != TipoUtente.PROPRIETARIO) {
             val locatore = MainRepo.getUserRepository().beccaDatiUtente(p.proprietarioId)
-            binding.tvLocatore.text = locatore!!.nome + " " + locatore!!.cognome
+            binding.tvLocatore.text = locatore?.nome + " " + locatore?.cognome
+            binding.tvAvatarLocatoreCompact.text = locatore?.nome[0].toString() + locatore?.cognome[0].toString()
+
+            binding.containerLocatore.setOnClickListener {
+                val intent = Intent(this, RecensioniActivity::class.java)
+                intent.putExtra("idUtente", p.proprietarioId)
+                startActivity(intent)
+            }
+
         } else {
-            binding.tvLocatore.text = getString(R.string.tu)
+            binding.containerLocatore.visibility = View.GONE
         }
 
 

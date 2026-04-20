@@ -135,5 +135,6 @@
         <item>Best</item>
         <item>Worst</item>
     </string-array>
+    <string name="recensita">Property successfully reviewed</string>
 
 </resources>
