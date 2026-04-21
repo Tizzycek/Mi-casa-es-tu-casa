@@ -134,7 +134,7 @@
                 android:layout_gravity="center_vertical"
                 android:text="@string/segnala"
                 android:textAllCaps="false"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:textColor="@color/backgroundColor"
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="0dp"

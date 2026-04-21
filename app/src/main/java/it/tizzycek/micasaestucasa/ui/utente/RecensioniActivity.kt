@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import it.tizzycek.micasaestucasa.R
+import it.tizzycek.micasaestucasa.data.recensioni.Segnalazione
 import it.tizzycek.micasaestucasa.data.recensioni.Statistiche
 import it.tizzycek.micasaestucasa.data.utente.Utente
 import it.tizzycek.micasaestucasa.databinding.ActivityRecensioniBinding
@@ -39,10 +41,8 @@ class RecensioniActivity: AppCompatActivity() {
 
     private fun setupRecyclerView() {
         adapter = RecensioniAdapter(statistiche?.listaRecensioni) { idAutoreCliccato ->
-            // 1. Usa l'Activity corretta (es. ProfiloActivity, non RecensioniActivity stessa)
             val intent = Intent(this, RecensioniActivity::class.java)
 
-            // 2. Passa SOLO l'ID di chi ha scritto la recensione cliccata
             intent.putExtra("idUtente", idAutoreCliccato)
 
             startActivity(intent)
@@ -59,11 +59,24 @@ class RecensioniActivity: AppCompatActivity() {
             try {
                 val idUtente = intent.getStringExtra("idUtente")
                 utente = if (idUtente != null) {
-                    binding.btnSegnala.visibility = View.VISIBLE
                     MainRepo.getUserRepository().beccaDatiUtente(idUtente)!!
                 } else {
                     MainRepo.getUserRepository().getCurrentUser()!!
                 }
+
+                if (utente.id != MainRepo.getUserRepository().getCurrentUser()!!.id) {
+                    binding.btnSegnala.visibility = View.VISIBLE
+
+                    binding.btnSegnala.setOnClickListener {
+                        val sheet = SegnalazioneBottomSheet { segnalazione ->
+                            newSegnalazione(segnalazione)
+                        }
+                        sheet.show(supportFragmentManager, "SegnalazioneBottomSheet")
+                    }
+                } else {
+                    binding.btnSegnala.visibility = View.GONE
+                }
+
 
                 binding.avatarInitialsTextView.text = utente.nome[0].toString() + utente.cognome[0].toString()
                 binding.nomeCognomeTextView.text = utente.nome + " " + utente.cognome
@@ -135,6 +148,33 @@ class RecensioniActivity: AppCompatActivity() {
                 stats.listaRecensioni = stats.listaRecensioni.sortedByDescending { it.dataCreazione }
                 this@RecensioniActivity.adapter.updateData(stats.listaRecensioni)
             }
+        }
+    }
+
+    private fun newSegnalazione(segnalazione: Segnalazione) {
+        binding.progressBar.visibility = View.VISIBLE
+        lifecycleScope.launch {
+            val statistica = MainRepo.getStatisticheRepository().getStatistiche(utente.id!!)
+
+            statistica.fold(
+                onSuccess = { s ->
+                    s.aggiungiSegnalazione(segnalazione)
+                    val risultato = MainRepo.getStatisticheRepository().aggiornaStatistiche(utente.id!!, s)
+                    risultato.fold(
+                        onSuccess = {
+                            Toast.makeText(this@RecensioniActivity, getString(R.string.segnalazione_inviata), Toast.LENGTH_LONG).show()
+                        },
+                        onFailure = { e ->
+                            mostraErrore(e.message ?: getString(R.string.unknown_error))
+                            s.rimuoviSegnalazione(segnalazione)
+                        }
+                    )
+                },
+                onFailure = { e ->
+                    mostraErrore(e.message ?: getString(R.string.unknown_error))
+                }
+            )
+            binding.progressBar.visibility = View.GONE
         }
     }
 }

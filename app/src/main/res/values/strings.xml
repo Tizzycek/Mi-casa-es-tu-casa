@@ -136,5 +136,21 @@
         <item>Worst</item>
     </string-array>
     <string name="recensita">Property successfully reviewed</string>
+    <string name="seleziona_motivazione">Why are you reporting?</string>
+
+    <string name="contenuto_inappropriato">Inappropriate content</string>
+    <string name="contenuto_inappropriato_desc">The content was not appropriate</string>
+    <string name="informazioni_false">Fake information</string>
+    <string name="informazioni_false_desc">The information is false</string>
+    <string name="spam">Spam</string>
+    <string name="spam_desc">The message is spam</string>
+    <string name="comportamento_scorretto">Inappropriate behaviour</string>
+    <string name="comportamento_scorretto_desc">The behaviour is inappropriate</string>
+    <string name="altro">Other</string>
+    <string name="altro_desc">The reason is to be specified</string>
+    <string name="dettagli_aggiuntivi">More detalis</string>
+    <string name="descrivi_problema">Describe some other details</string>
+    <string name="segnalazione_inviata">User successfully reported</string>
+
 
 </resources>

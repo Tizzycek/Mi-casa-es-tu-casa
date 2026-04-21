@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true"
+    android:scrollbars="none">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:background="?android:attr/colorBackground">
+
+        <!-- Drag handle -->
+        <View
+            android:layout_width="40dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"
+            android:background="?android:attr/textColorHint"
+            android:alpha="0.4"/>
+
+        <!-- Titolo -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/segnala"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="?android:attr/textColorPrimary"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/seleziona_motivazione"
+            android:textSize="14sp"
+            android:textColor="?android:attr/textColorSecondary"
+            android:layout_marginBottom="20dp"/>
+
+        <!-- Opzioni segnalazione -->
+        <RadioGroup
+            android:id="@+id/radioGroupMotivazioni"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/light_gray"
+                android:checkable="true"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:id="@+id/cardContenutoInappropriato">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="12dp"
+                    android:gravity="center_vertical">
+
+                    <RadioButton
+                        android:id="@+id/radioContenutoInappropriato"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/contenuto_inappropriato"
+                            android:textSize="16sp"
+                            android:textColor="?android:attr/textColorPrimary"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/contenuto_inappropriato_desc"
+                            android:textSize="12sp"
+                            android:textColor="?android:attr/textColorSecondary"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/light_gray"
+                android:checkable="true"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:id="@+id/cardInfoFalse">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="12dp"
+                    android:gravity="center_vertical">
+
+                    <RadioButton
+                        android:id="@+id/radioInfoFalse"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/informazioni_false"
+                            android:textSize="16sp"
+                            android:textColor="?android:attr/textColorPrimary"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/informazioni_false_desc"
+                            android:textSize="12sp"
+                            android:textColor="?android:attr/textColorSecondary"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/light_gray"
+                android:checkable="true"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:id="@+id/cardComportamento">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="12dp"
+                    android:gravity="center_vertical">
+
+                    <RadioButton
+                        android:id="@+id/radioComportamentoScorretto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/comportamento_scorretto"
+                            android:textSize="16sp"
+                            android:textColor="?android:attr/textColorPrimary"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/comportamento_scorretto_desc"
+                            android:textSize="12sp"
+                            android:textColor="?android:attr/textColorSecondary"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/light_gray"
+                android:checkable="true"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:id="@+id/cardSpam">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="12dp"
+                    android:gravity="center_vertical">
+
+                    <RadioButton
+                        android:id="@+id/radioSpam"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/spam"
+                            android:textSize="16sp"
+                            android:textColor="?android:attr/textColorPrimary"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/spam_desc"
+                            android:textSize="12sp"
+                            android:textColor="?android:attr/textColorSecondary"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/light_gray"
+                android:checkable="true"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:id="@+id/cardAltro">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="12dp"
+                    android:gravity="center_vertical">
+
+                    <RadioButton
+                        android:id="@+id/radioAltro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/altro"
+                            android:textSize="16sp"
+                            android:textColor="?android:attr/textColorPrimary"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/altro_desc"
+                            android:textSize="12sp"
+                            android:textColor="?android:attr/textColorSecondary"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </RadioGroup>
+
+        <!-- Dettagli aggiuntivi -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dettagli_aggiuntivi"
+            android:textSize="14sp"
+            android:textColor="?android:attr/textColorSecondary"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/descrivi_problema"
+            app:counterEnabled="true"
+            app:counterMaxLength="300"
+            app:boxBackgroundMode="outline"
+            app:boxBackgroundColor="?android:attr/colorBackground"
+            app:hintTextColor="@color/primary"
+            android:layout_marginBottom="16dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/dettagliEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="100dp"
+                android:maxLength="300"
+                android:gravity="top|start"
+                android:inputType="textMultiLine"
+                android:padding="12dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Bottoni azione -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <Button
+                android:id="@+id/btnAnnulla"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:text="@string/annulla"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:id="@+id/btnInviaSegnalazione"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="@string/segnala"
+                android:textAllCaps="false"
+                android:backgroundTint="@android:color/holo_red_dark"
+                android:textColor="?android:attr/colorBackground"/>
+        </LinearLayout>
+
+        <!-- Progress indicator -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            android:indeterminateTint="@color/primary"/>
+
+    </LinearLayout>
+</ScrollView>

@@ -4,7 +4,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import it.tizzycek.micasaestucasa.data.recensioni.Recensione.Companion.toHashMap
 import it.tizzycek.micasaestucasa.data.recensioni.Recensione.Companion.toRecensioni
 
-data class Statistiche(val idUtente: String, var mediaRecensioni: Double = 0.0, var totaleRecensioni: Int = 0, var listaRecensioni: List<Recensione> = emptyList(), val listaSegnalazioni: List<Segnalazione> = emptyList()) {
+data class Statistiche(val idUtente: String, var mediaRecensioni: Double = 0.0, var totaleRecensioni: Int = 0, var listaRecensioni: List<Recensione> = emptyList(), var listaSegnalazioni: List<Segnalazione> = emptyList()) {
     init {
         update()
     }
@@ -26,6 +26,14 @@ data class Statistiche(val idUtente: String, var mediaRecensioni: Double = 0.0, 
     fun rimuoviRecensione(daRimuovere: Recensione) {
         listaRecensioni = listaRecensioni - daRimuovere
         update()
+    }
+
+    fun aggiungiSegnalazione(nuova: Segnalazione) {
+        listaSegnalazioni = listaSegnalazioni + nuova
+    }
+
+    fun rimuoviSegnalazione(daRimuovere: Segnalazione) {
+        listaSegnalazioni = listaSegnalazioni - daRimuovere
     }
 
     companion object {
