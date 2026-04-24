@@ -73,7 +73,7 @@ class FragmentManager: AppCompatActivity() {
         } else {
             menu.add(0, R.id.mappaFragment, 0, getString(R.string.esplora)).setIcon(R.drawable.explore_24px)
             menu.add(0, R.id.prenotazioniFragment, 1, getString(R.string.prenotazioni)).setIcon(R.drawable.hotels_24px)
-            menu.add(0, R.id.messaggiFragment, 2, getString(R.string.messaggistica)).setIcon(R.drawable.stacked_email_24px)
+            menu.add(0, R.id.messaggisticaFragment, 2, getString(R.string.messaggistica)).setIcon(R.drawable.stacked_email_24px)
             menu.add(0, R.id.profiloFragment, 3, getString(R.string.profilo)).setIcon(R.drawable.account_circle_24px)
         }
 
@@ -91,7 +91,6 @@ class FragmentManager: AppCompatActivity() {
         }
         binding.bottomNavigation.labelVisibilityMode = NavigationBarView.LABEL_VISIBILITY_LABELED
         binding.bottomNavigation.backgroundTintList = getColorStateList(R.color.backgroundColor)
-
     }
 
     override fun onSupportNavigateUp(): Boolean {

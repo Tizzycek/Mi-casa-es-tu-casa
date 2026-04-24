@@ -15,12 +15,14 @@ import it.tizzycek.micasaestucasa.data.prenotazioni.StatoPrenotazione
 import it.tizzycek.micasaestucasa.data.proprieta.Disponibilita
 import it.tizzycek.micasaestucasa.data.proprieta.Proprieta
 import it.tizzycek.micasaestucasa.data.utente.TipoUtente
+import it.tizzycek.micasaestucasa.data.utente.Utente
 import it.tizzycek.micasaestucasa.databinding.ActivityDettaglioProprietaBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo
 import it.tizzycek.micasaestucasa.ui.adapters.DisponibilitaAdapter
 import it.tizzycek.micasaestucasa.ui.adapters.ImageDetailAdapter
 import it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.mappa.AggiungiModificaProprieta
 import it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.mappa.PrenotazioneSheet
+import it.tizzycek.micasaestucasa.ui.utente.ChatActivity
 import it.tizzycek.micasaestucasa.ui.utente.RecensioniActivity
 import it.tizzycek.micasaestucasa.utils.DateValidator
 import it.tizzycek.micasaestucasa.utils.mostraErrore
@@ -34,7 +36,7 @@ import java.util.UUID
 class DettaglioProprieta: AppCompatActivity() {
     private lateinit var binding: ActivityDettaglioProprietaBinding
     private var idProprieta: String? = null
-    private var proprietarioId: String = ""
+    private var locatore: Utente? = null
     private var listaDisponibilita: List<Disponibilita> = emptyList()
     private var numeroOspiti: Int = 0
 
@@ -67,8 +69,7 @@ class DettaglioProprieta: AppCompatActivity() {
                     if (proprieta != null)
                         mostraDati(proprieta)
                     else
-                        Toast.makeText(this@DettaglioProprieta, getString(R.string.unknown_error), Toast.LENGTH_LONG)
-                            .show()
+                        mostraErrore(R.string.unknown_error)
                 },
                 onFailure = { e ->
                     mostraErrore(e.message ?: getString(R.string.unknown_error))
@@ -80,11 +81,10 @@ class DettaglioProprieta: AppCompatActivity() {
 
     private suspend fun mostraDati(p: Proprieta) {
         binding.tvNome.text = p.nome
-        proprietarioId = p.proprietarioId
         numeroOspiti = p.posti
 
         if (MainRepo.getUserRepository().getCurrentUser()!!.tipo != TipoUtente.PROPRIETARIO) {
-            val locatore = MainRepo.getUserRepository().beccaDatiUtente(p.proprietarioId)
+            locatore = MainRepo.getUserRepository().beccaDatiUtente(p.proprietarioId)
             binding.tvLocatore.text = locatore?.nome + " " + locatore?.cognome
             binding.tvAvatarLocatoreCompact.text = locatore?.nome[0].toString() + locatore?.cognome[0].toString()
 
@@ -148,7 +148,17 @@ class DettaglioProprieta: AppCompatActivity() {
             binding.btnSinistro.text = getString(R.string.contatta)
             binding.btnSinistro.setCompoundDrawablesWithIntrinsicBounds(R.drawable.forward_to_inbox_24px, 0, 0, 0)
             binding.btnSinistro.setOnClickListener {
-                Toast.makeText(this, "Contatta l'host", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this@DettaglioProprieta, ChatActivity::class.java)
+                val currentUserId = MainRepo.getUserRepository().getCurrentUser()?.id ?: "" // senza questa soluzione il sorted non ne vuole sapere
+
+                val chatId = listOf(currentUserId, locatore?.id!!).sorted().joinToString("_")
+
+                intent.putExtra("CHAT_ID", chatId)
+                intent.putExtra("destinatarioId", locatore?.id!!)
+                intent.putExtra("nomeDestinatario", locatore?.nome)
+                intent.putExtra("cognomeDestinatario", locatore?.cognome)
+
+                startActivity(intent)
             }
 
             binding.btnDestro.text = getString(R.string.prenota)
@@ -187,7 +197,7 @@ class DettaglioProprieta: AppCompatActivity() {
     }
 
     private fun gestionePrenotazione(pl: Map<String, Any>) {
-        val prenotazione = Prenotazioni(UUID.randomUUID().toString(), proprietarioId, MainRepo.getUserRepository().getCurrentUser()!!.id!!, idProprieta!!, pl["dataInizio"] as LocalDate, pl["dataFine"] as LocalDate, pl["ospiti"] as Int, null, null, pl["totale"] as Double, pl["valuta"] as Currency, dataPrenotazione = Instant.now())
+        val prenotazione = Prenotazioni(UUID.randomUUID().toString(), locatore?.id!!, MainRepo.getUserRepository().getCurrentUser()!!.id!!, idProprieta!!, pl["dataInizio"] as LocalDate, pl["dataFine"] as LocalDate, pl["ospiti"] as Int, null, null, pl["totale"] as Double, pl["valuta"] as Currency, dataPrenotazione = Instant.now())
 
         binding.progressBar.visibility = View.VISIBLE
         binding.btnDestro.isEnabled = false

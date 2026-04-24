@@ -19,4 +19,10 @@
     <color name="blue">#2196F3</color>
 
     <color name="emerald_green">#00D062</color>
+    <color name="teal_700">#00897B</color>
+    <color name="gray_stone">#D9D9D9</color>
+
+    <color name="message_sent_background">#DCF8C6</color>
+    <color name="message_received_background">#FFFFFF</color>
+    <color name="white_transparent_high">#B3FFFFFF</color>>
 </resources>

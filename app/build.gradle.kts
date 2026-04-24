@@ -65,4 +65,5 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.coil)
     implementation(libs.coil.network.okhttp)
+    implementation(libs.androidx.swiperefreshlayout)
 }

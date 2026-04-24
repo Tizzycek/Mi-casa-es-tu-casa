@@ -200,7 +200,7 @@ class ProprietaRepository {
     suspend fun cercaDisponibili(lat: Double? = null, lng: Double? = null, raggioKm: Double = 20.0, dal: LocalDate? = null, al: LocalDate? = null, posti: Int? = null, paroleChiaveIds: List<String>? = null, prezzoMin: Double? = null, prezzoMax: Double? = null): Result<List<Proprieta>> {
         return try {
             val risultatiDaCache = if (cacheProprieta.isNotEmpty()) {
-                cacheProprieta.values.filter { prop ->
+                cacheProprieta.values.asSequence().filter { prop ->
                     // Applichiamo gli stessi filtri sulla cache
                     posti?.let { prop.posti >= it } ?: true
                 }.filter { prop ->
@@ -221,7 +221,7 @@ class ProprietaRepository {
                     paroleChiaveIds?.let { ids ->
                         prop.paroleChiaveIds.any { it in ids }
                     } ?: true
-                }
+                }.toList()
             } else emptyList()
 
             // Se la cache ha risultati validi E contiene la maggior parte dei dati,

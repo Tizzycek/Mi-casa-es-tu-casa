@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:paddingStart="16dp"
+    android:paddingTop="12dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="12dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <!-- Avatar personalizzato -->
+    <FrameLayout
+        android:id="@+id/avatarContainer"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/avatarInitialsTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/avatar_circle_background"
+            android:gravity="center"
+            android:textColor="?android:attr/colorBackground"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:text="MR" />
+
+        <!-- Badge (visibile condizionalmente) -->
+        <ImageView
+            android:id="@+id/badgeImageView"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="bottom|end"
+            android:src="@drawable/ic_badge"
+            android:visibility="gone"
+            android:contentDescription="Badge"
+            tools:visibility="visible" />
+
+    </FrameLayout>
+
+    <!-- Nome contatto -->
+    <TextView
+        android:id="@+id/contactNameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/timestampTextView"
+        app:layout_constraintStart_toEndOf="@+id/avatarContainer"
+        app:layout_constraintTop_toTopOf="@+id/avatarContainer"
+        tools:text="Mario Rossi" />
+
+    <!-- Orario -->
+    <TextView
+        android:id="@+id/timestampTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/gray"
+        app:layout_constraintBottom_toBottomOf="@+id/contactNameTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/contactNameTextView"
+        tools:text="14:30" />
+
+    <!-- Anteprima messaggio -->
+    <TextView
+        android:id="@+id/messagePreviewTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/gray"
+        app:layout_constraintEnd_toStartOf="@+id/unreadIndicator"
+        app:layout_constraintStart_toStartOf="@+id/contactNameTextView"
+        app:layout_constraintTop_toBottomOf="@+id/contactNameTextView"
+        tools:text="Ciao! Ci vediamo domani per il caffè?" />
+
+    <!-- Indicatore messaggio non letto -->
+    <View
+        android:id="@+id/unreadIndicator"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/circle_unread_indicator"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/messagePreviewTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/messagePreviewTextView"
+        tools:visibility="visible" />
+
+    <!-- Divisore sottile -->
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/gray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

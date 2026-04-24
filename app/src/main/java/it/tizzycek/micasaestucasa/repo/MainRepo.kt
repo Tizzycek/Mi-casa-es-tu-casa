@@ -3,6 +3,7 @@ package it.tizzycek.micasaestucasa.repo
 import com.google.firebase.firestore.FirebaseFirestore
 import it.tizzycek.micasaestucasa.data.parolechiave.ParoleChiave
 import it.tizzycek.micasaestucasa.data.proprieta.Proprieta
+import it.tizzycek.micasaestucasa.repo.messaggi.ChatRepository
 import it.tizzycek.micasaestucasa.repo.parolechiave.ParoleChiaveRepository
 import it.tizzycek.micasaestucasa.repo.prenotazioni.PrenotazioniRepository
 import it.tizzycek.micasaestucasa.repo.proprieta.ProprietaRepository
@@ -19,6 +20,8 @@ object MainRepo {
     private val prenotazioniRepository = PrenotazioniRepository()
 
     private val statisticheRepository = StatisticheRepository()
+
+    private val chatRepository = ChatRepository()
 
 
     fun getUserRepository(): UserRepository {
@@ -39,5 +42,9 @@ object MainRepo {
 
     fun getStatisticheRepository(): StatisticheRepository {
         return statisticheRepository
+    }
+
+    fun getChatRepository(): ChatRepository {
+        return chatRepository
     }
 }

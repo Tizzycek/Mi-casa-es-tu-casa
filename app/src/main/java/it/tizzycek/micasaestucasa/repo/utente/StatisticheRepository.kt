@@ -17,7 +17,7 @@ class StatisticheRepository {
         return try {
             val statistiche = Statistiche(idUtente)
             firestore.collection(collection).document(idUtente).set(statistiche).await()
-//            statisticheCache[idUtente] = statistiche
+            statisticheCache[idUtente] = statistiche
             Result.success(true)
         } catch (e: Exception) {
             Result.failure(e)
@@ -25,10 +25,10 @@ class StatisticheRepository {
     }
 
     suspend fun getStatistiche(idUtente: String): Result<Statistiche> {
-        return /*if (statisticheCache.containsKey(idUtente)) {
+        return if (statisticheCache.containsKey(idUtente)) {
             Result.success(statisticheCache[idUtente]!!)
         }
-        else */try {
+        else try {
             val doc = firestore.collection(collection).document(idUtente).get().await()
             Result.success(doc.toStatistiche())
         } catch (e: Exception) {
@@ -40,7 +40,9 @@ class StatisticheRepository {
         return try {
             firestore.collection(collection).document(idUtente).set(statistica).await()
 
-//            statisticheCache[idUtente] = statistica
+            statisticheCache.remove(idUtente)
+            statisticheCache[idUtente] = statistica
+
             Result.success(true)
         } catch (e: Exception) {
             Result.failure(e)

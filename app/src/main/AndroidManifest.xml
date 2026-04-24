@@ -38,6 +38,8 @@
             android:exported="false"/>
         <activity android:name=".ui.utente.RecensioniActivity"
             android:exported="false"/>
+        <activity android:name=".ui.utente.ChatActivity"
+            android:exported="false"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

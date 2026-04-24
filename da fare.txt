@@ -4,4 +4,4 @@ inserire profilo cliccabile proprietà -> OK
 recensioni cliccabili con nome utente e apertura -> OK
 
 tastiera con nuova recensione (claude possibilmente)
-segnalazioni con bottom sheet e stesso problema
+segnalazioni con bottom sheet e stesso problema -> OK
