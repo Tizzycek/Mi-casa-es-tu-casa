@@ -31,9 +31,8 @@ class ChatPreviewAdapter(private var items: List<ChatPreview>): RecyclerView.Ada
             binding.contactNameTextView.text = nome + " " + cognome
             binding.avatarInitialsTextView.text = nome[0].toString() + cognome[0].toString()
 
-            binding.messagePreviewTextView.text = chatPreview.lastMessage
+            binding.messagePreviewTextView.text = chatPreview.lastMessage.ifBlank { binding.root.context.getString(R.string.immagine) }
             binding.timestampTextView.text = DateValidator.formatDate(chatPreview.lastUpdated)
-
 
             if (messaggiNonLetti > 0) {
                 binding.unreadIndicator.visibility = View.VISIBLE

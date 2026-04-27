@@ -58,6 +58,7 @@
     <string name="descrizione_della_propriet">Write a description…</string>
     <string name="parole_chiave">Keywords</string>
     <string name="immagini">Pictures</string>
+    <string name="immagine">Picture</string>
     <string name="aggiungi_foto">+ Add photo</string>
     <string name="disponibilit_e_prezzi">Availability and prices</string>
     <string name="aggiungi_periodo">Add date</string>

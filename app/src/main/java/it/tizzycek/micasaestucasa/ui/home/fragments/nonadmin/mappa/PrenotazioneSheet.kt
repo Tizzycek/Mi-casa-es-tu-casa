@@ -18,6 +18,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.time.temporal.ChronoUnit
 import java.util.Currency
+// TODO: refactor
 
 class PrenotazioneSheet(val listaDisponibilita: List<Disponibilita>, val ospiti: Int, val onPrenotazioneApplicata: (Map<String, Any>) -> Unit) : BottomSheetDialogFragment() {
 

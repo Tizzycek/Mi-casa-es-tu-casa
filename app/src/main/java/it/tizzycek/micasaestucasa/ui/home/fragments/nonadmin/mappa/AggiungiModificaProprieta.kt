@@ -23,6 +23,7 @@ import it.tizzycek.micasaestucasa.databinding.AggiungiModificaProprietaBinding
 import it.tizzycek.micasaestucasa.databinding.ItemAvailabilityBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo
 import it.tizzycek.micasaestucasa.ui.adapters.ImageAdapter
+import it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.BaseImageManagerActivity
 import it.tizzycek.micasaestucasa.utils.DateValidator
 import it.tizzycek.micasaestucasa.utils.findPlace
 import it.tizzycek.micasaestucasa.utils.mostraErrore
@@ -34,14 +35,11 @@ import java.util.Currency
 import java.util.Locale
 import java.util.UUID
 
-class AggiungiModificaProprieta: AppCompatActivity() {
+class AggiungiModificaProprieta: BaseImageManagerActivity() {
     private lateinit var binding: AggiungiModificaProprietaBinding
 
     private val keywordList = mutableListOf<Chip>()
-    private val listaImmagini = mutableListOf<Any>()
     private var vecchieImmagini: List<String> = emptyList()
-
-    private lateinit var imageAdapter: ImageAdapter
 
     private var isEdit = false
     private var idProprieta: String? = null
@@ -58,7 +56,8 @@ class AggiungiModificaProprieta: AppCompatActivity() {
 
         getKeyWords()
         setupListener()
-        setupAdapter()
+
+        super.setupImageRecyclerView(binding.rvPropertyImages, null)
 
         if (isEdit) {
             binding.tvAddProperty.setText(R.string.modifica_proprieta)
@@ -143,26 +142,10 @@ class AggiungiModificaProprieta: AppCompatActivity() {
         binding.btnAddAvailability.setOnClickListener { setupAvailability() }
 
         val pickMedia = registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(5)) { uris ->
-            if (uris.isNotEmpty()) {
-                listaImmagini.addAll(uris)
-                imageAdapter.updateData(listaImmagini.toList())
-            }
+            addImages(uris)
         }
         binding.btnAddImage.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-        }
-    }
-
-    private fun setupAdapter() {
-        imageAdapter = ImageAdapter(listaImmagini) { itemDaRimuovere ->
-            listaImmagini.remove(itemDaRimuovere)
-            imageAdapter.updateData(listaImmagini.toList()) // Passiamo una copia
-        }
-
-        binding.rvPropertyImages.apply {
-            layoutManager = LinearLayoutManager(this@AggiungiModificaProprieta, LinearLayoutManager.HORIZONTAL, false)
-
-            adapter = imageAdapter
         }
     }
 
@@ -176,33 +159,19 @@ class AggiungiModificaProprieta: AppCompatActivity() {
         val paroleChiave = getSelectedKeywordIds()
         val disponibilita = getDisponibilita()
 
-        
-        if (nome.isEmpty() || indirizzo.isEmpty() || posti.isEmpty() || posti.toInt() < 1 || descrizione.isEmpty() || paroleChiave.isEmpty() || listaImmagini.isEmpty()) {
+        val (immaginiDaCaricare, urlsGiaPresenti) = super.separateImages()
+
+        if (nome.isEmpty() || indirizzo.isEmpty() || posti.isEmpty() || posti.toInt() < 1 || descrizione.isEmpty() || paroleChiave.isEmpty() || selectedImages.isEmpty()) {
             mostraErrore(R.string.data_missing)
             setButtons(true)
         } else if (disponibilita.isEmpty()) {
             setButtons(true)
-        }
-        else {
+        } else if (immaginiDaCaricare.isEmpty() && urlsGiaPresenti.isEmpty()) {
+            mostraErrore(R.string.nessuna_immagine)
+            setButtons(true)
+        }  else {
             lifecycleScope.launch {
                 try {
-                    val immaginiDaCaricare = mutableListOf<ByteArray>()
-                    val urlsGiaPresenti = mutableListOf<String>()
-
-                    listaImmagini.forEach { item ->
-                        when (item) {
-                            is Uri -> {
-                                uriToByteArray(item)?.let { immaginiDaCaricare.add(it) }
-                            }
-                            is String -> {
-                                urlsGiaPresenti.add(item)
-                            }
-                        }
-                    }
-
-                    if (immaginiDaCaricare.isEmpty() && urlsGiaPresenti.isEmpty())
-                        throw Exception(getString(R.string.nessuna_immagine))
-
                     val coordinates = requireNotNull(findPlace(indirizzo)) {
                         throw Exception(getString(R.string.invalid_address))
                     }
@@ -293,17 +262,6 @@ class AggiungiModificaProprieta: AppCompatActivity() {
         }
     }
 
-    private fun uriToByteArray(uri: Uri): ByteArray? {
-        return try {
-            contentResolver.openInputStream(uri)?.use { inputStream ->
-                inputStream.readBytes()
-            }
-        } catch (e: Exception) {
-            mostraErrore(e.message ?: getString(R.string.unknown_error))
-            null
-        }
-    }
-
     private fun caricaDatiProprieta() {
         setButtons(false)
         lifecycleScope.launch {
@@ -348,8 +306,7 @@ class AggiungiModificaProprieta: AppCompatActivity() {
 
         p.immaginiUrl?.let { urls ->
             vecchieImmagini = urls
-            listaImmagini.addAll(urls)
-            imageAdapter.updateData(listaImmagini.toList())
+            loadExistingImages(urls)
         }
 
         for (i in 0 until binding.cgKeywords.childCount) {

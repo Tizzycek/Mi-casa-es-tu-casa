@@ -28,17 +28,22 @@ class ChatRepository {
     private val collectionChats = "chats"
     private val collectionMessages = "messages"
 
-    suspend fun sendMessage(chatId: String, messaggio: Messaggio, immagini: List<ByteArray>, infoPreview: HashMap<String, Map<String, String>>): Result<Boolean> = coroutineScope {
-        try {
-            val uploadTasks = immagini.withIndex().map { (index, bytes) ->
-                async {
-                    val imageName = "${UUID.randomUUID()}_$index.jpg"
-                    val ref = storageRef.reference.child(collectionChats).child(imageName)
-                    ref.putBytes(bytes).await()
-                    ref.downloadUrl.await().toString()
+    suspend fun sendMessage(chatId: String, messaggio: Messaggio, immagini: List<ByteArray>, infoPreview: HashMap<String, Map<String, String>>): Result<Boolean> {
+        return try {
+            var nuoviUrls: List<String> = emptyList()
+            if (immagini.isNotEmpty()) {
+                val uploadTasks = immagini.withIndex().map { (index, bytes) ->
+                    coroutineScope {
+                        async {
+                            val imageName = "${UUID.randomUUID()}_$index.jpg"
+                            val ref = storageRef.reference.child(collectionChats).child(imageName)
+                            ref.putBytes(bytes).await()
+                            ref.downloadUrl.await().toString()
+                        }
+                    }
                 }
+                nuoviUrls = uploadTasks.awaitAll()
             }
-            val nuoviUrls = uploadTasks.awaitAll()
             val messaggioFinale = messaggio.copy(imageUrl = messaggio.imageUrl + nuoviUrls)
 
             val batch = firestore.batch()

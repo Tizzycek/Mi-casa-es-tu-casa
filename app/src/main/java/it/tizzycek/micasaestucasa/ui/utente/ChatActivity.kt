@@ -1,8 +1,8 @@
 package it.tizzycek.micasaestucasa.ui.utente
 
 import android.os.Bundle
-import android.os.PersistableBundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import it.tizzycek.micasaestucasa.R
@@ -10,12 +10,13 @@ import it.tizzycek.micasaestucasa.data.messaggi.Messaggio
 import it.tizzycek.micasaestucasa.databinding.ActivityChatBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo
 import it.tizzycek.micasaestucasa.ui.adapters.MessageAdapter
+import it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.BaseImageManagerActivity
 import it.tizzycek.micasaestucasa.utils.mostraErrore
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
 // TODO: foto, design, notifiche
-class ChatActivity: AppCompatActivity() {
+class ChatActivity: BaseImageManagerActivity() {
     private lateinit var chatId: String
     private lateinit var infoUtente: Map<String, String?>
     private lateinit var messageAdapter: MessageAdapter
@@ -35,33 +36,27 @@ class ChatActivity: AppCompatActivity() {
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        super.setupImageRecyclerView(binding.imagePreviewRecyclerView, null)
+
         setDetails()
         setupRecyclerView()
         observeMessages()
 
-        messageList = getMessageList()
-
         binding.sendButton.setOnClickListener {
             inviaMessaggio()
+        }
+
+        val pickMultipleMedia = registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia()) { uris ->
+            addImages(uris)
+        }
+
+        binding.attachButton.setOnClickListener {
+            pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
     }
 
     override fun onResume() {
         super.onResume()
-    }
-
-    private fun getMessageList(): List<Messaggio> {
-        var listaMessaggi: List<Messaggio> = emptyList()
-
-        lifecycleScope.launch {
-            val res = MainRepo.getChatRepository().getMessagesFlow(chatId)
-            res.catch { e ->
-                mostraErrore(e.message ?: getString(R.string.unknown_error))
-            }.collect { lista ->
-                listaMessaggi = lista
-            }
-        }
-        return listaMessaggi
     }
 
     private fun setupRecyclerView() {
@@ -93,7 +88,6 @@ class ChatActivity: AppCompatActivity() {
     }
 
     private fun inviaMessaggio() {
-        // TODO: gestione immagini
         val messaggio = binding.messageInputEditText.text.toString()
         binding.messageInputEditText.text.clear()
         binding.sendButton.isEnabled = false
@@ -108,12 +102,16 @@ class ChatActivity: AppCompatActivity() {
             destinatarioId to mapOf("nome" to infoUtente["nomeDestinatario"]!!, "cognome" to infoUtente["cognomeDestinatario"]!!)
         )
 
+        val (immaginiDaCaricare, urlsGiaPresenti) = super.separateImages()
+
         // R.drawable.check_24
         lifecycleScope.launch {
-            val risultato = MainRepo.getChatRepository().sendMessage(chatId, daInviare, emptyList(), infoPreview)
+            val risultato = MainRepo.getChatRepository().sendMessage(chatId, daInviare, immaginiDaCaricare, infoPreview)
             risultato.fold(
                 onSuccess = {
                     binding.sendButton.isEnabled = true
+                    super.clearImages()
+
                 }, onFailure = { e ->
                     binding.sendButton.isEnabled = true
                     mostraErrore(e.message ?: getString(R.string.unknown_error))

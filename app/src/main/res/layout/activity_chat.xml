@@ -18,7 +18,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/primary"
+            android:background="@color/black"
             app:contentInsetStartWithNavigation="0dp"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
@@ -156,7 +156,19 @@
             android:paddingBottom="8dp"
             android:background="@color/white">
 
-            <!-- Pulsante allegati -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/imagePreviewRecyclerView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toTopOf="@+id/messageInputEditText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:listitem="@layout/item_image_preview" />
+
             <ImageButton
                 android:id="@+id/attachButton"
                 android:layout_width="48dp"
@@ -167,9 +179,8 @@
                 android:contentDescription="attach"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/imagePreviewRecyclerView" />
 
-            <!-- Campo ingresso messaggio -->
             <EditText
                 android:id="@+id/messageInputEditText"
                 android:layout_width="0dp"
@@ -188,9 +199,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/sendButton"
                 app:layout_constraintStart_toEndOf="@+id/attachButton"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/imagePreviewRecyclerView" />
 
-            <!-- Pulsante invio -->
             <ImageButton
                 android:id="@+id/sendButton"
                 android:layout_width="48dp"
@@ -201,7 +211,7 @@
                 android:contentDescription="send"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/imagePreviewRecyclerView" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
