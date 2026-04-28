@@ -36,7 +36,20 @@ class MessaggisticaFragment: Fragment() {
 
         setupRecyclerView()
 
+        caricaAnteprime()
 
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            caricaAnteprime()
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        caricaAnteprime()
+    }
+
+    private fun caricaAnteprime() {
         lifecycleScope.launch {
             binding.loadingProgressBar.visibility = View.VISIBLE
             val a = MainRepo.getChatRepository().getChatListFlow(utente!!.id!!)

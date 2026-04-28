@@ -28,22 +28,27 @@ class ChatPreviewAdapter(private var items: List<ChatPreview>): RecyclerView.Ada
 
             val messaggiNonLetti = chatPreview.unreadCounts[MainRepo.getUserRepository().getCurrentUser()!!.id] ?: 0
 
-            binding.contactNameTextView.text = nome + " " + cognome
-            binding.avatarInitialsTextView.text = nome[0].toString() + cognome[0].toString()
+            binding.contactNameTextView.text = "$nome $cognome"
+            binding.avatarInitialsTextView.text = "${nome[0]}${cognome[0]}"
 
             binding.messagePreviewTextView.text = chatPreview.lastMessage.ifBlank { binding.root.context.getString(R.string.immagine) }
             binding.timestampTextView.text = DateValidator.formatDate(chatPreview.lastUpdated)
 
+            binding.contactNameTextView.setTypeface(null, Typeface.NORMAL)
+            binding.messagePreviewTextView.setTypeface(null, Typeface.NORMAL)
+
             if (messaggiNonLetti > 0) {
-                binding.unreadIndicator.visibility = View.VISIBLE
+                binding.unreadBadgeContainer.visibility = View.VISIBLE
+                binding.unreadCountTextView.visibility = View.VISIBLE
+
+                binding.unreadCountTextView.text = if (messaggiNonLetti < 100) messaggiNonLetti.toString() else "99+"
+
                 binding.contactNameTextView.setTypeface(binding.contactNameTextView.typeface,
                     Typeface.BOLD)
                 binding.messagePreviewTextView.setTypeface(binding.messagePreviewTextView.typeface, Typeface.BOLD)
             } else {
-                binding.unreadIndicator.visibility = View.GONE
-                binding.contactNameTextView.setTypeface(binding.contactNameTextView.typeface,
-                    Typeface.NORMAL)
-                binding.messagePreviewTextView.setTypeface(binding.messagePreviewTextView.typeface, Typeface.NORMAL)
+                binding.unreadBadgeContainer.visibility = View.GONE
+                binding.unreadCountTextView.visibility = View.GONE
             }
 
             binding.root.setOnClickListener {

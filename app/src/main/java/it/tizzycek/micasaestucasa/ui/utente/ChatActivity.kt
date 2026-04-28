@@ -1,6 +1,8 @@
 package it.tizzycek.micasaestucasa.ui.utente
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
@@ -20,7 +22,6 @@ class ChatActivity: BaseImageManagerActivity() {
     private lateinit var chatId: String
     private lateinit var infoUtente: Map<String, String?>
     private lateinit var messageAdapter: MessageAdapter
-    private lateinit var messageList: List<Messaggio>
     private lateinit var binding: ActivityChatBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +41,6 @@ class ChatActivity: BaseImageManagerActivity() {
 
         setDetails()
         setupRecyclerView()
-        observeMessages()
 
         binding.sendButton.setOnClickListener {
             inviaMessaggio()
@@ -53,10 +53,15 @@ class ChatActivity: BaseImageManagerActivity() {
         binding.attachButton.setOnClickListener {
             pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
+
+        binding.backButton.setOnClickListener {
+            finish()
+        }
     }
 
     override fun onResume() {
         super.onResume()
+        observeMessages()
     }
 
     private fun setupRecyclerView() {
@@ -70,7 +75,14 @@ class ChatActivity: BaseImageManagerActivity() {
     }
 
     private fun setDetails() {
-        // TODO: nome utente e altra roba (prima facciamo funzionare il resto)
+        binding.toolbarContactName.text = infoUtente["nomeDestinatario"] + " " + infoUtente["cognomeDestinatario"]
+        binding.toolbarAvatarInitials.text = infoUtente["nomeDestinatario"]?.get(0).toString() + infoUtente["cognomeDestinatario"]?.get(0).toString()
+
+        binding.toolbarContactName.setOnClickListener {
+            val intent = Intent(this, RecensioniActivity::class.java)
+            intent.putExtra("idUtente", infoUtente["destinatarioId"])
+            startActivity(intent)
+        }
     }
 
     private fun observeMessages() {
@@ -89,8 +101,11 @@ class ChatActivity: BaseImageManagerActivity() {
 
     private fun inviaMessaggio() {
         val messaggio = binding.messageInputEditText.text.toString()
-        binding.messageInputEditText.text.clear()
+        binding.messageInputEditText.text?.clear()
+
         binding.sendButton.isEnabled = false
+        binding.sendButton.visibility = View.GONE
+        binding.sendProgressBar.visibility = View.VISIBLE
 
         val mittente = MainRepo.getUserRepository().getCurrentUser()!!
         val destinatarioId = infoUtente["destinatarioId"] ?: ""
@@ -104,20 +119,23 @@ class ChatActivity: BaseImageManagerActivity() {
 
         val (immaginiDaCaricare, urlsGiaPresenti) = super.separateImages()
 
-        // R.drawable.check_24
-        lifecycleScope.launch {
-            val risultato = MainRepo.getChatRepository().sendMessage(chatId, daInviare, immaginiDaCaricare, infoPreview)
-            risultato.fold(
-                onSuccess = {
-                    binding.sendButton.isEnabled = true
-                    super.clearImages()
-
-                }, onFailure = { e ->
-                    binding.sendButton.isEnabled = true
-                    mostraErrore(e.message ?: getString(R.string.unknown_error))
-                    binding.messageInputEditText.setText(messaggio)
-                }
-            )
+        if (immaginiDaCaricare.isEmpty() && daInviare.contenuto.isBlank()) {
+            mostraErrore("Impossibile inviare un messaggio vuoto")
+        } else {
+            lifecycleScope.launch {
+                val risultato = MainRepo.getChatRepository().sendMessage(chatId, daInviare, immaginiDaCaricare, infoPreview)
+                risultato.fold(
+                    onSuccess = {
+                        super.clearImages()
+                    }, onFailure = { e ->
+                        mostraErrore(e.message ?: getString(R.string.unknown_error))
+                        binding.messageInputEditText.setText(messaggio)
+                    }
+                )
+            }
         }
+        binding.sendButton.isEnabled = true
+        binding.sendProgressBar.visibility = View.GONE
+        binding.sendButton.visibility = View.VISIBLE
     }
 }

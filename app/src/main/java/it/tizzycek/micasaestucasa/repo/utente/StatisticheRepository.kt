@@ -30,10 +30,17 @@ class StatisticheRepository {
         }
         else try {
             val doc = firestore.collection(collection).document(idUtente).get().await()
-            Result.success(doc.toStatistiche())
+            val stat = doc.toStatistiche()
+            statisticheCache[idUtente] = stat
+            Result.success(stat)
         } catch (e: Exception) {
             Result.failure(e)
         }
+    }
+
+    suspend fun reloadStatistiche(idUtente: String): Result<Statistiche> {
+        statisticheCache.remove(idUtente)
+        return getStatistiche(idUtente)
     }
 
     suspend fun aggiornaStatistiche(idUtente: String, statistica: Statistiche): Result<Boolean> {

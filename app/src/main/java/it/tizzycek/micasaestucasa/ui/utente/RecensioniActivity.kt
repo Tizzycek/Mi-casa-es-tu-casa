@@ -29,14 +29,15 @@ class RecensioniActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRecensioniBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setupRecyclerView()
+        setupSpinner()
     }
 
 
     override fun onResume() {
         super.onResume()
-        loadData()
-        setupRecyclerView()
-        setupSpinner()
+        loadData(false)
     }
 
     private fun setupRecyclerView() {
@@ -49,9 +50,14 @@ class RecensioniActivity: AppCompatActivity() {
         }
         binding.recensioniRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
         binding.recensioniRecyclerView.adapter = adapter
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            loadData(true)
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
     }
 
-    private fun loadData() {
+    private fun loadData(reload: Boolean) {
         binding.progressBar.visibility = View.VISIBLE
 
         lifecycleScope.launch {
@@ -81,7 +87,7 @@ class RecensioniActivity: AppCompatActivity() {
                 binding.avatarInitialsTextView.text = utente.nome[0].toString() + utente.cognome[0].toString()
                 binding.nomeCognomeTextView.text = utente.nome + " " + utente.cognome
 
-                val resultList = MainRepo.getStatisticheRepository().getStatistiche(utente.id!!)
+                val resultList = if (reload) MainRepo.getStatisticheRepository().reloadStatistiche(utente.id!!) else MainRepo.getStatisticheRepository().getStatistiche(utente.id!!)
                 resultList.fold(
                     onSuccess = { stat ->
                         statistiche = stat

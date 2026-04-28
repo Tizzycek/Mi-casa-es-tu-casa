@@ -182,8 +182,8 @@
                 android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:src="@drawable/sort_24px"
-                android:tint="?android:attr/textColorSecondary"
-                android:layout_marginEnd="8dp"/>
+                android:layout_marginEnd="8dp"
+                app:tint="?android:attr/textColorSecondary" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -213,6 +213,14 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="8dp"/>
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
     <!-- RecyclerView per le recensioni -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recensioniRecyclerView"
@@ -222,6 +230,9 @@
         android:clipToPadding="false"
         android:padding="8dp"
         tools:listitem="@layout/item_recensione"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
     <!-- Empty state -->
 <!--    <LinearLayout-->

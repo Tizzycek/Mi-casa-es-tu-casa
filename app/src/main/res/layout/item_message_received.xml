@@ -14,9 +14,9 @@
         android:id="@+id/messageCard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/message_received_background"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="2dp"
+        app:cardBackgroundColor="@color/secondary_light"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="1dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:strokeWidth="0dp">
@@ -25,35 +25,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="8dp">
+            android:padding="12dp">
 
             <ImageView
                 android:id="@+id/messageImageView"
-                android:layout_width="250dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:maxHeight="300dp"
+                android:maxHeight="250dp"
                 android:scaleType="centerCrop"
                 android:visibility="gone"
-                tools:visibility="visible"
-                android:layout_marginBottom="4dp"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingStart="12dp"
-            android:paddingTop="8dp"
-            android:paddingEnd="12dp"
-            android:paddingBottom="4dp">
+                android:layout_marginBottom="4dp"
+                tools:visibility="visible"/>
 
             <TextView
                 android:id="@+id/messageTextTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxWidth="260dp"
+                android:maxWidth="240dp"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 tools:text="Tutto bene! Tu?" />
@@ -63,8 +52,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginTop="4dp"
-                android:textColor="@color/gray"
+                android:layout_marginTop="6dp"
+                android:textColor="@color/gray_stone"
                 android:textSize="11sp"
                 tools:text="14:31" />
 
