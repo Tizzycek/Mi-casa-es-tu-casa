@@ -1,9 +1,11 @@
 package it.tizzycek.micasaestucasa.ui.home
 
+import android.app.ComponentCaller
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -14,6 +16,8 @@ import it.tizzycek.micasaestucasa.R
 import it.tizzycek.micasaestucasa.data.utente.TipoUtente
 import it.tizzycek.micasaestucasa.databinding.ActivityHomeBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo
+import it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.MessaggisticaFragment
+import it.tizzycek.micasaestucasa.ui.utente.ChatActivity
 import it.tizzycek.micasaestucasa.ui.utente.LoginActivity
 import it.tizzycek.micasaestucasa.utils.notifiche.NotificationHelper
 
@@ -37,7 +41,44 @@ class FragmentManager: AppCompatActivity() {
         }
 
         setupNavigation(utente.tipo)
+        handleNotificationIntent(intent)
     }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleNotificationIntent(intent)
+    }
+
+    private fun handleNotificationIntent(intent: Intent?) {
+        if (intent != null) {
+            val type = intent.getStringExtra("NOTIFICATION_TYPE")
+            val targetId = intent.getStringExtra("TARGET_ID")
+
+            if (type != null && targetId != null) {
+                when (type) {
+                    "messaggi_channel" -> navigaAChat(targetId)
+                    "prenotazioni_channel" -> navigaAPrenotazioni()
+                }
+                // 🗑️ Pulisci gli extra per evitare loop su rotazione o ripristino
+                intent.removeExtra("NOTIFICATION_TYPE")
+                intent.removeExtra("TARGET_ID")
+            }
+        }
+    }
+
+    private fun navigaAChat(chatId: String) {
+        val intent = Intent(this, ChatActivity::class.java).apply {
+            putExtra("CHAT_ID", chatId)
+        }
+        startActivity(intent)
+    }
+
+    private fun navigaAPrenotazioni() {
+        navController.navigate(R.id.prenotazioniFragment)
+        binding.bottomNavigation.selectedItemId = R.id.prenotazioniFragment
+    }
+
 
     private fun setupNavigation(tipo: TipoUtente) {
         // trova

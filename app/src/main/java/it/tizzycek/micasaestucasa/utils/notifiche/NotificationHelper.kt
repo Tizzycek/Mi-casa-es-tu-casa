@@ -17,6 +17,7 @@ import it.tizzycek.micasaestucasa.MainActivity
 import it.tizzycek.micasaestucasa.R
 import it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.PrenotazioniFragment
 import androidx.core.content.ContextCompat.checkSelfPermission
+import it.tizzycek.micasaestucasa.ui.home.FragmentManager
 
 
 class NotificationHelper(private val context: Context) {
@@ -30,7 +31,7 @@ class NotificationHelper(private val context: Context) {
     private fun setupChannels() {
         val channels = listOf(
             createChannel(NotificationType.Prenotazioni),
-            //createChannel(NotificationType.Messaggi)
+            createChannel(NotificationType.Messaggi)
         )
         notificationManager.createNotificationChannels(channels)
     }
@@ -47,15 +48,17 @@ class NotificationHelper(private val context: Context) {
     // targetId utile per aprire una specifica chat o prenotazione
     fun sendNotification(type: NotificationType, title: String, message: String, targetId: String? = null) {
         // TODO: da controllare
-        val intent = if (type.id == "prenotazioni_channel") Intent(context, PrenotazioniFragment::class.java) else Intent(context, MainActivity::class.java).apply{
+        val intent = Intent(context, FragmentManager::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            putExtra("NOTIFICATION_TYPE", if (type == NotificationType.Messaggi) "MESSAGGIO" else "PRENOTAZIONE")
             putExtra("TARGET_ID", targetId)
-            putExtra("NOTIFICATION_TYPE", type.id)
         }
 
-        val pendingIntent = PendingIntent.getActivity(context, System.currentTimeMillis().toInt(), intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+        val requestCode = System.currentTimeMillis().hashCode()
 
-        val builder = NotificationCompat.Builder(context, type.id).setSmallIcon(R.drawable.ic_launcher_foreground).setContentTitle(title).setContentText(message).setPriority(NotificationCompat.PRIORITY_DEFAULT).setContentIntent(pendingIntent).setAutoCancel(true)
+        val pendingIntent = PendingIntent.getActivity(context, requestCode, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+
+        val builder = NotificationCompat.Builder(context, type.id).setSmallIcon(R.drawable.ic_launcher_foreground).setContentTitle(title).setContentText(message).setPriority(if (type == NotificationType.Messaggi) NotificationCompat.PRIORITY_HIGH else NotificationCompat.PRIORITY_DEFAULT).setContentIntent(pendingIntent).setAutoCancel(true)
 
         notificationManager.notify(System.currentTimeMillis().toInt(), builder.build())
     }

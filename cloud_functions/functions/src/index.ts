@@ -32,6 +32,7 @@
 // });
 
 import { onDocumentWritten } from "firebase-functions/v2/firestore";
+import { onDocumentCreated } from "firebase-functions/v2/firestore"
 import { setGlobalOptions } from "firebase-functions/v2";
 import * as admin from "firebase-admin";
 
@@ -124,11 +125,106 @@ async function inviaPushTradotta(userId: string, action: string/*, nomeProprieta
             data: { type: "PRENOTAZIONE" }
         };
         
-        if (((action === "NUOVA" || action === "MODIFICATA" || action === "ANNULLATA") && userData.tipoUtente === "PROPRIETARIO") || (((action === "ACCETTATA" || action === "RIFIUTATA") && userData.tipoUtente === "AFFITTUARIO"))) {
+        //if (((action === "NUOVA" || action === "MODIFICATA" || action === "ANNULLATA") && userData.tipoUtente === "PROPRIETARIO") || (((action === "ACCETTATA" || action === "RIFIUTATA") && userData.tipoUtente === "AFFITTUARIO"))) {
             await admin.messaging().send(message);
             console.log(`Notifica [${action}] inviata in lingua [${lang}] a ${userId}`);
-        }
+        //}
     } catch (error) {
         console.error("Errore invio push multilingua:", error);
     }
 }
+
+// Aggiungi questo in fondo a index.ts
+export const gestoreNotificheMessaggi = onDocumentCreated(
+    "chats/{chatId}/messages/{messageId}",  // ⚠️ Verifica che collectionChats="chats" e collectionMessages="messages"
+    async (event) => {
+        const messageData = event.data?.data();
+        if (!messageData) return;
+
+        // Campi dal tuo data class Messaggio
+        const senderId = messageData.mittente as string;      // ✅ mittente (non mittenteId)
+        const receiverId = messageData.destinatario as string; // ✅ destinatario
+        const chatId = event.params.chatId;
+        const contenuto = (messageData.contenuto as string) || "";
+
+        // Preview: gestisce testo + immagini
+        let messagePreview: string;
+        const imageUrls = messageData.imageUrl as string[] || [];
+        if (imageUrls.length > 0) {
+            // Se ci sono immagini: mostra icona + primo pezzo di testo se presente
+            messagePreview = contenuto
+                ? `📷 ${contenuto.substring(0, 40)}...`
+                : "📷 Immagine";
+        } else {
+            messagePreview = contenuto.length > 60
+                ? contenuto.substring(0, 60) + "..."
+                : contenuto;
+        }
+
+        // Evita notifiche a se stessi
+        if (senderId === receiverId) return;
+
+        // 🔍 Recupera nome mittente: PRIORITÀ a userData denormalizzato (più veloce)
+        let senderName = "Contatto";
+        try {
+            const chatDoc = await admin.firestore()
+                .collection("chats")  // ⚠️ Conferma che sia il nome esatto di collectionChats
+                .doc(chatId)
+                .get();
+
+            const chatData = chatDoc.data();
+            const userData = chatData?.userData as Record<string, any> | undefined;
+
+            // userData ha struttura: { "userId": { "nome": "...", "cognome": "..." } }
+            if (userData?.[senderId]) {
+                const nome = userData[senderId].nome as string || "";
+                const cognome = userData[senderId].cognome as string || "";
+                senderName = `${nome} ${cognome}`.trim() || "Contatto";
+            }
+        } catch (e) {
+            // Fallback: query diretta su utenti (meno efficiente ma sicuro)
+            console.warn(`Fallback: recupero nome da utenti per ${senderId}`);
+            const userDoc = await admin.firestore()
+                .collection("utenti")
+                .doc(senderId)
+                .get();
+            const u = userDoc.data();
+            if (u?.nome && u?.cognome) {
+                senderName = `${u.nome} ${u.cognome}`;
+            }
+        }
+
+        // Recupera token e lingua del destinatario
+        const receiverDoc = await admin.firestore()
+            .collection("utenti")
+            .doc(receiverId)
+            .get();
+        const receiverData = receiverDoc.data();
+
+        if (!receiverData?.fcmToken) {
+            console.log(`⚠️ Token FCM mancante per ${receiverId}`);
+            return;
+        }
+
+        // Traduzione in base alla lingua
+        const lang = receiverData.lingua === "en" ? "en" : "it";
+        const title = lang === "it" ? "Nuovo messaggio" : "New message";
+        const body = `${senderName}: ${messagePreview}`;
+
+        // Payload FCM
+        const messagePayload = {
+            notification: { title, body },
+            token: receiverData.fcmToken,
+            data: {
+                type: "MESSAGGIO",     // ✅ Deve coincidere con il when() in MyFirebaseMessagingService
+                chatId,                // ✅ Per aprire la chat corretta
+                senderId,              // ✅ Utile per logiche avanzate
+                receiverId             // ✅ Utile per validazioni lato client
+            }
+        };
+
+
+        await admin.messaging().send(messagePayload);
+        console.log(`✅ Notifica messaggio inviata a ${receiverId} (chat: ${chatId})`);
+    }
+);

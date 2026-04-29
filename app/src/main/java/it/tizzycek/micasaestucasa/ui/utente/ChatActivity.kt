@@ -17,7 +17,6 @@ import it.tizzycek.micasaestucasa.utils.mostraErrore
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
-// TODO: foto, design, notifiche
 class ChatActivity: BaseImageManagerActivity() {
     private lateinit var chatId: String
     private lateinit var infoUtente: Map<String, String?>
@@ -100,7 +99,7 @@ class ChatActivity: BaseImageManagerActivity() {
     }
 
     private fun inviaMessaggio() {
-        val messaggio = binding.messageInputEditText.text.toString()
+        val messaggio = binding.messageInputEditText.text.toString().trim()
         binding.messageInputEditText.text?.clear()
 
         binding.sendButton.isEnabled = false

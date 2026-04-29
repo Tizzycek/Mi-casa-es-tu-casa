@@ -2,6 +2,7 @@ package it.tizzycek.micasaestucasa.repo.utente
 
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import com.google.firebase.messaging.FirebaseMessaging
@@ -96,9 +97,24 @@ class UserRepository {
         FirebaseFirestore.getInstance().collection("utenti").document(uid).set(utente.toHashMap()).await()
     }
 
-    fun logout() {
+    suspend fun logout(): Result<Boolean> {
+        val uid = auth.currentUser?.uid
+        if (uid != null) {
+            try {
+                FirebaseFirestore.getInstance().collection("utenti").document(uid).update("fcmToken", FieldValue.delete()).await()
+
+//                FirebaseMessaging.getInstance().deleteToken().await()
+
+                println("FCM: Token rimosso con successo al logout")
+            } catch (e: Exception) {
+                return Result.failure(e)
+            }
+        }
+
         auth.signOut()
         utente = null
+
+        return Result.success(true)
     }
 
     fun isLoggedIn(): Boolean {
@@ -134,7 +150,7 @@ class UserRepository {
                 utente?.fcmToken = token
                 println("FCM: Token aggiornato con successo")
             } catch (e: Exception) {
-                println("FCM: Errore silenzioso (normale in emulatore): ${e.message}")
+                e.printStackTrace()
             }
         }
     }

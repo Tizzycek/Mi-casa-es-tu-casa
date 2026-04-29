@@ -43,9 +43,26 @@ class ProfiloFragment: Fragment() {
 
 
         binding.logoutLayout.setOnClickListener {
-            MainRepo.getUserRepository().logout()
-            startActivity(Intent(requireContext(), LoginActivity::class.java))
-            requireActivity().finish()
+            binding.progressBar.visibility = View.VISIBLE
+            binding.logoutLayout.isEnabled = false
+            binding.modificaUtenteLayout.isEnabled = false
+            binding.visualizzaRecensioniLayout.isEnabled = false
+
+            lifecycleScope.launch {
+                val logout = MainRepo.getUserRepository().logout()
+                logout.fold(
+                    onSuccess = {
+                        startActivity(Intent(requireContext(), LoginActivity::class.java))
+                        requireActivity().finish()
+                    }, onFailure = { e ->
+                        requireActivity().mostraErrore(e.message ?: getString(R.string.unknown_error))
+                        binding.logoutLayout.isEnabled = true
+                        binding.modificaUtenteLayout.isEnabled = true
+                        binding.visualizzaRecensioniLayout.isEnabled = true
+                    }
+                )
+                binding.progressBar.visibility = View.GONE
+            }
         }
 
         binding.modificaUtenteLayout.setOnClickListener {

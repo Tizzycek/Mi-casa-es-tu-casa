@@ -31,10 +31,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkUserAndNavigate() {
-        if (MainRepo.getUserRepository().isLoggedIn() && MainRepo.getUserRepository().getCurrentUser() != null) {
-            startActivity(Intent(this, FragmentManager::class.java))
+        val intent = if (MainRepo.getUserRepository().isLoggedIn() && MainRepo.getUserRepository().getCurrentUser() != null) {
+            Intent(this, FragmentManager::class.java)
         } else {
-            startActivity(Intent(this, LoginActivity::class.java))
+            Intent(this, LoginActivity::class.java)
         }
+
+        this.intent?.extras?.let { intent.putExtras(it) }
+
+        startActivity(intent)
+        finish()
     }
 }
