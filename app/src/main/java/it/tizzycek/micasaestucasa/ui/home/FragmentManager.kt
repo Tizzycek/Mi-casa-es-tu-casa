@@ -55,27 +55,35 @@ class FragmentManager: AppCompatActivity() {
             val type = intent.getStringExtra("NOTIFICATION_TYPE")
             val targetId = intent.getStringExtra("TARGET_ID")
 
-            if (type != null && targetId != null) {
+            val nomeDestinatario = intent.getStringExtra("nomeDestinatario")
+            val cognomeDestinatario = intent.getStringExtra("cognomeDestinatario")
+
+            if (type != null) {
                 when (type) {
-                    "messaggi_channel" -> navigaAChat(targetId)
-                    "prenotazioni_channel" -> navigaAPrenotazioni()
+                    "MESSAGGIO" -> {
+                        if (targetId != null)
+                        navigaAChat(targetId, nomeDestinatario ?: "Not", cognomeDestinatario ?: "Available")
+                    }
+                    "PRENOTAZIONE" -> navigaAPrenotazioni()
                 }
-                // 🗑️ Pulisci gli extra per evitare loop su rotazione o ripristino
                 intent.removeExtra("NOTIFICATION_TYPE")
                 intent.removeExtra("TARGET_ID")
+                intent.removeExtra("nomeDestinatario")
+                intent.removeExtra("cognomeDestinatario")
             }
         }
     }
 
-    private fun navigaAChat(chatId: String) {
+    private fun navigaAChat(chatId: String, nomeDestinatario: String, cognomeDestinatario: String) {
         val intent = Intent(this, ChatActivity::class.java).apply {
             putExtra("CHAT_ID", chatId)
+            putExtra("nomeDestinatario", nomeDestinatario)
+            putExtra("cognomeDestinatario", cognomeDestinatario)
         }
         startActivity(intent)
     }
 
     private fun navigaAPrenotazioni() {
-        navController.navigate(R.id.prenotazioniFragment)
         binding.bottomNavigation.selectedItemId = R.id.prenotazioniFragment
     }
 
@@ -105,12 +113,10 @@ class FragmentManager: AppCompatActivity() {
         menu.clear()
 
         if (tipo == TipoUtente.ADMIN) {
-            /*
-            menu.add(0, R.id.homeProprietarioFragment, 0, "Home").setIcon(R.drawable.ic_home)
+            /*menu.add(0, R.id.homeProprietarioFragment, 0, "Home").setIcon(R.drawable.ic_home)
             menu.add(0, R.id.annunciFragment, 1, "Annunci").setIcon(R.drawable.ic_annunci)
-            menu.add(0, R.id.prenotazioniFragment, 2, "Prenotazioni").setIcon(R.drawable.ic_prenotazioni)
-            menu.add(0, R.id.profiloProprietarioFragment, 3, "Profilo").setIcon(R.drawable.ic_profilo)
-*/
+            menu.add(0, R.id.prenotazioniFragment, 2, "Prenotazioni").setIcon(R.drawable.ic_prenotazioni)*/
+            menu.add(0, R.id.profiloFragment, 3, "Profilo").setIcon(R.drawable.account_circle_24px)
         } else {
             menu.add(0, R.id.mappaFragment, 0, getString(R.string.esplora)).setIcon(R.drawable.explore_24px)
             menu.add(0, R.id.prenotazioniFragment, 1, getString(R.string.prenotazioni)).setIcon(R.drawable.hotels_24px)

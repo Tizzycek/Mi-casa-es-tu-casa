@@ -40,7 +40,7 @@ admin.initializeApp();
 setGlobalOptions({ region: "europe-west1" });
 
 // 1. Definiamo i testi in un oggetto dedicato
-const TRANSLATIONS: any = {
+/*const TRANSLATIONS: any = {
     it: {
         NUOVA: { title: "Nuova Prenotazione!", body: "Hai una nuova richiesta di prenotazione." },
         MODIFICATA: { title: "Prenotazione Modificata", body: "L'affittuario ha modificato i dettagli della richiesta." },
@@ -55,7 +55,7 @@ const TRANSLATIONS: any = {
         ACCETTATA: { title: "Request Accepted!", body: "The owner has confirmed your stay." },
         RIFIUTATA: { title: "Request Rejected", body: "Unfortunately, your request was not accepted." }
     }
-};
+};*/
 
 export const gestoreNotifichePrenotazioni = onDocumentWritten("prenotazioni/{prenotazioneId}", async (event) => {
     const after = event.data?.after.data();
@@ -73,7 +73,7 @@ export const gestoreNotifichePrenotazioni = onDocumentWritten("prenotazioni/{pre
     if (!before) {
         recipientId = after.proprietarioId;
         actionType = "NUOVA";
-    } else if (statoNuovo === "IN_ATTESA" && statoVecchio === "IN_ATTESA" && JSON.stringify(before) !== JSON.stringify(after)) {
+    } else if (statoNuovo === "IN_ATTESA" && statoVecchio === "IN_ATTESA" || statoNuovo === "IN_ATTESA" && statoVecchio === "ACCETTATA") {//&& JSON.stringify(before) !== JSON.stringify(after)) {
         recipientId = after.proprietarioId;
         actionType = "MODIFICATA";
     } else if (statoNuovo === "ANNULLATA" && statoVecchio !== "ANNULLATA") {
@@ -110,8 +110,8 @@ async function inviaPushTradotta(userId: string, action: string/*, nomeProprieta
         const lang = userData.lingua === "en" ? "en" : "it";
         
         // 3. Prendiamo i testi corrispondenti
-        let title = TRANSLATIONS[lang][action].title;
-        let body = TRANSLATIONS[lang][action].body;
+        //let title = TRANSLATIONS[lang][action].title;
+        //let body = TRANSLATIONS[lang][action].body;
 
         // Aggiungiamo il nome della proprietà se serve (es. Nuova o Accettata)
         // if (action === "NUOVA" || action === "ACCETTATA") {
@@ -120,9 +120,12 @@ async function inviaPushTradotta(userId: string, action: string/*, nomeProprieta
 
         
         const message = {
-            notification: { title, body },
+            //notification: { title, body },
             token: userData.fcmToken,
-            data: { type: "PRENOTAZIONE" }
+            data: {
+                type: "PRENOTAZIONE",
+                action
+            }
         };
         
         //if (((action === "NUOVA" || action === "MODIFICATA" || action === "ANNULLATA") && userData.tipoUtente === "PROPRIETARIO") || (((action === "ACCETTATA" || action === "RIFIUTATA") && userData.tipoUtente === "AFFITTUARIO"))) {
@@ -165,7 +168,8 @@ export const gestoreNotificheMessaggi = onDocumentCreated(
         if (senderId === receiverId) return;
 
         // 🔍 Recupera nome mittente: PRIORITÀ a userData denormalizzato (più veloce)
-        let senderName = "Contatto";
+        let nome = "";
+        let cognome = ""
         try {
             const chatDoc = await admin.firestore()
                 .collection("chats")  // ⚠️ Conferma che sia il nome esatto di collectionChats
@@ -177,9 +181,11 @@ export const gestoreNotificheMessaggi = onDocumentCreated(
 
             // userData ha struttura: { "userId": { "nome": "...", "cognome": "..." } }
             if (userData?.[senderId]) {
-                const nome = userData[senderId].nome as string || "";
-                const cognome = userData[senderId].cognome as string || "";
-                senderName = `${nome} ${cognome}`.trim() || "Contatto";
+                const nomeDoc = userData[senderId].nome as string || "";
+                const cognomeDoc = userData[senderId].cognome as string || "";
+                //senderName = `${nome} ${cognome}`.trim() || "Contatto";
+                nome = nomeDoc
+                cognome = cognomeDoc
             }
         } catch (e) {
             // Fallback: query diretta su utenti (meno efficiente ma sicuro)
@@ -189,9 +195,11 @@ export const gestoreNotificheMessaggi = onDocumentCreated(
                 .doc(senderId)
                 .get();
             const u = userDoc.data();
-            if (u?.nome && u?.cognome) {
-                senderName = `${u.nome} ${u.cognome}`;
-            }
+            nome = u?.nome
+            cognome = u?.cognome
+           // if (u?.nome && u?.cognome) {
+           //     senderName = `${u.nome} ${u.cognome}`;
+           // }
         }
 
         // Recupera token e lingua del destinatario
@@ -207,19 +215,22 @@ export const gestoreNotificheMessaggi = onDocumentCreated(
         }
 
         // Traduzione in base alla lingua
-        const lang = receiverData.lingua === "en" ? "en" : "it";
-        const title = lang === "it" ? "Nuovo messaggio" : "New message";
-        const body = `${senderName}: ${messagePreview}`;
+        //const lang = receiverData.lingua === "en" ? "en" : "it";
+        //const title = lang === "it" ? "Nuovo messaggio" : "New message";
+        //const body = `${senderName}: ${messagePreview}`;
 
         // Payload FCM
         const messagePayload = {
-            notification: { title, body },
+            //notification: { title, body },
             token: receiverData.fcmToken,
             data: {
                 type: "MESSAGGIO",     // ✅ Deve coincidere con il when() in MyFirebaseMessagingService
                 chatId,                // ✅ Per aprire la chat corretta
                 senderId,              // ✅ Utile per logiche avanzate
-                receiverId             // ✅ Utile per validazioni lato client
+                receiverId,             // ✅ Utile per validazioni lato client
+                messagePreview,
+                nome,
+                cognome
             }
         };
 

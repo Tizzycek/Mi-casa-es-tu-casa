@@ -46,19 +46,33 @@ class NotificationHelper(private val context: Context) {
     }
 
     // targetId utile per aprire una specifica chat o prenotazione
-    fun sendNotification(type: NotificationType, title: String, message: String, targetId: String? = null) {
-        // TODO: da controllare
-        val intent = Intent(context, FragmentManager::class.java).apply {
+    fun sendNotification(type: NotificationType, title: String, message: Map<String, String?>, targetId: String? = null) {
+        val intent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             putExtra("NOTIFICATION_TYPE", if (type == NotificationType.Messaggi) "MESSAGGIO" else "PRENOTAZIONE")
             putExtra("TARGET_ID", targetId)
+            putExtra("nomeDestinatario", message["nome"])
+            putExtra("cognomeDestinatario", message["cognome"])
         }
 
         val requestCode = System.currentTimeMillis().hashCode()
 
         val pendingIntent = PendingIntent.getActivity(context, requestCode, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
 
-        val builder = NotificationCompat.Builder(context, type.id).setSmallIcon(R.drawable.ic_launcher_foreground).setContentTitle(title).setContentText(message).setPriority(if (type == NotificationType.Messaggi) NotificationCompat.PRIORITY_HIGH else NotificationCompat.PRIORITY_DEFAULT).setContentIntent(pendingIntent).setAutoCancel(true)
+        val notificationText = if (type == NotificationType.Messaggi) {
+            message["messagePreview"]
+        } else {
+            when (message["azione"]) {
+                "NUOVA" -> context.getString(R.string.notifica_nuova_prenotazione)
+                "MODIFICATA" -> context.getString(R.string.notifica_modifica_prenotazione)
+                "ANNULLATA" -> context.getString(R.string.notifica_prenotazione_annullata)
+                "ACCETTATA" -> context.getString(R.string.notifica_prenotazione_accettata)
+                "RIFIUTATA" -> context.getString(R.string.notifica_prenotazione_rifiutata)
+                else -> context.getString(R.string.notifica_prenotazione)
+            }
+        }
+
+        val builder = NotificationCompat.Builder(context, type.id).setSmallIcon(R.drawable.ic_launcher_foreground).setContentTitle(title).setContentText(notificationText).setPriority(if (type == NotificationType.Messaggi) NotificationCompat.PRIORITY_HIGH else NotificationCompat.PRIORITY_DEFAULT).setContentIntent(pendingIntent).setAutoCancel(true)
 
         notificationManager.notify(System.currentTimeMillis().toInt(), builder.build())
     }

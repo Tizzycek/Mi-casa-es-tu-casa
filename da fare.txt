@@ -5,3 +5,74 @@ recensioni cliccabili con nome utente e apertura -> OK
 
 tastiera con nuova recensione (claude possibilmente)
 segnalazioni con bottom sheet e stesso problema -> OK
+
+
+
+
+SCHERMATA UTENTE - SUGGERIMENTO GEMINI
+
+Ciao! Hai un'ottima base di partenza e i requisiti sono molto chiari. Visto che per gli utenti standard hai già previsto una struttura a 4 fragment (presumibilmente con una BottomNavigationView), la soluzione più elegante e coerente per la User Experience (UX) è mantenere la stessa impalcatura grafica anche per l'Admin, cambiando semplicemente i 4 fragment di destinazione.
+
+Ecco come ti suggerisco di distribuire graficamente gli elementi nei 4 Fragment dedicati all'amministratore:
+
+1. Fragment Dashboard (Statistiche)
+Questa è la schermata ideale per l'accesso iniziale (la "Home" dell'Admin). L'obiettivo è dare una panoramica immediata.
+
+Layout: Usa una griglia o un layout verticale con delle Material Cards per ogni dato.
+
+Elementi:
+
+Card 1: Prenotazioni Totali (Numero grande e magari un'icona generica).
+
+Card 2: Concluse (Icona di spunta, magari con un tocco di colore verde).
+
+Card 3: In Corso (Icona di "play" o un orologio, colore blu/arancione).
+
+Card 4: Da Iniziare (Icona di calendario o clessidra, colore grigio/neutro).
+
+UX Tip: Metti i numeri ben visibili al centro di ogni card. Anche se sono solo numeri grezzi, racchiuderli in card con un'ombra leggera rende l'interfaccia molto più moderna e pulita.
+
+2. Fragment Gestione Utenti (Moderazione)
+Visto che hai già il modulo per le segnalazioni, questa schermata sarà il fulcro dell'attività di moderazione.
+
+Layout: Una RecyclerView che mostra la lista degli utenti.
+
+Elementi:
+
+Barra di ricerca in alto per trovare un utente specifico per nome.
+
+Filtri (es. bottoni a chip sotto la ricerca: "Tutti", "Segnalati", "Sospesi").
+
+Lista (RecyclerView): Ogni elemento della lista mostra l'avatar, il nome utente e un badge rosso se ci sono segnalazioni attive.
+
+Interazione (Il blocco/sospensione): Invece di mettere i bottoni "Blocca/Sospendi" direttamente nella lista (che rischia di causare clic accidentali), fai in modo che cliccando su un utente si apra un BottomSheetDialog (un pannello che scorre dal basso). Lì mostrerai le motivazioni della segnalazione e i bottoni "Sospendi Utente" (magari con un timer) e "Blocca Utente" (definitivo, magari di colore rosso).
+
+3. Fragment Parole Chiave
+Una schermata classica di tipo CRUD (Create, Read, Update, Delete) per la gestione di un elenco.
+
+Layout: Una RecyclerView semplice.
+
+Elementi:
+
+Un Floating Action Button (FAB) in basso a destra con l'icona "+" per aggiungere una nuova parola chiave. Cliccandolo, si può aprire un semplice AlertDialog con un campo di testo.
+
+Elementi della lista: Ogni riga mostra la parola chiave a sinistra. A destra di ogni riga, metti due piccole icone: una matita (Modifica) e un cestino (Elimina).
+
+UX Tip: Aggiungi una finestra di conferma (Dialog) quando l'admin preme il cestino per evitare cancellazioni per errore.
+
+4. Fragment Profilo & Impostazioni
+La schermata più semplice e personale dell'admin.
+
+Layout: Layout verticale semplice (uno ScrollView se prevedi molti campi, altrimenti un LinearLayout o ConstraintLayout standard).
+
+Elementi:
+
+Immagine di profilo generica (opzionale) o icona admin in alto.
+
+Due TextInputLayout (i campi di testo in stile Material): uno per il Nome Utente e uno per la Password.
+
+Un bottone "Salva Modifiche".
+
+Un bottone di Logout ben distinto. Posizionalo in fondo alla pagina (magari "ancorato" in basso) e fallo di un colore diverso (es. Outlined button rosso o grigio scuro) per separarlo visivamente dalle azioni di salvataggio.
+
+Questa struttura mantiene l'app familiare, ordinata e facile da navigare sia per l'utente che per lo sviluppatore (tu), dato che riutilizzi logiche di navigazione simili a quelle che hai già impostato.

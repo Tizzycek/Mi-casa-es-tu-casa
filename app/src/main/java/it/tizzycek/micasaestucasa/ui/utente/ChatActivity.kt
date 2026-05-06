@@ -40,6 +40,7 @@ class ChatActivity: BaseImageManagerActivity() {
 
         setDetails()
         setupRecyclerView()
+        observeMessages()
 
         binding.sendButton.setOnClickListener {
             inviaMessaggio()
@@ -56,11 +57,6 @@ class ChatActivity: BaseImageManagerActivity() {
         binding.backButton.setOnClickListener {
             finish()
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        observeMessages()
     }
 
     private fun setupRecyclerView() {
@@ -100,7 +96,6 @@ class ChatActivity: BaseImageManagerActivity() {
 
     private fun inviaMessaggio() {
         val messaggio = binding.messageInputEditText.text.toString().trim()
-        binding.messageInputEditText.text?.clear()
 
         binding.sendButton.isEnabled = false
         binding.sendButton.visibility = View.GONE
@@ -118,23 +113,34 @@ class ChatActivity: BaseImageManagerActivity() {
 
         val (immaginiDaCaricare, urlsGiaPresenti) = super.separateImages()
 
-        if (immaginiDaCaricare.isEmpty() && daInviare.contenuto.isBlank()) {
+        if (immaginiDaCaricare.isEmpty() && daInviare.contenuto.isBlank() && urlsGiaPresenti.isEmpty()) {
             mostraErrore("Impossibile inviare un messaggio vuoto")
         } else {
             lifecycleScope.launch {
                 val risultato = MainRepo.getChatRepository().sendMessage(chatId, daInviare, immaginiDaCaricare, infoPreview)
                 risultato.fold(
                     onSuccess = {
-                        super.clearImages()
+                        clearImages()
+                        binding.messageInputEditText.text?.clear()
                     }, onFailure = { e ->
                         mostraErrore(e.message ?: getString(R.string.unknown_error))
-                        binding.messageInputEditText.setText(messaggio)
+
                     }
                 )
+                binding.sendButton.isEnabled = true
+                binding.sendButton.visibility = View.VISIBLE
+                binding.sendProgressBar.visibility = View.GONE
             }
         }
-        binding.sendButton.isEnabled = true
-        binding.sendProgressBar.visibility = View.GONE
-        binding.sendButton.visibility = View.VISIBLE
+    }
+
+    private fun setSendingState(isSending: Boolean) {
+        if (isSending) {
+            binding.sendButton.isEnabled = false
+            binding.sendButton.visibility = View.GONE
+            binding.sendProgressBar.visibility = View.VISIBLE
+        } else {
+
+        }
     }
 }

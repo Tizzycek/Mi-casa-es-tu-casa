@@ -21,8 +21,7 @@ class ImageAdapter(private var images: List<Any> = emptyList(), private val onRe
         // TODO Pro tip: in futuro usa DiffUtil per prestazioni migliori
     }
 
-    inner class ViewHolder(val binding: ItemImagePreviewBinding) :
-        RecyclerView.ViewHolder(binding.root)
+    inner class ViewHolder(val binding: ItemImagePreviewBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemImagePreviewBinding.inflate(LayoutInflater.from(parent.context), parent, false)

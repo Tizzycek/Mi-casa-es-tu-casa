@@ -153,5 +153,13 @@
     <string name="descrivi_problema">Describe some other details</string>
     <string name="segnalazione_inviata">User successfully reported</string>
 
+    <string name="nuovo_messaggio">New message from %1$s %2$s</string>
+    <string name="notifica_prenotazione">Booking notification</string>
+    <string name="notifica_nuova_prenotazione">You have a new booking request</string>
+    <string name="notifica_modifica_prenotazione">The tenant has modified the request details</string>
+    <string name="notifica_prenotazione_annullata">A booking has been cancelled by tenant</string>
+    <string name="notifica_prenotazione_accettata">The owner has confirmed your stay</string>
+    <string name="notifica_prenotazione_rifiutata">Unfortunately, your request was not accepted</string>
+
 
 </resources>

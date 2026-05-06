@@ -1,6 +1,7 @@
 package it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin
 
 import android.net.Uri
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -11,11 +12,14 @@ import it.tizzycek.micasaestucasa.utils.mostraErrore
 abstract class BaseImageManagerActivity: AppCompatActivity() {
     protected val selectedImages = mutableListOf<Any>()
     protected lateinit var imageAdapter: ImageAdapter
+    protected var imagePreviewRecyclerView: RecyclerView? = null
 
     protected fun setupImageRecyclerView(recyclerView: RecyclerView, onImageRemoved: ((Any) -> Unit)? = null) {
+        this.imagePreviewRecyclerView = recyclerView
         imageAdapter = ImageAdapter(selectedImages) { itemDaRimuovere ->
             selectedImages.remove(itemDaRimuovere)
             imageAdapter.updateData(selectedImages.toList())
+            updateRecyclerViewVisibility()
             onImageRemoved?.invoke(itemDaRimuovere)
         }
 
@@ -23,6 +27,11 @@ abstract class BaseImageManagerActivity: AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@BaseImageManagerActivity, LinearLayoutManager.HORIZONTAL, false)
             adapter = imageAdapter
         }
+        updateRecyclerViewVisibility()
+    }
+
+    protected fun updateRecyclerViewVisibility() {
+        imagePreviewRecyclerView?.visibility = if (selectedImages.isEmpty()) View.GONE else View.VISIBLE
     }
 
     protected fun uriToByteArray(uri: Uri): ByteArray? {
@@ -58,17 +67,20 @@ abstract class BaseImageManagerActivity: AppCompatActivity() {
         selectedImages.clear()
         selectedImages.addAll(urls)
         imageAdapter.updateData(selectedImages.toList())
+        updateRecyclerViewVisibility()
     }
 
     protected fun addImages(uris: List<Uri>) {
         if (uris.isNotEmpty()) {
             selectedImages.addAll(uris)
             imageAdapter.updateData(selectedImages.toList())
+            updateRecyclerViewVisibility()
         }
     }
 
     protected fun clearImages() {
         selectedImages.clear()
         imageAdapter.updateData(emptyList())
+        updateRecyclerViewVisibility()
     }
 }
