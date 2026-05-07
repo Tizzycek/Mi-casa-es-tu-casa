@@ -60,7 +60,7 @@ Elementi della lista: Ogni riga mostra la parola chiave a sinistra. A destra di 
 
 UX Tip: Aggiungi una finestra di conferma (Dialog) quando l'admin preme il cestino per evitare cancellazioni per errore.
 
-4. Fragment Profilo & Impostazioni
+4. Fragment Profilo & Impostazioni -> OK
 La schermata più semplice e personale dell'admin.
 
 Layout: Layout verticale semplice (uno ScrollView se prevedi molti campi, altrimenti un LinearLayout o ConstraintLayout standard).

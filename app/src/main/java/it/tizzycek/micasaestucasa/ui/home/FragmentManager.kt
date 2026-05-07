@@ -113,10 +113,10 @@ class FragmentManager: AppCompatActivity() {
         menu.clear()
 
         if (tipo == TipoUtente.ADMIN) {
-            menu.add(0, R.id.statisticheFragment, 0, "Statistiche").setIcon(R.drawable.analytics_24px)
-            menu.add(0, R.id.gestioneUtentiFragment, 1, "Gestione utenti").setIcon(R.drawable.group_search_24px)
-            menu.add(0, R.id.paroleChiaveFragment, 2, "Parole chiave").setIcon(R.drawable.dictionary_24px)
-            menu.add(0, R.id.profiloFragment, 3, "Profilo").setIcon(R.drawable.account_circle_24px)
+            menu.add(0, R.id.statisticheFragment, 0, getString(R.string.panoramica_prenotazioni)).setIcon(R.drawable.analytics_24px)
+            menu.add(0, R.id.gestioneUtentiFragment, 1, getString(R.string.gestione_utenti)).setIcon(R.drawable.group_search_24px)
+            menu.add(0, R.id.paroleChiaveFragment, 2, getString(R.string.parole_chiave)).setIcon(R.drawable.dictionary_24px)
+            menu.add(0, R.id.profiloFragment, 3, getString(R.string.profilo)).setIcon(R.drawable.account_circle_24px)
         } else {
             menu.add(0, R.id.mappaFragment, 0, getString(R.string.esplora)).setIcon(R.drawable.explore_24px)
             menu.add(0, R.id.prenotazioniFragment, 1, getString(R.string.prenotazioni)).setIcon(R.drawable.hotels_24px)

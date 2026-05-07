@@ -65,4 +65,32 @@ class PrenotazioniRepository {
         }
     }
 
+    suspend fun loadStatistics(): Result<Map<String, Int>> {
+        return try {
+            val snapshot = firestore.collection(collection).get().await()
+
+            val stats = mutableMapOf(
+                "totali" to 0,
+                "inAttesa" to 0,
+                "accettate" to 0,
+                "rifiutate" to 0,
+                "annullate" to 0
+            )
+
+            for (doc in snapshot) {
+                stats["totali"] = stats["totali"]!! + 1
+
+                when (doc.getString("statoPrenotazione")) {
+                    "IN_ATTESA" -> stats["inAttesa"] = stats["inAttesa"]!! + 1
+                    "ACCETTATA" -> stats["accettate"] = stats["accettate"]!! + 1
+                    "RIFIUTATA" -> stats["rifiutate"] = stats["rifiutate"]!! + 1
+                    "ANNULLATA" -> stats["annullate"] = stats["annullate"]!! + 1
+                }
+            }
+
+            Result.success(stats)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }

@@ -162,5 +162,9 @@
     <string name="notifica_prenotazione_accettata">The owner has confirmed your stay</string>
     <string name="notifica_prenotazione_rifiutata">Unfortunately, your request was not accepted</string>
 
+    <string name="panoramica_prenotazioni">Booking data</string>
+    <string name="prenotazioni_totali">Total No. of bookings</string>
+    <string name="gestione_utenti">Manage users</string>
+
 
 </resources>
