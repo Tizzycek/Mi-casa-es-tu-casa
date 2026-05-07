@@ -22,7 +22,7 @@
     <color name="teal_700">#00897B</color>
     <color name="gray_stone">#D9D9D9</color>
 
-    <color name="message_sent_background">#DCF8C6</color>
-    <color name="message_received_background">#FFFFFF</color>
     <color name="white_transparent_high">#B3FFFFFF</color>
+
+    <color name="admin_navbar">#FF1285</color>
 </resources>

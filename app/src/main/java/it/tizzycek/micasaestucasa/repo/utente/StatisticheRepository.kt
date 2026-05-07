@@ -30,7 +30,7 @@ class StatisticheRepository {
         }
         else try {
             val doc = firestore.collection(collection).document(idUtente).get().await()
-            val stat = doc.toStatistiche()
+            val stat = if(doc.exists()) doc.toStatistiche() else Statistiche(idUtente)
             statisticheCache[idUtente] = stat
             Result.success(stat)
         } catch (e: Exception) {

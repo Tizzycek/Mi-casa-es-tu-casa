@@ -113,9 +113,9 @@ class FragmentManager: AppCompatActivity() {
         menu.clear()
 
         if (tipo == TipoUtente.ADMIN) {
-            /*menu.add(0, R.id.homeProprietarioFragment, 0, "Home").setIcon(R.drawable.ic_home)
-            menu.add(0, R.id.annunciFragment, 1, "Annunci").setIcon(R.drawable.ic_annunci)
-            menu.add(0, R.id.prenotazioniFragment, 2, "Prenotazioni").setIcon(R.drawable.ic_prenotazioni)*/
+            menu.add(0, R.id.statisticheFragment, 0, "Statistiche").setIcon(R.drawable.analytics_24px)
+            menu.add(0, R.id.gestioneUtentiFragment, 1, "Gestione utenti").setIcon(R.drawable.group_search_24px)
+            menu.add(0, R.id.paroleChiaveFragment, 2, "Parole chiave").setIcon(R.drawable.dictionary_24px)
             menu.add(0, R.id.profiloFragment, 3, "Profilo").setIcon(R.drawable.account_circle_24px)
         } else {
             menu.add(0, R.id.mappaFragment, 0, getString(R.string.esplora)).setIcon(R.drawable.explore_24px)
@@ -133,7 +133,8 @@ class FragmentManager: AppCompatActivity() {
                 binding.bottomNavigation.itemTextColor = getColorStateList(R.color.secondary)
                 binding.bottomNavigation.itemIconTintList = getColorStateList(R.color.secondary)
             } TipoUtente.ADMIN -> {
-
+                binding.bottomNavigation.itemTextColor = getColorStateList(R.color.admin_navbar)
+                binding.bottomNavigation.itemIconTintList = getColorStateList(R.color.admin_navbar)
             }
         }
         binding.bottomNavigation.labelVisibilityMode = NavigationBarView.LABEL_VISIBILITY_LABELED

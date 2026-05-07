@@ -3,36 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_admin"
-    app:startDestination="@id/dashboardAdminFragment">
+    app:startDestination="@id/statisticheFragment">
 
     <fragment
-        android:id="@+id/dashboardAdminFragment"
-        android:name="it.tizzycek.micasaestucasa.ui.admin.DashboardAdminFragment"
+        android:id="@+id/statisticheFragment"
+        android:name="it.tizzycek.micasaestucasa.ui.home.fragments.admin.StatisticheFragment"
         android:label="Dashboard"
-        tools:layout="@layout/fragment_dashboard_admin" />
+        tools:layout="@layout/fragment_statistiche" />
 
     <fragment
         android:id="@+id/gestioneUtentiFragment"
-        android:name="it.tizzycek.micasaestucasa.ui.admin.GestioneUtentiFragment"
+        android:name="it.tizzycek.micasaestucasa.ui.home.fragments.admin.GestioneUtentiFragment"
         android:label="Utenti"
         tools:layout="@layout/fragment_gestione_utenti" />
 
     <fragment
-        android:id="@+id/gestioneAnnunciFragment"
-        android:name="it.tizzycek.micasaestucasa.ui.admin.GestioneAnnunciFragment"
-        android:label="Annunci"
-        tools:layout="@layout/fragment_gestione_annunci" />
-
-    <fragment
-        android:id="@+id/segnalazioniFragment"
-        android:name="it.tizzycek.micasaestucasa.ui.admin.SegnalazioniFragment"
+        android:id="@+id/paroleChiaveFragment"
+        android:name="it.tizzycek.micasaestucasa.ui.home.fragments.admin.ParoleChiaveFragment"
         android:label="Segnalazioni"
-        tools:layout="@layout/fragment_segnalazioni" />
+        tools:layout="@layout/fragment_parole_chiave" />
 
     <fragment
-        android:id="@+id/impostazioniAdminFragment"
-        android:name="it.tizzycek.micasaestucasa.ui.admin.ImpostazioniAdminFragment"
+        android:id="@+id/profiloFragment"
+        android:name="it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.ProfiloFragment"
         android:label="Impostazioni"
-        tools:layout="@layout/fragment_impostazioni_admin" />
+        tools:layout="@layout/fragment_profilo" />
 
 </navigation>

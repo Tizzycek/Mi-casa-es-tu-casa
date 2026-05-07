@@ -123,6 +123,7 @@
     <string name="invalid_password">Confirmed password is different from new password</string>
     <string name="segnala">Report</string>
     <string name="recensioni">Reviews</string>
+    <string name="frase_admin">You are administrator of this application</string>
 
     <string name="ordina_per">Sort by</string>
     <string name="scrivi_una_recensione">Write a review</string>
