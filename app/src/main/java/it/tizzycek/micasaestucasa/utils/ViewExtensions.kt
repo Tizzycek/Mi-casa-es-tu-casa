@@ -51,8 +51,8 @@ fun ChipGroup.setupParoleChiave(scope: CoroutineScope, onSelectionChanged: (List
                     this@setupParoleChiave.addView(chip)
                 }
             },
-            onFailure = {
-                throw Exception("Errore nel caricamento parole chiave: ${it.message}")
+            onFailure = { e ->
+                throw Exception(e)
             }
         )
     }
@@ -74,8 +74,8 @@ fun ChipGroup.paroleChiaveProprieta(scope: CoroutineScope, listaParole: List<Str
                     this@paroleChiaveProprieta.addView(chip)
                 }
             },
-            onFailure = {
-                throw Exception("Errore nel caricamento parole chiave: ${it.message}")
+            onFailure = { e ->
+                throw Exception(e)
             }
         )
 

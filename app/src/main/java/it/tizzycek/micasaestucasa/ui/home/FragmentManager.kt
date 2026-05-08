@@ -80,6 +80,7 @@ class FragmentManager: AppCompatActivity() {
             putExtra("nomeDestinatario", nomeDestinatario)
             putExtra("cognomeDestinatario", cognomeDestinatario)
         }
+        MainRepo.getChatRepository().azzeraMessaggiNonLetti(chatId, MainRepo.getUserRepository().getCurrentUser()?.id!!)
         startActivity(intent)
     }
 

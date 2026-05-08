@@ -26,7 +26,7 @@ class ParoleChiaveRepository {
 
     suspend fun aggiungiParolaChiave(parola: ParoleChiave): Result<Boolean> {
         if (MainRepo.getUserRepository().getCurrentUser()!!.tipo != TipoUtente.ADMIN) {
-            return Result.failure(Exception("Non hai i permessi per aggiungere una parola chiave")) // TODO: stringa
+            return Result.failure(Exception("You are not admin"))
         }
         return try {
             parola.id = UUID.randomUUID().toString()
@@ -35,6 +35,24 @@ class ParoleChiaveRepository {
             Result.success(true)
         } catch (e: Exception) {
             return Result.failure(e)
+        }
+    }
+
+    suspend fun aggiornaParolaChiave(parola: ParoleChiave): Result<Boolean> {
+        return try {
+            firestore.collection(collection).document(parola.id!!).set(parola).await()
+            Result.success(true)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun rimuoviParolaChiave(id: String): Result<Boolean> {
+        return try {
+            firestore.collection(collection).document(id).delete().await()
+            Result.success(true)
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 }
