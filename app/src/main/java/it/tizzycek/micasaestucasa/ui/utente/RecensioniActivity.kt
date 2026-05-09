@@ -17,6 +17,7 @@ import it.tizzycek.micasaestucasa.repo.MainRepo
 import it.tizzycek.micasaestucasa.ui.adapters.RecensioniAdapter
 import it.tizzycek.micasaestucasa.utils.mostraErrore
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 class RecensioniActivity: AppCompatActivity() {
     private lateinit var binding: ActivityRecensioniBinding
@@ -107,7 +108,7 @@ class RecensioniActivity: AppCompatActivity() {
     private fun updateStatisticheUI() {
         statistiche?.let { s ->
             binding.mediaRatingBar.rating = s.mediaRecensioni.toFloat()
-            binding.mediaValoreTextView.text = String.format("%.1f/5", statistiche?.mediaRecensioni)
+            binding.mediaValoreTextView.text = String.format(Locale.getDefault(), "%.1f/5", statistiche?.mediaRecensioni)
             binding.numeroRecensioniTextView.text = getString(R.string.numero_recensioni, s.totaleRecensioni)
 
             statistiche?.let {
@@ -165,16 +166,21 @@ class RecensioniActivity: AppCompatActivity() {
             statistica.fold(
                 onSuccess = { s ->
                     s.aggiungiSegnalazione(segnalazione)
-                    val risultato = MainRepo.getStatisticheRepository().aggiornaStatistiche(utente.id!!, s)
-                    risultato.fold(
-                        onSuccess = {
-                            Toast.makeText(this@RecensioniActivity, getString(R.string.segnalazione_inviata), Toast.LENGTH_LONG).show()
-                        },
-                        onFailure = { e ->
-                            mostraErrore(e.message ?: getString(R.string.unknown_error))
-                            s.rimuoviSegnalazione(segnalazione)
-                        }
-                    )
+                    val r1 = MainRepo.getUserRepository().setReport(utente.id, true)
+                    if (r1.isSuccess) {
+                        val risultato = MainRepo.getStatisticheRepository().aggiornaStatistiche(utente.id!!, s)
+                        risultato.fold(
+                            onSuccess = {
+                                Toast.makeText(this@RecensioniActivity, getString(R.string.segnalazione_inviata), Toast.LENGTH_LONG).show()
+                            },
+                            onFailure = { e ->
+                                mostraErrore(e.message ?: getString(R.string.unknown_error))
+                                s.rimuoviSegnalazione(segnalazione)
+                            }
+                        )
+                    } else {
+                        mostraErrore(r1.exceptionOrNull()?.message ?: getString(R.string.unknown_error))
+                    }
                 },
                 onFailure = { e ->
                     mostraErrore(e.message ?: getString(R.string.unknown_error))

@@ -165,6 +165,34 @@
     <string name="panoramica_prenotazioni">Booking data</string>
     <string name="prenotazioni_totali">Total No. of bookings</string>
     <string name="gestione_utenti">Manage users</string>
+    <string name="filter_all">Show all</string>
+    <string name="filter_banned">Show banned</string>
+    <string name="filter_suspended">Show suspended</string>
+    <string name="search_users_hint">Find user</string>
+    <string name="no_active_reports">No active reports</string>
+    <string name="report_reasons">Report motivations</string>
+    <string name="admin_actions">Actions</string>
+    <string name="suspension_duration">Suspension duration</string>
+    <string name="suspend_user">Suspend user</string>
+    <string name="block_user_permanently">Ban user</string>
+    <string name="default_suspension_24h">Default suspension (24h)</string>
+    <string name="ban_user">Ban user</string>
+    <string name="filter_reported">Show reported</string>
 
+    <string name="ok">OK</string>
+    <string name="sospeso">Suspended</string>
+    <string name="bandito">Banned</string>
 
+    <string name="utente_sospeso">"User suspended successfully"</string>
+    <string name="utente_bandito">"User banned successfully"</string>
+
+    <string-array name="suspension_durations">
+        <item>6 hours</item>
+        <item>12 hours</item>
+        <item>24 hours</item>
+        <item>2 days</item>
+        <item>7 days</item>
+        <item>30 days</item>
+        <item>90 days</item>
+    </string-array>
 </resources>

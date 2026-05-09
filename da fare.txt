@@ -15,7 +15,7 @@ Ciao! Hai un'ottima base di partenza e i requisiti sono molto chiari. Visto che 
 
 Ecco come ti suggerisco di distribuire graficamente gli elementi nei 4 Fragment dedicati all'amministratore:
 
-1. Fragment Dashboard (Statistiche)
+1. Fragment Dashboard (Statistiche) -> OK
 Questa è la schermata ideale per l'accesso iniziale (la "Home" dell'Admin). L'obiettivo è dare una panoramica immediata.
 
 Layout: Usa una griglia o un layout verticale con delle Material Cards per ogni dato.
@@ -47,7 +47,7 @@ Lista (RecyclerView): Ogni elemento della lista mostra l'avatar, il nome utente 
 
 Interazione (Il blocco/sospensione): Invece di mettere i bottoni "Blocca/Sospendi" direttamente nella lista (che rischia di causare clic accidentali), fai in modo che cliccando su un utente si apra un BottomSheetDialog (un pannello che scorre dal basso). Lì mostrerai le motivazioni della segnalazione e i bottoni "Sospendi Utente" (magari con un timer) e "Blocca Utente" (definitivo, magari di colore rosso).
 
-3. Fragment Parole Chiave
+3. Fragment Parole Chiave -> bug interruttore, traduzioni, test
 Una schermata classica di tipo CRUD (Create, Read, Update, Delete) per la gestione di un elenco.
 
 Layout: Una RecyclerView semplice.

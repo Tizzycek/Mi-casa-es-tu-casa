@@ -3,6 +3,8 @@ package it.tizzycek.micasaestucasa.data.recensioni
 import com.google.firebase.firestore.DocumentSnapshot
 import it.tizzycek.micasaestucasa.data.recensioni.Recensione.Companion.toHashMap
 import it.tizzycek.micasaestucasa.data.recensioni.Recensione.Companion.toRecensioni
+import it.tizzycek.micasaestucasa.data.recensioni.Segnalazione.Companion.toHashMap
+import it.tizzycek.micasaestucasa.data.recensioni.Segnalazione.Companion.toSegnalazione
 
 data class Statistiche(val idUtente: String, var mediaRecensioni: Double = 0.0, var totaleRecensioni: Int = 0, var listaRecensioni: List<Recensione> = emptyList(), var listaSegnalazioni: List<Segnalazione> = emptyList()) {
     init {
@@ -43,7 +45,7 @@ data class Statistiche(val idUtente: String, var mediaRecensioni: Double = 0.0, 
                 "mediaRecensioni" to mediaRecensioni,
                 "totaleRecensioni" to totaleRecensioni,
                 "listaRecensioni" to listaRecensioni.map { it.toHashMap() },
-                "listaSegnalazioni" to listaSegnalazioni
+                "listaSegnalazioni" to listaSegnalazioni.map { it.toHashMap() }
             )
         }
 
@@ -53,7 +55,7 @@ data class Statistiche(val idUtente: String, var mediaRecensioni: Double = 0.0, 
                 mediaRecensioni = this["mediaRecensioni"] as? Double ?: 0.0,
                 totaleRecensioni = this["totaleRecensioni"] as? Int ?: 0,
                 listaRecensioni = (this["listaRecensioni"] as? List<Map<String, Any?>>)?.map { it.toRecensioni() } ?: emptyList(),
-                listaSegnalazioni = this["listaSegnalazioni"] as? List<Segnalazione> ?: emptyList()
+                listaSegnalazioni = (this["listaSegnalazioni"] as? List<Map<String, Any?>>)?.map { it.toSegnalazione() } ?: emptyList()
             )
         }
     }

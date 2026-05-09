@@ -1,11 +1,19 @@
 package it.tizzycek.micasaestucasa.repo.utente
 
+import androidx.lifecycle.LifecycleOwner
+import androidx.paging.PagingConfig
+import com.firebase.ui.firestore.SnapshotParser
+import com.firebase.ui.firestore.paging.FirestorePagingOptions
 import com.google.firebase.Firebase
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import com.google.firebase.messaging.FirebaseMessaging
+import it.tizzycek.micasaestucasa.data.utente.Stato
 import it.tizzycek.micasaestucasa.data.utente.TipoUtente
 import it.tizzycek.micasaestucasa.data.utente.Utente
 import it.tizzycek.micasaestucasa.data.utente.Utente.Companion.toHashMap
@@ -77,7 +85,7 @@ class UserRepository {
                 auth.currentUser?.updatePassword(nuovaPassword)?.await()
             }
 
-            val nuovoUtente = Utente(utente?.id!!, utente!!.email, nome, cognome, nascita, utente!!.stato, utente!!.tipo, utente!!.fcmToken)
+            val nuovoUtente = Utente(utente?.id!!, utente!!.email, nome, cognome, nascita, utente!!.stato, false, utente!!.tipo, utente!!.fcmToken)
             salvaUtenteSuFirestore(nuovoUtente)
 
             utente = nuovoUtente
@@ -133,6 +141,17 @@ class UserRepository {
         return null
     }
 
+    suspend fun setReport(idUtente: String?, reported: Boolean): Result<Boolean> {
+        return if (idUtente != null) {
+            try {
+                Firebase.firestore.collection("utenti").document(idUtente).update("segnalato", reported).await()
+                Result.success(true)
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        } else Result.failure(Exception("UID cannot be null"))
+    }
+
     private fun aggiornaTokenFCM(uid: String) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -152,6 +171,53 @@ class UserRepository {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
+        }
+    }
+
+    fun getUserPaging(lifecycleOwner: LifecycleOwner, filterReport: Boolean, filterSuspended: Boolean, filterBanned: Boolean): FirestorePagingOptions<Utente> {
+        var nuovaQuery = Firebase.firestore.collection("utenti").orderBy("nome", Query.Direction.ASCENDING)
+
+        if (filterReport)
+            nuovaQuery = nuovaQuery.whereEqualTo("segnalato", true)
+
+        if (filterSuspended)
+            nuovaQuery = nuovaQuery.whereEqualTo("stato", Stato.SOSPESO.toString())
+
+        if (filterBanned)
+            nuovaQuery = nuovaQuery.whereEqualTo("stato", Stato.BANDITO.toString())
+
+        val config = PagingConfig(20)
+        val parser = SnapshotParser<Utente> { sn ->
+            sn.toUtente() ?: throw Exception("Could not deserialize user")
+        }
+
+        return FirestorePagingOptions.Builder<Utente>().setLifecycleOwner(lifecycleOwner).setQuery(nuovaQuery, config, parser).build()
+
+    }
+
+    suspend fun changeStatus(id: String?, stato: Stato): Result<Boolean> {
+        return if (id != null) {
+            try {
+                Firebase.firestore.collection("utenti").document(id).update("stato", stato.toString()).await()
+                Result.success(true)
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        } else {
+            Result.failure(Exception("User id cannot be null"))
+        }
+    }
+
+    suspend fun setSuspension(id: String?, timestamp: Timestamp): Result<Boolean> {
+        return if (id != null) {
+            try {
+                Firebase.firestore.collection("utenti").document(id).update("suspension", timestamp).await()
+                Result.success(true)
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        } else {
+            Result.failure(Exception("User id cannot be null"))
         }
     }
 }

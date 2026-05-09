@@ -7,9 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.findFragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
@@ -102,16 +100,15 @@ class PrenotazioniAdapter(private val items: List<Prenotazioni>, private val lif
                 binding.root.setOnClickListener {
                     val intent = Intent(binding.root.context, RecensioniActivity::class.java)
                     intent.putExtra("idUtente", prenotazione.affittuarioId)
-                    startActivity(binding.root.context, intent, null)
+                    binding.root.context.startActivity(intent)
                 }
             } else {
                 binding.root.setOnClickListener {
                     val intent = Intent(binding.root.context, DettaglioProprieta::class.java)
                     intent.putExtra("PROPRIETA_ID", prenotazione.proprietaId)
-                    startActivity(binding.root.context, intent, null)
+                    binding.root.context.startActivity(intent)
                 }
             }
-
             configureButtons(tipoUtente, lifecycleOwner, prenotazione)
         }
 
@@ -475,24 +472,3 @@ class PrenotazioniAdapter(private val items: List<Prenotazioni>, private val lif
         return items.size
     }
 }
-
-/*
-Class PrenotazioniAdapter()
-    private val items: List<Prenotazioni>,
-    private val lifecycleOwner: LifecycleOwner,
-    private val onTitleClick: (Prenotazioni) -> Unit // <-- Callback
-) : RecyclerView.Adapter<PrenotazioniAdapter.ViewHolder>() {
-
-    // ... nel bind ...
-    binding.tvNomeProprieta.setOnClickListener {
-        onTitleClick(prenotazione)
-    }
-}
-
-val adapter = PrenotazioniAdapter(lista, viewLifecycleOwner) { prenotazione ->
-    // Gestisci l' intent qui nel Fragment
-    val intent = Intent(requireContext(), DettaglioActivity::class.java)
-    startActivity(intent)
-}
-
- */

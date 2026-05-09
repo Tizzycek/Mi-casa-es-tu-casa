@@ -1,13 +1,13 @@
 package it.tizzycek.micasaestucasa.data.utente
 
 import android.util.Patterns
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
-import it.tizzycek.micasaestucasa.data.recensioni.Statistiche
-import it.tizzycek.micasaestucasa.data.recensioni.Statistiche.Companion.toHashMap
-import it.tizzycek.micasaestucasa.data.recensioni.Statistiche.Companion.toStatistiche
+import it.tizzycek.micasaestucasa.data.utente.Stato
+import java.time.Instant
 import java.time.LocalDate
 
-data class Utente (var id: String?, val email: String, val nome: String, val cognome: String, val nascita: LocalDate, var stato: Stato = Stato.OK, val tipo: TipoUtente, var fcmToken: String? = null) {
+data class Utente (var id: String?, val email: String, val nome: String, val cognome: String, val nascita: LocalDate, var stato: Stato = Stato.OK, var segnalato: Boolean = false, val tipo: TipoUtente, var fcmToken: String? = null, var suspension: Timestamp? = null) {
     init {
         require(Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             "Not a valid Email"
@@ -21,7 +21,6 @@ data class Utente (var id: String?, val email: String, val nome: String, val cog
         return today.year - nascita.year >= 18
     }
 
-    // TODO: perché lo stato è string e non int
     companion object {
         fun Utente.toHashMap(): Map<String, Any?> {
             return hashMapOf(
@@ -31,8 +30,10 @@ data class Utente (var id: String?, val email: String, val nome: String, val cog
                 "cognome" to cognome,
                 "nascita" to nascita.toString(),
                 "tipo" to tipo,
-                "stato" to stato.code,
-                "fcmToken" to fcmToken
+                "stato" to stato.toString(),
+                "segnalato" to segnalato,
+                "fcmToken" to fcmToken,
+                "suspension" to suspension
             )
         }
 
@@ -46,7 +47,9 @@ data class Utente (var id: String?, val email: String, val nome: String, val cog
                 nascita = LocalDate.parse(data["nascita"] as String),
                 tipo = TipoUtente.valueOf(data["tipo"] as? String ?: "AFFITTUARIO"),
                 stato = Stato.valueOf(data["stato"] as? String ?: "OK"),
-                fcmToken = data["fcmToken"] as? String
+                segnalato = data["segnalato"] as? Boolean ?: false,
+                fcmToken = data["fcmToken"] as? String,
+                suspension = data["suspension"] as? Timestamp
             )
         }
     }
