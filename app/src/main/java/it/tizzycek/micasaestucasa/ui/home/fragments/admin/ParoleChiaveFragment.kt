@@ -81,7 +81,7 @@ class ParoleChiaveFragment: Fragment() {
                     lista.add(0, newKeyword) // Aggiunge all'inizio
                     adapter.aggiornaLista(lista)
                     updateEmptyState()
-                    Toast.makeText(requireContext(), "Parola aggiunta correttamente", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), R.string.parola_salvata, Toast.LENGTH_LONG).show()
                 },
                 onFailure = { e ->
                     requireActivity().mostraErrore(e.message ?: getString(R.string.unknown_error))
@@ -105,7 +105,7 @@ class ParoleChiaveFragment: Fragment() {
                         adapter.notifyItemChanged(index)
                         updateEmptyState()
 
-                        Toast.makeText(requireContext(), "Parola aggiornata correttamente", Toast.LENGTH_LONG).show()
+                        Toast.makeText(requireContext(), R.string.parola_salvata, Toast.LENGTH_LONG).show()
                     },
                     onFailure = { e ->
                         requireActivity().mostraErrore(e.message ?: getString(R.string.unknown_error))
@@ -130,26 +130,22 @@ class ParoleChiaveFragment: Fragment() {
 
         val isEditMode = keyword != null
 
-        // Pre-compila se modifica
+        // C'è gia in caso di modifica
         if (isEditMode) {
             etKeyword.setText(keyword.parola)
             cbActive.isChecked = keyword.attiva
         }
 
-        val dialog = MaterialAlertDialogBuilder(requireContext())
-            .setTitle(if (isEditMode) "Modifica parola chiave" else "Nuova parola chiave")
-            .setView(dialogView)
-            .setPositiveButton(if (isEditMode) "Salva" else "Aggiungi") { dialogInterface, _ ->
+        val dialog = MaterialAlertDialogBuilder(requireContext()).setTitle(if (isEditMode) R.string.modifica_parola else R.string.nuova_parola).setView(dialogView)
+            .setPositiveButton(R.string.salva_propriet) { dialogInterface, _ ->
                 val text = etKeyword.text.toString().trim()
 
-                // Validazione semplice
                 when {
                     text.isEmpty() -> {
-                        tilKeyword.error = "Campo obbligatorio"
-                        // Non chiudere il dialog - richiede gestione aggiuntiva
+                        tilKeyword.error = getString(R.string.campo_obbligatorio)
                     }
                     text.length < 2 -> {
-                        tilKeyword.error = "Minimo 2 caratteri"
+                        tilKeyword.error = getString(R.string.due_caratteri)
                     }
                     else -> {
                         if (isEditMode) {
@@ -161,8 +157,7 @@ class ParoleChiaveFragment: Fragment() {
                     }
                 }
             }
-            .setNegativeButton("Annulla", null)
-            .create()
+            .setNegativeButton(R.string.annulla, null).create()
 
         dialog.show()
 
@@ -173,10 +168,10 @@ class ParoleChiaveFragment: Fragment() {
 
             when {
                 text.isEmpty() -> {
-                    tilKeyword.error = "Campo obbligatorio"
+                    tilKeyword.error = getString(R.string.campo_obbligatorio)
                 }
                 text.length < 2 -> {
-                    tilKeyword.error = "Minimo 2 caratteri"
+                    tilKeyword.error = getString(R.string.due_caratteri)
                 }
                 else -> {
                     if (isEditMode) {
@@ -200,22 +195,34 @@ class ParoleChiaveFragment: Fragment() {
     }
 
     private fun showDeleteConfirmation(keyword: ParoleChiave) {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Elimina parola chiave")
-            .setMessage("Sei sicuro di voler eliminare \"${keyword.parola}\"?")
-            .setPositiveButton("Elimina") { _, _ ->
+        MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.elimina).setMessage(R.string.sei_sicuro_elimina)
+            .setPositiveButton(R.string.elimina) { _, _ ->
                 deleteKeyword(keyword)
             }
-            .setNegativeButton("Annulla", null)
+            .setNegativeButton(R.string.annulla, null)
             .show()
     }
 
     private fun toggleKeywordStatus(keyword: ParoleChiave, isActive: Boolean) {
         val index = lista.indexOfFirst { it.id == keyword.id }
-        if (index != -1) {
-            lista[index] = keyword.copy(attiva = isActive)
-            // Non serve aggiornare tutta la lista, solo notificare il cambiamento
-            adapter.notifyItemChanged(index)
+        if (index != -1 && lista[index].attiva != isActive) {
+            val updatedKeyword = keyword.copy(attiva = isActive)
+            lista[index] = updatedKeyword
+
+            lifecycleScope.launch {
+                val risultato = MainRepo.getParoleChiave().aggiornaParolaChiave(updatedKeyword)
+                risultato.fold(
+                    onSuccess = {
+                        adapter.notifyItemChanged(index)
+                    },
+                    onFailure = { e ->
+                        // In caso di errore, ripristina lo stato precedente
+                        lista[index] = keyword
+                        adapter.notifyItemChanged(index)
+                        requireActivity().mostraErrore(e.message ?: getString(R.string.unknown_error))
+                    }
+                )
+            }
         }
     }
 
@@ -227,7 +234,7 @@ class ParoleChiaveFragment: Fragment() {
                     lista.removeAll { it.id == keyword.id }
                     adapter.aggiornaLista(lista)
                     updateEmptyState()
-                    Toast.makeText(requireContext(), "Parola eliminata", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), R.string.deleted, Toast.LENGTH_LONG).show()
                 },
                 onFailure = { e ->
                     requireActivity().mostraErrore(e.message ?: getString(R.string.unknown_error))

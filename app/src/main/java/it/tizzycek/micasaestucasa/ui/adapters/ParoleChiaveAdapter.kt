@@ -12,6 +12,7 @@ class ParoleChiaveAdapter(private var items: List<ParoleChiave>, private val onE
     inner class ViewHolder(private val binding: ItemKeywordBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(keyword: ParoleChiave) {
             binding.tvKeyword.text = keyword.parola
+            binding.switchActive.setOnCheckedChangeListener(null) // Evita trigger durante il bind
             binding.switchActive.isChecked = keyword.attiva
             binding.tvKeyword.alpha = if (keyword.attiva) 1.0f else 0.5f
 

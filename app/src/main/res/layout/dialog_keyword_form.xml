@@ -9,7 +9,7 @@
         android:id="@+id/til_keyword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Parola chiave"
+        android:hint="@string/parola_chiave"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Parola chiave attiva"
+        android:text="@string/parola_attiva"
         android:checked="true" />
 
 </LinearLayout>

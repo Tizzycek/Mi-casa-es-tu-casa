@@ -57,6 +57,7 @@
     <string name="posti_disponibili">Available places:</string>
     <string name="descrizione_della_propriet">Write a description…</string>
     <string name="parole_chiave">Keywords</string>
+    <string name="parola_chiave">Keyword</string>
     <string name="immagini">Pictures</string>
     <string name="immagine">Picture</string>
     <string name="aggiungi_foto">+ Add photo</string>
@@ -178,6 +179,10 @@
     <string name="default_suspension_24h">Default suspension (24h)</string>
     <string name="ban_user">Ban user</string>
     <string name="filter_reported">Show reported</string>
+    <string name="due_caratteri">At least 2 characters</string>
+    <string name="modifica_parola">Edit keyword</string>
+    <string name="nuova_parola">New keyword</string>
+    <string name="parola_salvata">Keyword successfully saved</string>
 
     <string name="ok">OK</string>
     <string name="sospeso">Suspended</string>
@@ -190,6 +195,7 @@
     <string name="sei_bandito">YOU GOT BANNED</string>
     <string name="schermata_blocco">You got kicked out due to a violation of our terms and conditions.\n\nIf you think there\'s something wrong, please contact our support service.</string>
     <string name="info_sospeso">You will be able to get after %1$s in again</string>
+    <string name="parola_attiva">Mark as active</string>
 
     <string-array name="suspension_durations">
         <item>6 hours</item>
