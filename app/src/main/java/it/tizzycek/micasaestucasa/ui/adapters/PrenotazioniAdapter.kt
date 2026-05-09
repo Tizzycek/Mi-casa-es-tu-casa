@@ -280,7 +280,7 @@ class PrenotazioniAdapter(private val items: List<Prenotazioni>, private val lif
                                     p.vecchiaDataInizio = null
                                     p.vecchiaDataFine = null
 
-                                    notifyItemChanged(adapterPosition)
+                                    notifyItemChanged(bindingAdapterPosition)
 
                                     binding.tvStatoPrenotazione.setBackgroundResource(R.drawable.bg_status_accepted)
                                     binding.tvStatoPrenotazione.setText(R.string.accettata)

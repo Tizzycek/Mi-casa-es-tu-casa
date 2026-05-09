@@ -150,7 +150,7 @@
     <string name="comportamento_scorretto_desc">The behaviour is inappropriate</string>
     <string name="altro">Other</string>
     <string name="altro_desc">The reason is to be specified</string>
-    <string name="dettagli_aggiuntivi">More detalis</string>
+    <string name="dettagli_aggiuntivi">More details</string>
     <string name="descrivi_problema">Describe some other details</string>
     <string name="segnalazione_inviata">User successfully reported</string>
 
@@ -185,6 +185,11 @@
 
     <string name="utente_sospeso">"User suspended successfully"</string>
     <string name="utente_bandito">"User banned successfully"</string>
+
+    <string name="sei_sospeso">YOU GOT SUSPENDED</string>
+    <string name="sei_bandito">YOU GOT BANNED</string>
+    <string name="schermata_blocco">You got kicked out due to a violation of our terms and conditions.\n\nIf you think there\'s something wrong, please contact our support service.</string>
+    <string name="info_sospeso">You will be able to get after %1$s in again</string>
 
     <string-array name="suspension_durations">
         <item>6 hours</item>

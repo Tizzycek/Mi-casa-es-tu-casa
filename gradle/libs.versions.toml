@@ -27,6 +27,8 @@ firebaseStorage = "22.0.1"
 playServicesLocation = "21.3.0"
 firebaseMessaging = "25.0.2"
 swiperefreshlayout = "1.2.0"
+animationCore = "1.11.1"
+coreAnimation = "1.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -55,6 +57,8 @@ androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation
 firebase-storage-ktx = { group = "com.google.firebase", name = "firebase-storage-ktx", version.ref = "firebaseStorageKtx" }
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
+androidx-animation-core = { group = "androidx.compose.animation", name = "animation-core", version.ref = "animationCore" }
+androidx-core-animation = { group = "androidx.core", name = "core-animation", version.ref = "coreAnimation" }
 # firebase-messaging-ktx is deprecated and included in firebase-messaging
 
 [plugins]

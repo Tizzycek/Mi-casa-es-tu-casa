@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="32dp">
+
+    <!-- Contenitore lucchetto animato -->
+    <RelativeLayout
+        android:id="@+id/lockContainer"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="40dp">
+
+        <!-- Cerchio esterno pulsante -->
+        <ImageView
+            android:id="@+id/lockRing"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_centerInParent="true"
+            android:alpha="0.3"
+            android:src="@drawable/ic_lock_ring" />
+
+        <!-- Lucchetto -->
+        <ImageView
+            android:id="@+id/lockIcon"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_lock_open"
+            android:contentDescription="Lucchetto che si chiude" />
+
+    </RelativeLayout>
+
+    <!-- Titolo animato -->
+    <TextView
+        android:id="@+id/titleBanned"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:letterSpacing="0.1"
+        android:gravity="center"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Linea separatrice animata -->
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:background="#F31207"
+        android:layout_marginBottom="24dp" />
+
+    <!-- Messaggio di avviso -->
+    <TextView
+        android:id="@+id/messageBanned"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0"
+        android:text="@string/schermata_blocco"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp"
+        android:layout_marginBottom="48dp" />
+
+    <!-- Pulsante contatta supporto -->
+    <Button
+        android:id="@+id/btnSupport"
+        android:layout_width="220dp"
+        android:layout_height="48dp"
+        android:alpha="0"
+        android:text="@string/logout"
+        android:textSize="14sp"
+        android:background="@drawable/btn_support_bg"
+        android:textAllCaps="false" />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"/>
+
+    <TextView
+        android:id="@+id/suspendInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0"
+        android:textSize="16sp"
+        android:visibility="visible"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp"
+        android:layout_marginBottom="48dp" />
+
+</LinearLayout>

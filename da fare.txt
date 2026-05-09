@@ -76,3 +76,6 @@ Un bottone "Salva Modifiche".
 Un bottone di Logout ben distinto. Posizionalo in fondo alla pagina (magari "ancorato" in basso) e fallo di un colore diverso (es. Outlined button rosso o grigio scuro) per separarlo visivamente dalle azioni di salvataggio.
 
 Questa struttura mantiene l'app familiare, ordinata e facile da navigare sia per l'utente che per lo sviluppatore (tu), dato che riutilizzi logiche di navigazione simili a quelle che hai già impostato.
+
+
+Ancora schermate, poi problemi (eccezione switch parola chiave, ricerca e filtri utente)

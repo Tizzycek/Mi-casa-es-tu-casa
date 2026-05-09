@@ -6,8 +6,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
+import it.tizzycek.micasaestucasa.data.utente.Stato
 import it.tizzycek.micasaestucasa.repo.MainRepo
 import it.tizzycek.micasaestucasa.ui.home.FragmentManager
+import it.tizzycek.micasaestucasa.ui.utente.BannedActivity
 import it.tizzycek.micasaestucasa.ui.utente.LoginActivity
 import kotlinx.coroutines.launch
 
@@ -32,8 +34,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkUserAndNavigate() {
         val intent = if (MainRepo.getUserRepository().isLoggedIn() && MainRepo.getUserRepository().getCurrentUser() != null) {
-            Intent(this, FragmentManager::class.java)
-        } else {
+            if (MainRepo.getUserRepository().getCurrentUser()?.stato == Stato.OK)
+                Intent(this, FragmentManager::class.java)
+            else
+                Intent(this, BannedActivity::class.java)
+        }
+        else {
             Intent(this, LoginActivity::class.java)
         }
 

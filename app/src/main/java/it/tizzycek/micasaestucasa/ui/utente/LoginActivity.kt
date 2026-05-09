@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import it.tizzycek.micasaestucasa.R
+import it.tizzycek.micasaestucasa.data.utente.Stato
 import it.tizzycek.micasaestucasa.databinding.LoginBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo
 import it.tizzycek.micasaestucasa.ui.home.FragmentManager
@@ -56,7 +57,10 @@ class LoginActivity() : AppCompatActivity() {
             onSuccess = {
                 val profilo = MainRepo.getUserRepository().getCurrentUser()
                 if (profilo != null) {
-                    startActivity(Intent(this, FragmentManager::class.java))
+                    if (profilo.stato == Stato.OK)
+                        startActivity(Intent(this, FragmentManager::class.java))
+                    else
+                        startActivity(Intent(this, BannedActivity::class.java))
                     finish()
                 }
             },

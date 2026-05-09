@@ -63,7 +63,7 @@ class ChatPreviewAdapter(private var items: List<ChatPreview>): RecyclerView.Ada
 
                 MainRepo.getChatRepository().azzeraMessaggiNonLetti(chatId, currentUserId)
 
-                startActivity(binding.root.context, intent, null)
+                binding.root.context.startActivity(intent)
             }
         }
     }

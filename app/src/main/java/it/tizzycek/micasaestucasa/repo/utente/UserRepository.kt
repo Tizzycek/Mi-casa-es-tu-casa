@@ -7,7 +7,6 @@ import com.firebase.ui.firestore.paging.FirestorePagingOptions
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -23,6 +22,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import java.time.Instant
 import java.time.LocalDate
 import java.util.Locale
 
@@ -42,6 +42,10 @@ class UserRepository {
             auth.signInWithEmailAndPassword(email, password).await()
             val uid = auth.currentUser?.uid ?: throw Exception("UID nullo")
             utente = beccaDatiUtente(uid)
+
+            utente?.suspension?.let { suspension ->
+                controlloSospensione(suspension.toInstant())
+            }
 
             aggiornaTokenFCM(uid)
             
@@ -134,6 +138,11 @@ class UserRepository {
         val firebaseUser = auth.currentUser
         if (firebaseUser != null) {
             val dati = beccaDatiUtente(firebaseUser.uid)
+
+            utente?.suspension?.let { suspension ->
+                controlloSospensione(suspension.toInstant())
+            }
+
             this.utente = dati
             aggiornaTokenFCM(firebaseUser.uid)
             return dati
@@ -218,6 +227,24 @@ class UserRepository {
             }
         } else {
             Result.failure(Exception("User id cannot be null"))
+        }
+    }
+
+    private suspend fun controlloSospensione(sus: Instant) {
+        val now = Instant.now()
+        if (now.isAfter(sus)) {
+            val userId = utente?.id
+            if (userId != null) {
+                try {
+                    Firebase.firestore.collection("utenti").document(userId).update("suspension", null).await()
+
+                    changeStatus(userId, Stato.OK)
+
+                    utente?.suspension = null
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
         }
     }
 }
