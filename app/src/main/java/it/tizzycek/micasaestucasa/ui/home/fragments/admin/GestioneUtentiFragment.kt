@@ -1,6 +1,8 @@
 package it.tizzycek.micasaestucasa.ui.home.fragments.admin
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +14,8 @@ import it.tizzycek.micasaestucasa.databinding.FragmentGestioneUtentiBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo
 import it.tizzycek.micasaestucasa.ui.adapters.GestioneUtentiAdapter
 import it.tizzycek.micasaestucasa.utils.mostraErrore
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class GestioneUtentiFragment: Fragment() {
@@ -20,6 +24,8 @@ class GestioneUtentiFragment: Fragment() {
     private var filtroSegnalati = false
     private var filtroSospesi = false
     private var filtroBanditi = false
+    private var ricercaJob: Job? = null
+    private var ricerca = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_gestione_utenti, container, false)
@@ -54,7 +60,6 @@ class GestioneUtentiFragment: Fragment() {
         }
     }
 
-    // TODO i filtri non funzionano
     private fun setupFilters() {
         binding.chipReported.setOnCheckedChangeListener { _, isChecked ->
             filtroSegnalati = isChecked
@@ -70,13 +75,39 @@ class GestioneUtentiFragment: Fragment() {
             filtroBanditi = isChecked
             aggiornaFiltri()
         }
+
+        setupSearch()
     }
 
     private fun aggiornaFiltri() {
-        // Ricrea le opzioni con i nuovi filtri
-        val nuoveOpzioni = MainRepo.getUserRepository().getUserPaging(this, filtroSegnalati, filtroSospesi, filtroBanditi)
+        binding.loadingProgressBar.visibility = View.VISIBLE
+        val nuoveOpzioni = MainRepo.getUserRepository().getUserPaging(this, filtroSegnalati, filtroSospesi, filtroBanditi, ricerca)
 
-        // Aggiorna l'adapter con le nuove opzioni
-        adapter.updateOptions(nuoveOpzioni)
+        adapter = GestioneUtentiAdapter(nuoveOpzioni, parentFragmentManager) { id ->
+            setReportedFalse(id)
+        }
+        binding.usersRecyclerView.adapter = adapter
+
+        binding.usersRecyclerView.postDelayed({
+            binding.loadingProgressBar.visibility = View.GONE
+        }, 300)
+    }
+
+    private fun setupSearch() {
+        binding.searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                ricercaJob?.cancel()
+
+                ricercaJob = lifecycleScope.launch {
+                    delay(500) // ritardo per aspettare la fine della digitazione
+                    ricerca = s?.toString()?.trim() ?: ""
+                    aggiornaFiltri()
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
     }
 }

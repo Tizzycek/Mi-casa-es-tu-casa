@@ -169,7 +169,7 @@
     <string name="filter_all">Show all</string>
     <string name="filter_banned">Show banned</string>
     <string name="filter_suspended">Show suspended</string>
-    <string name="search_users_hint">Find user</string>
+    <string name="search_users_hint">Find user by email</string>
     <string name="no_active_reports">No active reports</string>
     <string name="report_reasons">Report motivations</string>
     <string name="admin_actions">Actions</string>

@@ -48,7 +48,7 @@ class UserRepository {
             }
 
             aggiornaTokenFCM(uid)
-            
+
             Result.success(true)
         } catch (e: Exception) {
             Result.failure(e)
@@ -183,8 +183,8 @@ class UserRepository {
         }
     }
 
-    fun getUserPaging(lifecycleOwner: LifecycleOwner, filterReport: Boolean, filterSuspended: Boolean, filterBanned: Boolean): FirestorePagingOptions<Utente> {
-        var nuovaQuery = Firebase.firestore.collection("utenti").orderBy("nome", Query.Direction.ASCENDING)
+    fun getUserPaging(lifecycleOwner: LifecycleOwner, filterReport: Boolean, filterSuspended: Boolean, filterBanned: Boolean, searchQuery: String? = null): FirestorePagingOptions<Utente> {
+        var nuovaQuery: Query = Firebase.firestore.collection("utenti")
 
         if (filterReport)
             nuovaQuery = nuovaQuery.whereEqualTo("segnalato", true)
@@ -195,13 +195,22 @@ class UserRepository {
         if (filterBanned)
             nuovaQuery = nuovaQuery.whereEqualTo("stato", Stato.BANDITO.toString())
 
+        val hasEqualityFilter = filterReport || filterSuspended || filterBanned
+
+        nuovaQuery = when {
+            !searchQuery.isNullOrBlank() ->
+                nuovaQuery.whereGreaterThanOrEqualTo("email", searchQuery).whereLessThanOrEqualTo("email", searchQuery + "\uf8ff").orderBy("email", Query.Direction.ASCENDING)
+            !hasEqualityFilter -> nuovaQuery.orderBy("nome", Query.Direction.ASCENDING) // non è possibile l'ordinamento se ci sono filtri attivi
+            else -> nuovaQuery
+        }
+
+
         val config = PagingConfig(20)
         val parser = SnapshotParser<Utente> { sn ->
             sn.toUtente() ?: throw Exception("Could not deserialize user")
         }
 
         return FirestorePagingOptions.Builder<Utente>().setLifecycleOwner(lifecycleOwner).setQuery(nuovaQuery, config, parser).build()
-
     }
 
     suspend fun changeStatus(id: String?, stato: Stato): Result<Boolean> {
