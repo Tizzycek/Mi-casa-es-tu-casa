@@ -56,8 +56,12 @@ class MessaggisticaFragment: Fragment() {
             a.catch { e ->
                 requireActivity().mostraErrore(e.message ?: getString(R.string.unknown_error))
             }.collect { lista ->
-                messagePreviewAdapter.aggiornaLista(lista)
-                listaAnteprime = lista
+                if (lista.isEmpty()) {
+                    binding.emptyStateLayout.visibility = View.VISIBLE
+                } else {
+                    messagePreviewAdapter.aggiornaLista(lista)
+                    listaAnteprime = lista
+                }
             }
         }
         binding.loadingProgressBar.visibility = View.GONE

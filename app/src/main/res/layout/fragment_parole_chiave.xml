@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@color/backgroundColor"
     tools:context=".ui.home.fragments.admin.ParoleChiaveFragment">
 
     <!-- Layout principale -->
@@ -14,19 +14,29 @@
         android:layout_height="match_parent">
 
         <!-- TextView per stato vuoto -->
-        <TextView
-            android:id="@+id/tv_empty_state"
+        <LinearLayout
+            android:id="@+id/layoutEmpty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Nessuna parola chiave presente"
-            android:textSize="16sp"
-            android:textColor="@android:color/darker_gray"
-            android:visibility="gone"
-            android:drawableTop="@android:drawable/ic_menu_search"
-            android:drawablePadding="16dp"
+            android:layout_gravity="center"
             android:gravity="center"
-            tools:visibility="visible" />
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_no_keywords"
+                app:tint="@color/light_gray" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/no_parole"
+                android:textColor="@color/light_gray"
+                android:textSize="16sp" />
+        </LinearLayout>
 
 
         <!-- RecyclerView -->

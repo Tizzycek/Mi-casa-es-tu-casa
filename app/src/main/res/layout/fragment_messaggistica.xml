@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Nessuna conversazione"
+            android:text="@string/no_messages"
             android:textSize="16sp"
             android:textColor="@color/gray"
             android:fontFamily="sans-serif-medium" />
@@ -63,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Inizia una nuova chat"
+            android:text="@string/start_chat"
             android:textSize="14sp"
             android:textColor="@color/light_gray" />
 

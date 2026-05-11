@@ -135,6 +135,3 @@
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
-
-<!-- stile bottone cambiato: style="@style/Widget.MaterialComponents.Button.OutlinedButton"
- -->

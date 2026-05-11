@@ -105,22 +105,22 @@
             <Button
                 android:id="@+id/btnLogin"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
+                android:minHeight="56dp"
                 android:backgroundTint="@color/primary"
                 android:text="@string/login"
                 android:textSize="16sp"
-                android:textColor="?android:attr/colorBackground"
+                android:textColor="?android:textColorPrimaryInverse"
                 android:textAllCaps="false"
                 android:padding="16dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="16dp"/>
 
-            <!-- Link alla Registrazione -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center">
+                android:gravity="center_horizontal|center_vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -128,22 +128,17 @@
                     android:text="@string/dont_have_account"
                     android:textColor="?android:attr/textColorPrimary"/>
 
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    />
-
                 <Button
                     android:id="@+id/btnSignUp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@null"
+                    android:background="?attr/selectableItemBackground"
                     android:text="@string/registrati_subito"
-                    android:textColor="?android:attr/colorBackground"
+                    android:textColor="@color/primary"
                     android:textSize="14sp"
                     android:textAllCaps="false"
-                    android:padding="8dp"/>
+                    android:layout_marginStart="8dp"
+                    style="?android:attr/borderlessButtonStyle"/>
             </LinearLayout>
 
         </LinearLayout>

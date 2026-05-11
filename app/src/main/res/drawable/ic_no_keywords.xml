@@ -1,0 +1,66 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+
+    <!-- Sfondo circolare chiaro -->
+    <path
+        android:fillColor="#F0F0F0"
+        android:pathData="M60,60 m-50,0 a50,50 0 1,1 100,0 a50,50 0 1,1 -100,0"/>
+
+    <!-- Lucchetto (Corpo e Arco) -->
+    <!-- Arco -->
+    <path
+        android:strokeColor="@color/secondary"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:pathData="M48,55v-8c0,-6 5,-11 11,-11s11,5 11,11v8"/>
+    <!-- Corpo -->
+    <path
+        android:fillColor="@color/secondary"
+        android:pathData="M44,56h30c2.2,0 4,1.8 4,4v18c0,2.2 -1.8,4 -4,4h-30c-2.2,0 -4,-1.8 -4,-4v-18c0,-2.2 1.8,-4 4,-4z"/>
+
+    <!-- Ingresso per chiave (Buco della serratura: Cerchio + Rettangolo uniti) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M59,67a3,3 0 1,0 0,6a3,3 0 1,0 0,-6z M57,71h4v8h-4z"/>
+
+    <!-- Simbolo hashtag # (keyword) -->
+    <path
+        android:strokeColor="#9E9E9E"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:pathData="M82,42l-4,22M88,42l-4,22M76,48h20M74,56h20"/>
+
+    <!-- Tratteggio (parole mancanti) -->
+    <path
+        android:strokeColor="#E0E0E0"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:pathData="M35,88h18M35,94h26M35,100h14"/>
+
+    <!-- Lente di ingrandimento -->
+    <path
+        android:strokeColor="#BDBDBD"
+        android:strokeWidth="2.5"
+        android:pathData="M88,76m-8,0a8,8 0 1,1 16,0a8,8 0 1,1 -16,0"/>
+    <path
+        android:strokeColor="#BDBDBD"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:pathData="M94,82l8,8"/>
+
+    <!-- Crocetta rossa (assenza) -->
+    <path
+        android:strokeColor="#F31207"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:pathData="M72,34l10,10M82,34l-10,10"/>
+
+    <!-- Piccola stella (keyword popolare) -->
+    <path
+        android:fillColor="#FFD54F"
+        android:pathData="M30,32l1.5,3.5l3.5,0.5l-2.5,2.5l0.5,3.5l-3,-1.5l-3,1.5l0.5,-3.5l-2.5,-2.5l3.5,-0.5z"/>
+
+</vector>

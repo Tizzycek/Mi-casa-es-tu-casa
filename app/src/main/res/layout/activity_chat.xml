@@ -169,7 +169,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
                     android:background="@drawable/message_input_background"
-                    android:hint="Scrivi un messaggio..."
+                    android:hint="@string/write_message"
                     android:inputType="textCapSentences|textMultiLine"
                     android:maxLines="5"
                     android:paddingStart="16dp"

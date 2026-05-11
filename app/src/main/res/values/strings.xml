@@ -111,6 +111,11 @@
     <string name="annullata">Cancelled</string>
     <string name="pending_loading">Loading…</string>
     <string name="esito_prenotazione">Booking request successfully</string>
+    <string name="no_booking">No booking found</string>
+
+    <string name="write_message">Write a message...</string>
+    <string name="no_messages">Nobody chatted with you yet</string>
+    <string name="start_chat">Start being a chatterbox now</string>
 
     <string name="visualizza_recensioni">Show reviews</string>
     <string name="modifica_utente">Edit user</string>
@@ -124,7 +129,7 @@
     <string name="invalid_password">Confirmed password is different from new password</string>
     <string name="segnala">Report</string>
     <string name="recensioni">Reviews</string>
-    <string name="frase_admin">You are administrator of this application</string>
+    <string name="frase_admin">You are administrator of this application\n#1) Respect the privacy of others.\n#2) Think before you type.\n#3) With great power comes great responsibility.</string>
 
     <string name="ordina_per">Sort by</string>
     <string name="scrivi_una_recensione">Write a review</string>
@@ -196,6 +201,8 @@
     <string name="schermata_blocco">You got kicked out due to a violation of our terms and conditions.\n\nIf you think there\'s something wrong, please contact our support service.</string>
     <string name="info_sospeso">You will be able to get after %1$s in again</string>
     <string name="parola_attiva">Mark as active</string>
+    <string name="no_parole">No keyword found</string>
+    <string name="nessuna_recensione">Nobody has reviewed you yet</string>
 
     <string-array name="suspension_durations">
         <item>6 hours</item>

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
+    android:background="@color/backgroundColor"
     android:padding="16dp">
 
     <LinearLayout
@@ -18,7 +18,7 @@
             android:text="@string/panoramica_prenotazioni"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:textColor="#212121"
+            android:textColor="?attr/colorOnSurface"
             android:layout_marginBottom="20dp"
             android:fontFamily="sans-serif-medium" />
 
@@ -99,7 +99,6 @@
                 android:layout_rowWeight="1"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="#FFFFFF"
                 android:clickable="false"
                 android:focusable="false"
                 android:foreground="?attr/selectableItemBackground">
@@ -126,7 +125,7 @@
                         android:text="NaN"
                         android:textSize="32sp"
                         android:textStyle="bold"
-                        android:textColor="#212121"
+                        android:textColor="?android:textColorPrimary"
                         android:fontFamily="sans-serif-medium" />
 
                     <TextView
@@ -151,7 +150,6 @@
                 android:layout_rowWeight="1"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="#FFFFFF"
                 android:clickable="false"
                 android:focusable="false"
                 android:foreground="?attr/selectableItemBackground">
@@ -178,7 +176,7 @@
                         android:text="NaN"
                         android:textSize="32sp"
                         android:textStyle="bold"
-                        android:textColor="#212121"
+                        android:textColor="?android:textColorPrimary"
                         android:fontFamily="sans-serif-medium" />
 
                     <TextView
@@ -203,7 +201,6 @@
                 android:layout_rowWeight="1"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="#FFFFFF"
                 android:clickable="false"
                 android:focusable="false"
                 android:foreground="?attr/selectableItemBackground">
@@ -230,7 +227,7 @@
                         android:text="NaN"
                         android:textSize="32sp"
                         android:textStyle="bold"
-                        android:textColor="#212121"
+                        android:textColor="?android:textColorPrimary"
                         android:fontFamily="sans-serif-medium" />
 
                     <TextView
@@ -255,7 +252,6 @@
                 android:layout_rowWeight="1"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="#FFFFFF"
                 android:clickable="false"
                 android:focusable="false"
                 android:foreground="?attr/selectableItemBackground">
@@ -282,7 +278,7 @@
                         android:text="NaN"
                         android:textSize="32sp"
                         android:textStyle="bold"
-                        android:textColor="#212121"
+                        android:textColor="?android:textColorPrimary"
                         android:fontFamily="sans-serif-medium" />
 
                     <TextView

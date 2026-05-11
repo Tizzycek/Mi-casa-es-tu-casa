@@ -52,6 +52,8 @@ class ParoleChiaveFragment: Fragment() {
             risultato.fold(
                 onSuccess = {
                     lista = it.toMutableList()
+
+                    updateEmptyState()
                     adapter.aggiornaLista(lista)
                 },
                 onFailure = { e ->
@@ -116,7 +118,7 @@ class ParoleChiaveFragment: Fragment() {
     }
 
     private fun updateEmptyState() {
-        binding.tvEmptyState.visibility = if (lista.isEmpty()) View.VISIBLE else View.GONE
+        binding.layoutEmpty.visibility = if (lista.isEmpty()) View.VISIBLE else View.GONE
     }
 
     private fun showKeywordDialog(keyword: ParoleChiave?) {

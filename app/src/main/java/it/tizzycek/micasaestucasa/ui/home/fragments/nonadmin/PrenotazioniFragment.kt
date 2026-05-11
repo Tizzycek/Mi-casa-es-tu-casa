@@ -45,8 +45,12 @@ class PrenotazioniFragment: Fragment() {
                         prenotazioni.dataPrenotazione
                     }
 
-                    val adapter = PrenotazioniAdapter(listaPrenotazioni, viewLifecycleOwner, utente.tipo)
-                    binding.rvPrenotazioni.adapter = adapter
+                    if (listaPrenotazioni.isEmpty()) {
+                        binding.layoutEmpty.visibility = View.VISIBLE
+                    } else {
+                        val adapter = PrenotazioniAdapter(listaPrenotazioni, viewLifecycleOwner, utente.tipo)
+                        binding.rvPrenotazioni.adapter = adapter
+                    }
                 },
                 onFailure = { e ->
                     requireActivity().mostraErrore(e.message ?: getString(R.string.unknown_error))

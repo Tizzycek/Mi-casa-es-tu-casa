@@ -112,12 +112,15 @@ class RecensioniActivity: AppCompatActivity() {
             binding.numeroRecensioniTextView.text = getString(R.string.numero_recensioni, s.totaleRecensioni)
 
             statistiche?.let {
-                if (it.mediaRecensioni >= 4.5 && it.totaleRecensioni >= 10)
+                if (s.mediaRecensioni >= 4.5 && s.totaleRecensioni >= 10)
                     binding.badgeImageView.visibility = View.VISIBLE
             }
 
             // Notifica l'adapter con la nuova lista
-            adapter.updateData(s.listaRecensioni)
+            if (s.listaRecensioni.isEmpty())
+                binding.emptyStateLayout.visibility = View.VISIBLE
+            else
+                adapter.updateData(s.listaRecensioni)
         }
     }
 

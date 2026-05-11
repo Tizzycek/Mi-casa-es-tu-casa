@@ -18,7 +18,6 @@ class ImageAdapter(private var images: List<Any> = emptyList(), private val onRe
     fun updateData(newImages: List<Any>) {
         this.images = newImages
         notifyDataSetChanged()
-        // TODO Pro tip: in futuro usa DiffUtil per prestazioni migliori
     }
 
     inner class ViewHolder(val binding: ItemImagePreviewBinding): RecyclerView.ViewHolder(binding.root)

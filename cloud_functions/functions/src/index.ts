@@ -39,32 +39,14 @@ import * as admin from "firebase-admin";
 admin.initializeApp();
 setGlobalOptions({ region: "europe-west1" });
 
-// 1. Definiamo i testi in un oggetto dedicato
-/*const TRANSLATIONS: any = {
-    it: {
-        NUOVA: { title: "Nuova Prenotazione!", body: "Hai una nuova richiesta di prenotazione." },
-        MODIFICATA: { title: "Prenotazione Modificata", body: "L'affittuario ha modificato i dettagli della richiesta." },
-        ANNULLATA: { title: "Prenotazione Annullata", body: "Una prenotazione è stata annullata dall'utente." },
-        ACCETTATA: { title: "Richiesta Accettata!", body: "Il proprietario ha confermato il tuo soggiorno." },
-        RIFIUTATA: { title: "Richiesta Rifiutata", body: "Purtroppo la tua richiesta non è stata accettata." }
-    },
-    en: {
-        NUOVA: { title: "New Booking!", body: "You have a new booking request." },
-        MODIFICATA: { title: "Booking Modified", body: "The tenant has modified the request details." },
-        ANNULLATA: { title: "Booking Cancelled", body: "A booking has been cancelled by the user." },
-        ACCETTATA: { title: "Request Accepted!", body: "The owner has confirmed your stay." },
-        RIFIUTATA: { title: "Request Rejected", body: "Unfortunately, your request was not accepted." }
-    }
-};*/
-
 export const gestoreNotifichePrenotazioni = onDocumentWritten("prenotazioni/{prenotazioneId}", async (event) => {
     const after = event.data?.after.data();
     const before = event.data?.before.data();
 
     if (!after) return;
 
-    let recipientId = "";
-    let actionType = ""; // Useremo questo per pescare la traduzione corretta
+    let recipientId = ""; // chi riceve la notifica
+    let actionType = ""; // per cosa (filtro per traduzione sull'app)
 
     const statoNuovo = after.statoPrenotazione;
     const statoVecchio = before?.statoPrenotazione;
@@ -88,76 +70,51 @@ export const gestoreNotifichePrenotazioni = onDocumentWritten("prenotazioni/{pre
     }
 
     if (recipientId && actionType) {
-        await inviaPushTradotta(recipientId, actionType/*, after.nome || ""*/);
+
+        try {
+            const userDoc = await admin.firestore().collection("utenti").doc(recipientId).get();
+            const userData = userDoc.data();
+    
+            if (!userData || !userData.fcmToken) {
+                console.log(`Notifica non inviata: Token mancante per ${recipientId}`);
+                return;
+            }
+    
+            const message = {
+                //notification: { title, body },
+                token: userData.fcmToken,
+                data: {
+                    type: "PRENOTAZIONE",
+                    actionType
+                }
+            };
+    
+            await admin.messaging().send(message);
+            
+        } catch (error) {
+            console.error("Errore: ", error)
+        }
+
     }
 });
 
-/**
- * Funzione che recupera la lingua dell'utente e invia la notifica corretta
- */
-async function inviaPushTradotta(userId: string, action: string/*, nomeProprieta: string*/) {
-    try {
-        // Recuperiamo il documento dell'utente destinatario
-        const userDoc = await admin.firestore().collection("utenti").doc(userId).get();
-        const userData = userDoc.data();
 
-        if (!userData || !userData.fcmToken) {
-            console.log(`Notifica non inviata: Token mancante per ${userId}`);
-            return;
-        }
-
-        // 2. Determiniamo la lingua (default "it" se non specificata)
-        const lang = userData.lingua === "en" ? "en" : "it";
-        
-        // 3. Prendiamo i testi corrispondenti
-        //let title = TRANSLATIONS[lang][action].title;
-        //let body = TRANSLATIONS[lang][action].body;
-
-        // Aggiungiamo il nome della proprietà se serve (es. Nuova o Accettata)
-        // if (action === "NUOVA" || action === "ACCETTATA") {
-        //     body += nomeProprieta;
-        // }
-
-        
-        const message = {
-            //notification: { title, body },
-            token: userData.fcmToken,
-            data: {
-                type: "PRENOTAZIONE",
-                action
-            }
-        };
-        
-        //if (((action === "NUOVA" || action === "MODIFICATA" || action === "ANNULLATA") && userData.tipoUtente === "PROPRIETARIO") || (((action === "ACCETTATA" || action === "RIFIUTATA") && userData.tipoUtente === "AFFITTUARIO"))) {
-            await admin.messaging().send(message);
-            console.log(`Notifica [${action}] inviata in lingua [${lang}] a ${userId}`);
-        //}
-    } catch (error) {
-        console.error("Errore invio push multilingua:", error);
-    }
-}
-
-// Aggiungi questo in fondo a index.ts
-export const gestoreNotificheMessaggi = onDocumentCreated(
-    "chats/{chatId}/messages/{messageId}",  // ⚠️ Verifica che collectionChats="chats" e collectionMessages="messages"
-    async (event) => {
+export const gestoreNotificheMessaggi = onDocumentCreated("chats/{chatId}/messages/{messageId}",  async (event) => {
         const messageData = event.data?.data();
         if (!messageData) return;
 
-        // Campi dal tuo data class Messaggio
-        const senderId = messageData.mittente as string;      // ✅ mittente (non mittenteId)
-        const receiverId = messageData.destinatario as string; // ✅ destinatario
+        // Campi data class Messaggio
+        const senderId = messageData.mittente as string; 
+        const receiverId = messageData.destinatario as string;
         const chatId = event.params.chatId;
         const contenuto = (messageData.contenuto as string) || "";
 
-        // Preview: gestisce testo + immagini
         let messagePreview: string;
         const imageUrls = messageData.imageUrl as string[] || [];
         if (imageUrls.length > 0) {
-            // Se ci sono immagini: mostra icona + primo pezzo di testo se presente
             messagePreview = contenuto
                 ? `📷 ${contenuto.substring(0, 40)}...`
-                : "📷 Immagine";
+                : "📷";
         } else {
             messagePreview = contenuto.length > 60
                 ? contenuto.substring(0, 60) + "..."
@@ -167,14 +124,10 @@ export const gestoreNotificheMessaggi = onDocumentCreated(
         // Evita notifiche a se stessi
         if (senderId === receiverId) return;
 
-        // 🔍 Recupera nome mittente: PRIORITÀ a userData denormalizzato (più veloce)
         let nome = "";
         let cognome = ""
         try {
-            const chatDoc = await admin.firestore()
-                .collection("chats")  // ⚠️ Conferma che sia il nome esatto di collectionChats
-                .doc(chatId)
-                .get();
+            const chatDoc = await admin.firestore().collection("chats") .doc(chatId).get();
 
             const chatData = chatDoc.data();
             const userData = chatData?.userData as Record<string, any> | undefined;
@@ -183,7 +136,6 @@ export const gestoreNotificheMessaggi = onDocumentCreated(
             if (userData?.[senderId]) {
                 const nomeDoc = userData[senderId].nome as string || "";
                 const cognomeDoc = userData[senderId].cognome as string || "";
-                //senderName = `${nome} ${cognome}`.trim() || "Contatto";
                 nome = nomeDoc
                 cognome = cognomeDoc
             }
@@ -197,9 +149,7 @@ export const gestoreNotificheMessaggi = onDocumentCreated(
             const u = userDoc.data();
             nome = u?.nome
             cognome = u?.cognome
-           // if (u?.nome && u?.cognome) {
-           //     senderName = `${u.nome} ${u.cognome}`;
-           // }
+        
         }
 
         // Recupera token e lingua del destinatario
@@ -214,12 +164,6 @@ export const gestoreNotificheMessaggi = onDocumentCreated(
             return;
         }
 
-        // Traduzione in base alla lingua
-        //const lang = receiverData.lingua === "en" ? "en" : "it";
-        //const title = lang === "it" ? "Nuovo messaggio" : "New message";
-        //const body = `${senderName}: ${messagePreview}`;
-
-        // Payload FCM
         const messagePayload = {
             //notification: { title, body },
             token: receiverData.fcmToken,

@@ -125,7 +125,6 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- TODO Bottone segnala (in alto a destra nell'header) -->
             <Button
                 android:id="@+id/btnSegnala"
                 style="@style/Widget.Material3.Button.OutlinedButton"
@@ -234,43 +233,33 @@
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
-    <!-- Empty state -->
-<!--    <LinearLayout-->
-<!--        android:id="@+id/emptyStateLayout"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_weight="1"-->
-<!--        android:orientation="vertical"-->
-<!--        android:gravity="center"-->
-<!--        android:visibility="gone"-->
-<!--        tools:visibility="visible">-->
+<!--     Empty state -->
+    <LinearLayout
+        android:id="@+id/emptyStateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        tools:visibility="visible">
 
-<!--        <ImageView-->
-<!--            android:layout_width="80dp"-->
-<!--            android:layout_height="80dp"-->
-<!--            android:src="@drawable/ic_empty_reviews"-->
-<!--            android:tint="?android:attr/textColorHint"-->
-<!--            android:layout_marginBottom="16dp"/>-->
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_empty_reviews"
+            android:layout_marginBottom="16dp"
+            app:tint="?android:attr/textColorHint" />
 
-<!--        <TextView-->
-<!--            android:id="@+id/emptyStateTextView"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="@string/nessuna_recensione"-->
-<!--            android:textColor="?android:attr/textColorSecondary"-->
-<!--            android:textSize="16sp"-->
-<!--            android:gravity="center"/>-->
-
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="@string/nessuna_recensione_desc"-->
-<!--            android:textColor="?android:attr/textColorHint"-->
-<!--            android:textSize="14sp"-->
-<!--            android:gravity="center"-->
-<!--            android:layout_marginTop="8dp"-->
-<!--            android:paddingHorizontal="32dp"/>-->
-<!--    </LinearLayout>-->
+        <TextView
+            android:id="@+id/emptyStateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nessuna_recensione"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="16sp"
+            android:gravity="center"/>
+    </LinearLayout>
 
     <!-- Progress Bar -->
     <ProgressBar

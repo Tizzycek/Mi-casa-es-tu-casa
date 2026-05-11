@@ -18,7 +18,6 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.time.temporal.ChronoUnit
 import java.util.Currency
-// TODO: refactor
 
 class PrenotazioneSheet(val listaDisponibilita: List<Disponibilita>, val ospiti: Int, val onPrenotazioneApplicata: (Map<String, Any>) -> Unit) : BottomSheetDialogFragment() {
 
@@ -84,41 +83,25 @@ class PrenotazioneSheet(val listaDisponibilita: List<Disponibilita>, val ospiti:
         }
     }
 
-    // ── Date picker ─────────────────────────────────────────────────────────
 
     private fun setupDatePicker() {
-        // Guard: nothing to pick if there are no availability windows
         if (listaDisponibilita.isEmpty()) {
             requireActivity().mostraErrore(R.string.nessuna_disponibilita)
             return
         }
 
-        // Limit calendar scrolling to the span of actual availability windows
-        val startMs = listaDisponibilita.minOf { it.dataInizio }
-            .atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
-        val endMs = listaDisponibilita.maxOf { it.dataFine }
-            .atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
+        val startMs = listaDisponibilita.minOf { it.dataInizio }.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
+        val endMs = listaDisponibilita.maxOf { it.dataFine }.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
 
-        val constraints = CalendarConstraints.Builder()
-            .setStart(startMs)
-            .setEnd(endMs)
-            .setValidator(DisponibilitaValidator(listaDisponibilita))
-            .build()
+        val constraints = CalendarConstraints.Builder().setStart(startMs).setEnd(endMs).setValidator(DisponibilitaValidator(listaDisponibilita)).build()
 
-        val picker = MaterialDatePicker.Builder.dateRangePicker()
-            .setTitleText(getString(R.string.seleziona_date))
-            .setCalendarConstraints(constraints)
-            .build()
+        val picker = MaterialDatePicker.Builder.dateRangePicker().setTitleText(getString(R.string.seleziona_date)).setCalendarConstraints(constraints).build()
 
         picker.addOnPositiveButtonClickListener { selection ->
-            // selection.first / second are UTC-midnight milliseconds
-            val inizio = Instant.ofEpochMilli(selection.first)
-                .atZone(ZoneOffset.UTC).toLocalDate()
-            val fine = Instant.ofEpochMilli(selection.second)
-                .atZone(ZoneOffset.UTC).toLocalDate()
+            val inizio = Instant.ofEpochMilli(selection.first).atZone(ZoneOffset.UTC).toLocalDate()
+            val fine = Instant.ofEpochMilli(selection.second).atZone(ZoneOffset.UTC).toLocalDate()
 
-            // Guard: the picker validates individual dates but not the whole range,
-            // so a selection spanning a gap between two windows must be rejected here
+
             if (trovaPeriodoCorrispondente(inizio, fine) == null) {
                 binding.root.mostraErrore(getString(R.string.range_non_valido))
                 return@addOnPositiveButtonClickListener
@@ -132,18 +115,14 @@ class PrenotazioneSheet(val listaDisponibilita: List<Disponibilita>, val ospiti:
         picker.show(parentFragmentManager, "DateRangePicker")
     }
 
-    // ── UI helpers ───────────────────────────────────────────────────────────
 
     private fun aggiornaUI() {
         val inizio = dataInizio ?: return
         val fine = dataFine ?: return
 
-        // Show the selected range on the card
         val formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
-        binding.tvBookingDateRange.text =
-            "${inizio.format(formatter)}  –  ${fine.format(formatter)}"
+        binding.tvBookingDateRange.text = "${inizio.format(formatter)}  –  ${fine.format(formatter)}"
 
-        // Calculate cost
         val notti = ChronoUnit.DAYS.between(inizio, fine)
         val disp = trovaPeriodoCorrispondente(inizio, fine)
 
@@ -159,14 +138,7 @@ class PrenotazioneSheet(val listaDisponibilita: List<Disponibilita>, val ospiti:
         }
     }
 
-    /**
-     * Returns the first [Disponibilita] whose window fully contains [inizio]..[fine],
-     * or `null` if no such window exists.
-     */
-    private fun trovaPeriodoCorrispondente(
-        inizio: LocalDate,
-        fine: LocalDate
-    ): Disponibilita? = listaDisponibilita.firstOrNull { disp ->
+    private fun trovaPeriodoCorrispondente(inizio: LocalDate, fine: LocalDate): Disponibilita? = listaDisponibilita.firstOrNull { disp ->
         disp.contiene(inizio) && disp.contiene(fine)
     }
 }

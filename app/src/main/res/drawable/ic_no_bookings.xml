@@ -1,0 +1,70 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+
+    <!-- Sfondo circolare chiaro -->
+    <path
+        android:fillColor="#F0F0F0"
+        android:pathData="M60,60 m-50,0 a50,50 0 1,1 100,0 a50,50 0 1,1 -100,0"/>
+
+    <!-- Icona di un letto (soggiorno) vuoto -->
+    <path
+        android:fillColor="#E0E0E0"
+        android:strokeColor="#BDBDBD"
+        android:strokeWidth="2"
+        android:pathData="M25,75v-15c0,-4 3,-7 7,-7h26c4,0 7,3 7,7v15z"/>
+
+    <!-- Cuscino -->
+    <path
+        android:fillColor="#EEEEEE"
+        android:strokeColor="#CCCCCC"
+        android:strokeWidth="1.5"
+        android:pathData="M32,68h30c2,0 4,2 4,4v3h-30c-2,0 -4,-2 -4,-4z"/>
+
+    <!-- Secondo letto -->
+    <path
+        android:fillColor="#E8E8E8"
+        android:strokeColor="#BDBDBD"
+        android:strokeWidth="2"
+        android:pathData="M25,55v-12c0,-4 3,-6 7,-6h26c4,0 7,2 7,6v12z"/>
+
+    <!-- Crocetta rossa (nessuna prenotazione) -->
+    <path
+        android:strokeColor="#F31207"
+        android:strokeWidth="3.5"
+        android:strokeLineCap="round"
+        android:pathData="M80,35l16,16M96,35l-16,16"/>
+
+    <!-- Calendario (Convertito da rect a path) -->
+    <path
+        android:fillColor="#FAFAFA"
+        android:strokeColor="#BDBDBD"
+        android:strokeWidth="2"
+        android:pathData="M81,58h22c1.6,0 3,1.4 3,3v16c0,1.6 -1.4,3 -3,3h-22c-1.6,0 -3,-1.4 -3,-3v-16c0,-1.6 1.4,-3 3,-3z"/>
+
+    <!-- Griglia calendario -->
+    <path
+        android:strokeColor="#E0E0E0"
+        android:strokeWidth="1.5"
+        android:pathData="M82,64v14M90,64v14M98,64v14M78,68h28M78,74h28"/>
+
+    <!-- Testo vuoto / nessuna data -->
+    <path
+        android:strokeColor="#E0E0E0"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M83,61h16"/>
+
+    <!-- Piccola luna (Sostituito il riferimento dinamico con un colore esadecimale) -->
+    <path
+        android:fillColor="@color/secondary"
+        android:pathData="M45,38c-6,0 -11,-3 -13,-8c-4,2 -6,6 -6,11c0,9 8,16 17,14c6,-2 10,-8 9,-14c-2,2 -5,3 -7,3c-6,0 -10,-4 -10,-9c0,-2 1,-4 2,-5c-2,0 -3,0 -4,1z"/>
+
+    <!-- Puntini di sospensione (Ottimizzati in un unico path) -->
+    <path
+        android:fillColor="#BDBDBD"
+        android:pathData="M50,92m-2,0a2,2 0 1,1 4,0a2,2 0 1,1 -4,0 M60,92m-2,0a2,2 0 1,1 4,0a2,2 0 1,1 -4,0 M70,92m-2,0a2,2 0 1,1 4,0a2,2 0 1,1 -4,0"/>
+
+</vector>

@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -42,6 +44,13 @@ class FragmentManager: AppCompatActivity() {
 
         setupNavigation(utente.tipo)
         handleNotificationIntent(intent)
+
+        // serve a non fare uscire l'applicazione dai bordi
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root.rootView) { v, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(insets.left, insets.top, insets.right, insets.bottom)
+            windowInsets
+        }
     }
 
     override fun onNewIntent(intent: Intent) {
