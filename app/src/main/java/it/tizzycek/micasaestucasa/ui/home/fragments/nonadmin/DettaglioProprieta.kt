@@ -27,6 +27,7 @@ import it.tizzycek.micasaestucasa.ui.utente.RecensioniActivity
 import it.tizzycek.micasaestucasa.utils.DateValidator
 import it.tizzycek.micasaestucasa.utils.mostraErrore
 import it.tizzycek.micasaestucasa.utils.paroleChiaveProprieta
+import it.tizzycek.micasaestucasa.utils.sistemaSchermo
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.LocalDate
@@ -44,6 +45,8 @@ class DettaglioProprieta: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDettaglioProprietaBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        sistemaSchermo(binding.root.rootView)
     }
 
     override fun onResume() {

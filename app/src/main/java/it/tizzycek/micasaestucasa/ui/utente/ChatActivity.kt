@@ -14,6 +14,7 @@ import it.tizzycek.micasaestucasa.repo.MainRepo
 import it.tizzycek.micasaestucasa.ui.adapters.MessageAdapter
 import it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.BaseImageManagerActivity
 import it.tizzycek.micasaestucasa.utils.mostraErrore
+import it.tizzycek.micasaestucasa.utils.sistemaSchermo
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
@@ -57,6 +58,8 @@ class ChatActivity: BaseImageManagerActivity() {
         binding.backButton.setOnClickListener {
             finish()
         }
+
+        sistemaSchermo(binding.root.rootView)
     }
 
     private fun setupRecyclerView() {

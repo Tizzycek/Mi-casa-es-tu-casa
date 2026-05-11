@@ -1,0 +1,216 @@
+<resources>
+    <string name="app_name">Mi Casa es tu Casa</string>
+
+    <string name="email">E-Mail</string>
+    <string name="password">Passwort</string>
+    <string name="login">Login</string>
+    <string name="logout">Abmelden</string>
+    <string name="sign_up">Registrieren</string>
+    <string name="accedi">Anmelden</string>
+    <string name="crea_account">Konto erstellen</string>
+    <string name="registrati_subito">Jetzt registrieren und loslegen</string>
+
+    <string name="dont_have_account">Haben Sie noch kein Konto?</string>
+    <string name="have_account">Haben Sie bereits ein Konto?</string>
+
+    <string name="nome">Vorname</string>
+    <string name="cognome">Nachname</string>
+    <string name="data_nascita">Geburtsdatum</string>
+    <string name="sono">Ich bin ein</string>
+    <string name="seleziona_tipo">Benutzertyp auswählen</string>
+
+    <string name="landlord">Vermieter</string>
+    <string name="tenant">Mieter</string>
+
+    <string name="enter_email">E-Mail eingeben</string>
+    <string name="enter_password">Passwort eingeben</string>
+    <string name="invalid_email">Ungültige E-Mail-Adresse</string>
+    <string name="campo_obbligatorio">Pflichtfeld</string>
+    <string name="password_minima">Passwort muss mindestens 6 Zeichen lang sein</string>
+    <string name="unknown_error">Unbekannter Fehler</string>
+    <string name="invalid_age">Sie müssen über 18 Jahre alt sein</string>
+    <string name="error_registration_success">Registrierung erfolgreich, aber Login fehlgeschlagen</string>
+    <string name="data_missing">Bitte füllen Sie alle Felder aus</string>
+
+    <string name="login_success">Login erfolgreich abgeschlossen</string>
+    <string name="login_fail">Login fehlgeschlagen</string>
+    <string name="notification">Benachrichtigung senden</string>
+
+    <string name="welcome_back">Willkommen zurück!</string>
+    <string name="inserisci_credenziali">Bitte geben Sie Ihre Zugangsdaten ein</string>
+
+    <string name="title_activity_login">Login Aktivität</string>
+    <string name="title_activity_maps">Karten</string>
+
+    <string name="esplora">Entdecken</string>
+    <string name="prenotazioni">Buchungen</string>
+    <string name="messaggistica">Nachrichten</string>
+    <string name="profilo">Profil</string>
+    <string name="inizio">Von</string>
+    <string name="fine">Bis</string>
+    <string name="nuova_propriet">Unterkunft hinzufügen</string>
+    <string name="modifica_proprieta">Unterkunft bearbeiten</string>
+    <string name="informazioni_di_base">Allgemeine Informationen</string>
+    <string name="nome_della_propriet">Name</string>
+    <string name="indirizzo_per_la_mappa">Adresse</string>
+    <string name="inserisci_indirizzo">Adresse eingeben</string>
+    <string name="posti_disponibili">Verfügbare Plätze:</string>
+    <string name="descrizione_della_propriet">Beschreibung schreiben…</string>
+    <string name="parole_chiave">Schlagwörter</string>
+    <string name="parola_chiave">Schlagwort</string>
+    <string name="immagini">Bilder</string>
+    <string name="immagine">Bild</string>
+    <string name="aggiungi_foto">+ Foto hinzufügen</string>
+    <string name="disponibilit_e_prezzi">Verfügbarkeit und Preise</string>
+    <string name="aggiungi_periodo">Datum hinzufügen</string>
+    <string name="salva_propriet">Speichern</string>
+    <string name="date_error">Das eingegebene Datum ist nicht korrekt</string>
+    <string name="date_overlap">Die eingegebenen Daten überschneiden sich</string>
+    <string name="cerca_una_propriet">Unterkunft suchen…</string>
+    <string name="nessuna_immagine">Kein Bild ausgewählt</string>
+    <string name="invalid_address">Die eingegebene Adresse ist ungültig</string>
+    <string name="la_mia_posizione">Mein Standort</string>
+    <string name="descrizione">Beschreibung</string>
+    <string name="prezzo_notte">Preis pro Nacht</string>
+    <string name="modifica">Bearbeiten</string>
+    <string name="elimina">Löschen</string>
+    <string name="annulla">Abbrechen</string>
+    <string name="contatta">Vermieter kontaktieren</string>
+    <string name="prenota">Buchen</string>
+    <string name="permesso_negato">Berechtigung verweigert</string>
+    <string name="deleted">Element erfolgreich gelöscht</string>
+    <string name="sei_sicuro_elimina">Sind Sie sicher, dass Sie dieses Element löschen möchten?</string>
+    <string name="tu">Du</string>
+
+    <string name="no_property_found">Keine Unterkunft gefunden</string>
+    <string name="filtri">Filter</string>
+    <string name="chiudi">Schließen</string>
+    <string name="date">Daten</string>
+    <string name="seleziona_date">Daten auswählen</string>
+    <string name="ospiti">Gast/Gäste</string>
+    <string name="reset">Zurücksetzen</string>
+    <string name="mostra_risultati">Unterkünfte anzeigen</string>
+    <string name="ospitati_da">Gastgeber:</string>
+    <string name="keywords_dettaglio">Hier finden Sie</string>
+    <string name="non_disponibile">Nicht verfügbar</string>
+    <string name="nessuna_disponibilita">Keine Verfügbarkeit für diese Unterkunft definiert</string>
+    <string name="range_non_valido">Der Zeitraum enthält nicht verfügbare Daten. Bitte wählen Sie Daten innerhalb eines Zeitfensters</string>
+    <string name="prenotazione_effettuata">Buchungsanfrage erfolgreich gesendet</string>
+    <string name="conferma_prenotazione">Buchungsanfrage senden</string>
+    <string name="totale">Gesamtbetrag</string>
+    <string name="totale_parziale">Zwischensumme</string>
+    <string name="numero_ospiti">Anzahl der Gäste</string>
+    <string name="periodo_soggiorno">Aufenthaltszeitraum</string>
+    <string name="completa_prenotazione">Buchung abschließen</string>
+
+    <string name="accettata">Akzeptiert</string>
+    <string name="accetta">Bestätigen</string>
+    <string name="rifiutata">Abgelehnt</string>
+    <string name="rifiuta">Ablehnen</string>
+    <string name="in_attesa">Wartend</string>
+    <string name="annullata">Storniert</string>
+    <string name="pending_loading">Ladevorgang…</string>
+    <string name="esito_prenotazione">Buchungsanfrage erfolgreich abgeschlossen</string>
+    <string name="no_booking">Keine Buchung gefunden</string>
+
+    <string name="write_message">Nachricht schreiben...</string>
+    <string name="no_messages">Noch keine Nachrichten vorhanden</string>
+    <string name="start_chat">Jetzt einen Chat starten</string>
+
+    <string name="visualizza_recensioni">Bewertungen anzeigen</string>
+    <string name="modifica_utente">Benutzer bearbeiten</string>
+    <string name="numero_recensioni">%1$d Bewertungen</string>
+    <string name="aggiorna_dati">Daten aktualisieren</string>
+    <string name="nuova_password_opzionale">Neues Passwort</string>
+    <string name="conferma_nuova_password">Neues Passwort bestätigen</string>
+    <string name="lascia_vuoto_per_mantenere">Leer lassen, um aktuelles zu behalten</string>
+    <string name="conferma_password">Passwort bestätigen</string>
+    <string name="updated_user">Benutzer erfolgreich aktualisiert</string>
+    <string name="invalid_password">Die Passwörter stimmen nicht überein</string>
+    <string name="segnala">Melden</string>
+    <string name="recensioni">Bewertungen</string>
+    <string name="frase_admin">Sie sind Administrator dieser Anwendung\n#1) Respektieren Sie die Privatsphäre anderer.\n#2) Erst denken, dann tippen.\n#3) Aus großer Macht folgt große Verantwortung.</string>
+
+    <string name="ordina_per">Sortieren nach</string>
+    <string name="scrivi_una_recensione">Bewertung schreiben</string>
+    <string name="come_valuti_esperienza">Wie war Ihr Aufenthalt?</string>
+    <string name="il_tuo_voto">Ihre Bewertung</string>
+    <string name="scrivi_la_tua_recensione">Schreiben Sie Ihre Bewertung</string>
+    <string name="racconta_esperienza">Erzählen Sie uns von Ihrer Erfahrung</string>
+    <string name="pubblica">Veröffentlichen</string>
+    <string-array name="ordinamenti_recensioni">
+        <item>Neueste</item>
+        <item>Beste</item>
+        <item>Schlechteste</item>
+    </string-array>
+    <string name="recensita">Bewertung erfolgreich veröffentlicht</string>
+    <string name="seleziona_motivazione">Warum melden Sie dies?</string>
+
+    <string name="contenuto_inappropriato">Unangemessener Inhalt</string>
+    <string name="contenuto_inappropriato_desc">Der Inhalt war nicht angemessen</string>
+    <string name="informazioni_false">Falsche Informationen</string>
+    <string name="informazioni_false_desc">Die Informationen sind falsch</string>
+    <string name="spam">Spam</string>
+    <string name="spam_desc">Die Nachricht ist Spam</string>
+    <string name="comportamento_scorretto">Fehlverhalten</string>
+    <string name="comportamento_scorretto_desc">Das Verhalten ist unangemessen</string>
+    <string name="altro">Sonstiges</string>
+    <string name="altro_desc">Der Grund muss spezifiziert werden</string>
+    <string name="dettagli_aggiuntivi">Weitere Details</string>
+    <string name="descrivi_problema">Beschreiben Sie weitere Details zum Problem</string>
+    <string name="segnalazione_inviata">Benutzer erfolgreich gemeldet</string>
+
+    <string name="nuovo_messaggio">Neue Nachricht von %1$s %2$s</string>
+    <string name="notifica_prenotazione">Buchungsbenachrichtigung</string>
+    <string name="notifica_nuova_prenotazione">Sie haben eine neue Buchungsanfrage</string>
+    <string name="notifica_modifica_prenotazione">Der Mieter hat die Details der Anfrage geändert</string>
+    <string name="notifica_prenotazione_annullata">Eine Buchung wurde vom Mieter storniert</string>
+    <string name="notifica_prenotazione_accettata">Der Gastgeber hat Ihren Aufenthalt bestätigt</string>
+    <string name="notifica_prenotazione_rifiutata">Ihre Anfrage wurde leider nicht akzeptiert</string>
+
+    <string name="panoramica_prenotazioni">Buchungsdaten</string>
+    <string name="prenotazioni_totali">Gesamtanzahl Buchungen</string>
+    <string name="gestione_utenti">Benutzerverwaltung</string>
+    <string name="filter_all">Alle anzeigen</string>
+    <string name="filter_banned">Gesperrte anzeigen</string>
+    <string name="filter_suspended">Sustendierte anzeigen</string>
+    <string name="search_users_hint">Benutzer nach E-Mail suchen</string>
+    <string name="no_active_reports">Keine aktiven Meldungen</string>
+    <string name="report_reasons">Gründe für Meldung</string>
+    <string name="admin_actions">Aktionen</string>
+    <string name="suspension_duration">Sperrdauer</string>
+    <string name="suspend_user">Benutzer suspendieren</string>
+    <string name="block_user_permanently">Benutzer permanent sperren</string>
+    <string name="default_suspension_24h">Standard-Sperre (24h)</string>
+    <string name="ban_user">Benutzer bannen</string>
+    <string name="filter_reported">Gemeldete anzeigen</string>
+    <string name="due_caratteri">Mindestens 2 Zeichen</string>
+    <string name="modifica_parola">Schlagwort bearbeiten</string>
+    <string name="nuova_parola">Neues Schlagwort</string>
+    <string name="parola_salvata">Schlagwort erfolgreich gespeichert</string>
+
+    <string name="ok">OK</string>
+    <string name="sospeso">Suspendiert</string>
+    <string name="bandito">Gesperrt</string>
+
+    <string name="utente_sospeso">Benutzer erfolgreich suspendiert</string>
+    <string name="utente_bandito">Benutzer erfolgreich gesperrt</string>
+
+    <string name="sei_sospeso">SIE WURDEN SUSPENDIERT</string>
+    <string name="sei_bandito">SIE WURDEN GESPERRT</string>
+    <string name="schermata_blocco">Sie wurden aufgrund eines Verstoßes gegen unsere Nutzungsbedingungen ausgeschlossen.\n\nWenn Sie dies für einen Fehler halten, kontaktieren Sie bitte unseren Support.</string>
+    <string name="info_sospeso">Sie können sich nach dem %1$s wieder anmelden</string>
+    <string name="parola_attiva">Als aktiv markieren</string>
+    <string name="no_parole">Kein Schlagwort gefunden</string>
+    <string name="nessuna_recensione">Sie haben noch keine Bewertungen erhalten</string>
+
+    <string-array name="suspension_durations">
+        <item>6 Stunden</item>
+        <item>12 Stunden</item>
+        <item>24 Stunden</item>
+        <item>2 Tage</item>
+        <item>7 Tage</item>
+        <item>30 Tage</item>
+        <item>90 Tage</item>
+    </string-array>
+</resources>

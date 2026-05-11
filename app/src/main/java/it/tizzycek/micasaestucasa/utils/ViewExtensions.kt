@@ -1,13 +1,11 @@
 package it.tizzycek.micasaestucasa.utils
-import android.app.Activity
+import androidx.core.content.ContextCompat
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import androidx.core.content.ContextCompat
+import it.tizzycek.micasaestucasa.R
+import it.tizzycek.micasaestucasa.repo.MainRepo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import it.tizzycek.micasaestucasa.R
-import it.tizzycek.micasaestucasa.data.parolechiave.ParoleChiave
-import it.tizzycek.micasaestucasa.repo.MainRepo
 
 /**
  * Popola un ChipGroup con le parole chiave recuperate dal repository.

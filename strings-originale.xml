@@ -1,0 +1,216 @@
+<resources>
+    <string name="app_name" translatable="false">Mi Casa es tu Casa</string>
+
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="logout">Log out</string>
+    <string name="sign_up">Sign up</string>
+    <string name="accedi">Sign in</string>
+    <string name="crea_account">Create Account</string>
+    <string name="registrati_subito">Register now to get started</string>
+
+    <string name="dont_have_account">Don\'t have an account?</string>
+    <string name="have_account">Do you already have an account?</string>
+
+    <string name="nome">First Name</string>
+    <string name="cognome">Surname</string>
+    <string name="data_nascita">Birth date</string>
+    <string name="sono">I\'m a…</string>
+    <string name="seleziona_tipo">Select account type</string>
+
+    <string name="landlord">Landlord</string>
+    <string name="tenant">Tenant</string>
+
+    <string name="enter_email">Please enter email</string>
+    <string name="enter_password">Please enter password</string>
+    <string name="invalid_email">This is not a valid email address</string>
+    <string name="campo_obbligatorio">Required field</string>
+    <string name="password_minima">Password must be at least 6 characters</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="invalid_age">Age must be over 18</string>
+    <string name="error_registration_success">Registration completed but login failed</string>
+    <string name="data_missing">Please, fill all the fields</string>
+
+    <string name="login_success">Login successfully completed</string>
+    <string name="login_fail">Login failed</string>
+    <string name="notification">Send notification</string>
+
+    <string name="welcome_back">Welcome back!</string>
+    <string name="inserisci_credenziali">Please, enter your credentials to log in</string>
+
+    <string name="title_activity_login">Login Activity</string>
+    <string name="title_activity_maps">MapsActivity</string>
+
+    <string name="esplora">Explore</string>
+    <string name="prenotazioni">Reservations</string>
+    <string name="messaggistica">Messaging</string>
+    <string name="profilo">Profile</string>
+    <string name="inizio">From</string>
+    <string name="fine">Till</string>
+    <string name="nuova_propriet">Add Property</string>
+    <string name="modifica_proprieta">Edit Property</string>
+    <string name="informazioni_di_base">Basic Information</string>
+    <string name="nome_della_propriet">Name</string>
+    <string name="indirizzo_per_la_mappa">Address</string>
+    <string name="inserisci_indirizzo">Write an address</string>
+    <string name="posti_disponibili">Available places:</string>
+    <string name="descrizione_della_propriet">Write a description…</string>
+    <string name="parole_chiave">Keywords</string>
+    <string name="parola_chiave">Keyword</string>
+    <string name="immagini">Pictures</string>
+    <string name="immagine">Picture</string>
+    <string name="aggiungi_foto">+ Add photo</string>
+    <string name="disponibilit_e_prezzi">Availability and prices</string>
+    <string name="aggiungi_periodo">Add date</string>
+    <string name="salva_propriet">Save</string>
+    <string name="date_error">The date entered is incorrect</string>
+    <string name="date_overlap">Insert dates cause overlap</string>
+    <string name="cerca_una_propriet">Find an estate…</string>
+    <string name="nessuna_immagine">No picture selected</string>
+    <string name="invalid_address">The inserted address is not valid</string>
+    <string name="la_mia_posizione">My location</string>
+    <string name="descrizione">Description</string>
+    <string name="prezzo_notte">Price per night</string>
+    <string name="modifica">Edit</string>
+    <string name="elimina">Delete</string>
+    <string name="annulla">Cancel</string>
+    <string name="contatta">Ask the landlord</string>
+    <string name="prenota">Book</string>
+    <string name="permesso_negato">Permission denied</string>
+    <string name="deleted">The item was deleted successfully</string>
+    <string name="sei_sicuro_elimina">Are you sure you want to delete this item?</string>
+    <string name="tu">you</string>
+
+    <string name="no_property_found">No property found</string>
+    <string name="filtri">Filters</string>
+    <string name="chiudi">Close</string>
+    <string name="date">Dates</string>
+    <string name="seleziona_date">Choose dates</string>
+    <string name="ospiti">Guest(s)</string>
+    <string name="reset">Reset</string>
+    <string name="mostra_risultati">Show results</string>
+    <string name="ospitati_da">Hosted by</string>
+    <string name="keywords_dettaglio">Here you can find</string>
+    <string name="non_disponibile">Not available</string>
+    <string name="nessuna_disponibilita">No availability periods defined for this property</string>
+    <string name="range_non_valido">The selected period spans across unavailable dates. Please choose dates within a single availability window</string>
+    <string name="prenotazione_effettuata">The booking request was successfully completed</string>
+    <string name="conferma_prenotazione">Send a booking request</string>
+    <string name="totale">Total amount</string>
+    <string name="totale_parziale">Subtotal</string>
+    <string name="numero_ospiti">Number of guest(s)</string>
+    <string name="periodo_soggiorno">Period of stay</string>
+    <string name="completa_prenotazione">Complete the reservation</string>
+
+    <string name="accettata">Accepted</string>
+    <string name="accetta">Approve</string>
+    <string name="rifiutata">Rejected</string>
+    <string name="rifiuta">Decline</string>
+    <string name="in_attesa">Pending</string>
+    <string name="annullata">Cancelled</string>
+    <string name="pending_loading">Loading…</string>
+    <string name="esito_prenotazione">Booking request sent successfully</string>
+    <string name="no_booking">No booking found</string>
+
+    <string name="write_message">Write a message…</string>
+    <string name="no_messages">Nobody chatted with you yet</string>
+    <string name="start_chat">Start being a chatterbox now</string>
+
+    <string name="visualizza_recensioni">Show reviews</string>
+    <string name="modifica_utente">Edit user</string>
+    <string name="numero_recensioni">%1$d reviews</string>
+    <string name="aggiorna_dati">Update data</string>
+    <string name="nuova_password_opzionale">New password</string>
+    <string name="conferma_nuova_password">Confirm new password</string>
+    <string name="lascia_vuoto_per_mantenere">Leave empty to keep</string>
+    <string name="conferma_password">Confirm password</string>
+    <string name="updated_user">User updated successfully</string>
+    <string name="invalid_password">Confirmed password is different from new password</string>
+    <string name="segnala">Report</string>
+    <string name="recensioni">Reviews</string>
+    <string name="frase_admin">You are administrator of this application\n#1) Respect the privacy of others.\n#2) Think before you type.\n#3) With great power comes great responsibility.</string>
+
+    <string name="ordina_per">Sort by</string>
+    <string name="scrivi_una_recensione">Write a review</string>
+    <string name="come_valuti_esperienza">How was your stay?</string>
+    <string name="il_tuo_voto">Your rating</string>
+    <string name="scrivi_la_tua_recensione">Write your review</string>
+    <string name="racconta_esperienza">Tell about your experience</string>
+    <string name="pubblica">Publish</string>
+    <string-array name="ordinamenti_recensioni">
+        <item>Most recent</item>
+        <item>Best</item>
+        <item>Worst</item>
+    </string-array>
+    <string name="recensita">Property successfully reviewed</string>
+    <string name="seleziona_motivazione">Why are you reporting?</string>
+
+    <string name="contenuto_inappropriato">Inappropriate content</string>
+    <string name="contenuto_inappropriato_desc">The content was not appropriate</string>
+    <string name="informazioni_false">Fake information</string>
+    <string name="informazioni_false_desc">The information is false</string>
+    <string name="spam">Spam</string>
+    <string name="spam_desc">The message is spam</string>
+    <string name="comportamento_scorretto">Inappropriate behaviour</string>
+    <string name="comportamento_scorretto_desc">The behaviour is inappropriate</string>
+    <string name="altro">Other</string>
+    <string name="altro_desc">The reason is to be specified</string>
+    <string name="dettagli_aggiuntivi">More details</string>
+    <string name="descrivi_problema">Describe some other details</string>
+    <string name="segnalazione_inviata">User successfully reported</string>
+
+    <string name="nuovo_messaggio">New message from %1$s %2$s</string>
+    <string name="notifica_prenotazione">Booking notification</string>
+    <string name="notifica_nuova_prenotazione">You have a new booking request</string>
+    <string name="notifica_modifica_prenotazione">The tenant has modified the request details</string>
+    <string name="notifica_prenotazione_annullata">A booking has been cancelled by tenant</string>
+    <string name="notifica_prenotazione_accettata">The owner has confirmed your stay</string>
+    <string name="notifica_prenotazione_rifiutata">Unfortunately, your request was not accepted</string>
+
+    <string name="panoramica_prenotazioni">Booking data</string>
+    <string name="prenotazioni_totali">Total No. of bookings</string>
+    <string name="gestione_utenti">Manage users</string>
+    <string name="filter_all">Show all</string>
+    <string name="filter_banned">Show banned</string>
+    <string name="filter_suspended">Show suspended</string>
+    <string name="search_users_hint">Find user by email</string>
+    <string name="no_active_reports">No active reports</string>
+    <string name="report_reasons">Report motivations</string>
+    <string name="admin_actions">Actions</string>
+    <string name="suspension_duration">Suspension duration</string>
+    <string name="suspend_user">Suspend user</string>
+    <string name="block_user_permanently">Ban user</string>
+    <string name="default_suspension_24h">Default suspension (24h)</string>
+    <string name="ban_user">Ban user</string>
+    <string name="filter_reported">Show reported</string>
+    <string name="due_caratteri">At least 2 characters</string>
+    <string name="modifica_parola">Edit keyword</string>
+    <string name="nuova_parola">New keyword</string>
+    <string name="parola_salvata">Keyword successfully saved</string>
+
+    <string name="ok">OK</string>
+    <string name="sospeso">Suspended</string>
+    <string name="bandito">Banned</string>
+
+    <string name="utente_sospeso">"User suspended successfully"</string>
+    <string name="utente_bandito">"User banned successfully"</string>
+
+    <string name="sei_sospeso">YOU GOT SUSPENDED</string>
+    <string name="sei_bandito">YOU GOT BANNED</string>
+    <string name="schermata_blocco">You got kicked out due to a violation of our terms and conditions.\n\nIf you believe this is a mistake, please contact support.</string>
+    <string name="info_sospeso">You can log in again after %1$s</string>
+    <string name="parola_attiva">Mark as active</string>
+    <string name="no_parole">No keyword found</string>
+    <string name="nessuna_recensione">Nobody has reviewed you yet</string>
+
+    <string-array name="suspension_durations">
+        <item>6 hours</item>
+        <item>12 hours</item>
+        <item>24 hours</item>
+        <item>2 days</item>
+        <item>7 days</item>
+        <item>30 days</item>
+        <item>90 days</item>
+    </string-array>
+</resources>

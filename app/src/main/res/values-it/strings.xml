@@ -1,0 +1,216 @@
+<resources>
+    <string name="app_name" translatable="false">Mi Casa es tu Casa</string>
+
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
+    <string name="sign_up">Registrati</string>
+    <string name="accedi">Accedi</string>
+    <string name="crea_account">Crea Account</string>
+    <string name="registrati_subito">Registrati ora per iniziare</string>
+
+    <string name="dont_have_account">Non hai un account?</string>
+    <string name="have_account">Hai già un account?</string>
+
+    <string name="nome">Nome</string>
+    <string name="cognome">Cognome</string>
+    <string name="data_nascita">Data di nascita</string>
+    <string name="sono">Sono un</string>
+    <string name="seleziona_tipo">Seleziona tipo utente</string>
+
+    <string name="landlord">Locatore</string>
+    <string name="tenant">Conduttore</string>
+
+    <string name="enter_email">Inserisci l\'email</string>
+    <string name="enter_password">Inserisci la password</string>
+    <string name="invalid_email">Indirizzo email non valido</string>
+    <string name="campo_obbligatorio">Campo obbligatorio</string>
+    <string name="password_minima">La password deve contenere almeno 6 caratteri</string>
+    <string name="unknown_error">Errore sconosciuto</string>
+    <string name="invalid_age">L\'età deve essere superiore a 18 anni</string>
+    <string name="error_registration_success">Registrazione completata, ma l\'accesso è fallito</string>
+    <string name="data_missing">Per favore, compila tutti i campi</string>
+
+    <string name="login_success">Accesso effettuato con successo</string>
+    <string name="login_fail">Accesso fallito</string>
+    <string name="notification">Invia notifica</string>
+
+    <string name="welcome_back">Bentornato!</string>
+    <string name="inserisci_credenziali">Inserisci le tue credenziali per accedere</string>
+
+    <string name="title_activity_login">Attività Login</string>
+    <string name="title_activity_maps">Mappe</string>
+
+    <string name="esplora">Esplora</string>
+    <string name="prenotazioni">Prenotazioni</string>
+    <string name="messaggistica">Messaggi</string>
+    <string name="profilo">Profilo</string>
+    <string name="inizio">Dal</string>
+    <string name="fine">Al</string>
+    <string name="nuova_propriet">Aggiungi Proprietà</string>
+    <string name="modifica_proprieta">Modifica Proprietà</string>
+    <string name="informazioni_di_base">Informazioni generali</string>
+    <string name="nome_della_propriet">Nome</string>
+    <string name="indirizzo_per_la_mappa">Indirizzo</string>
+    <string name="inserisci_indirizzo">Scrivi un indirizzo</string>
+    <string name="posti_disponibili">Posti disponibili:</string>
+    <string name="descrizione_della_propriet">Scrivi una descrizione…</string>
+    <string name="parole_chiave">Parole chiave</string>
+    <string name="parola_chiave">Parola chiave</string>
+    <string name="immagini">Immagini</string>
+    <string name="immagine">Immagine</string>
+    <string name="aggiungi_foto">+ Aggiungi foto</string>
+    <string name="disponibilit_e_prezzi">Disponibilità e prezzi</string>
+    <string name="aggiungi_periodo">Aggiungi data</string>
+    <string name="salva_propriet">Salva</string>
+    <string name="date_error">La data inserita non è corretta</string>
+    <string name="date_overlap">Le date inserite si sovrappongono</string>
+    <string name="cerca_una_propriet">Cerca un alloggio…</string>
+    <string name="nessuna_immagine">Nessuna immagine selezionata</string>
+    <string name="invalid_address">L\'indirizzo inserito non è valido</string>
+    <string name="la_mia_posizione">La mia posizione</string>
+    <string name="descrizione">Descrizione</string>
+    <string name="prezzo_notte">Prezzo per notte</string>
+    <string name="modifica">Modifica</string>
+    <string name="elimina">Elimina</string>
+    <string name="annulla">Annulla</string>
+    <string name="contatta">Contatta il proprietario</string>
+    <string name="prenota">Prenota</string>
+    <string name="permesso_negato">Permesso negato</string>
+    <string name="deleted">Elemento eliminato con successo</string>
+    <string name="sei_sicuro_elimina">Sei sicuro di voler eliminare questo elemento?</string>
+    <string name="tu">tu</string>
+
+    <string name="no_property_found">Nessuna proprietà trovata</string>
+    <string name="filtri">Filtri</string>
+    <string name="chiudi">Chiudi</string>
+    <string name="date">Date</string>
+    <string name="seleziona_date">Scegli le date</string>
+    <string name="ospiti">Ospite/i</string>
+    <string name="reset">Resetta</string>
+    <string name="mostra_risultati">Mostra alloggi</string>
+    <string name="ospitati_da">Ospitato da</string>
+    <string name="keywords_dettaglio">Qui puoi trovare</string>
+    <string name="non_disponibile">Non disponibile</string>
+    <string name="nessuna_disponibilita">Nessun periodo di disponibilità definito per questa proprietà</string>
+    <string name="range_non_valido">Il periodo selezionato include date non disponibili. Scegli le date all\'interno di un unico intervallo di disponibilità</string>
+    <string name="prenotazione_effettuata">Richiesta di prenotazione inviata con successo</string>
+    <string name="conferma_prenotazione">Invia richiesta di prenotazione</string>
+    <string name="totale">Totale</string>
+    <string name="totale_parziale">Subtotale</string>
+    <string name="numero_ospiti">Numero di ospite/i</string>
+    <string name="periodo_soggiorno">Periodo del soggiorno</string>
+    <string name="completa_prenotazione">Completa la prenotazione</string>
+
+    <string name="accettata">Accettata</string>
+    <string name="accetta">Approva</string>
+    <string name="rifiutata">Rifiutata</string>
+    <string name="rifiuta">Rifiuta</string>
+    <string name="in_attesa">In attesa</string>
+    <string name="annullata">Annullata</string>
+    <string name="pending_loading">Caricamento…</string>
+    <string name="esito_prenotazione">Richiesta di prenotazione completata</string>
+    <string name="no_booking">Nessuna prenotazione trovata</string>
+
+    <string name="write_message">Scrivi un messaggio...</string>
+    <string name="no_messages">Nessuna conversazione presente</string>
+    <string name="start_chat">Inizia a chattare ora</string>
+
+    <string name="visualizza_recensioni">Mostra recensioni</string>
+    <string name="modifica_utente">Modifica utente</string>
+    <string name="numero_recensioni">%1$d recensioni</string>
+    <string name="aggiorna_dati">Aggiorna dati</string>
+    <string name="nuova_password_opzionale">Nuova password</string>
+    <string name="conferma_nuova_password">Conferma nuova password</string>
+    <string name="lascia_vuoto_per_mantenere">Lascia vuoto per non modificare</string>
+    <string name="conferma_password">Conferma password</string>
+    <string name="updated_user">Utente aggiornato con successo</string>
+    <string name="invalid_password">Le password non coincidono</string>
+    <string name="segnala">Segnala</string>
+    <string name="recensioni">Recensioni</string>
+    <string name="frase_admin">Sei un amministratore di questa applicazione\n#1) Rispetta la privacy altrui.\n#2) Pensa prima di scrivere.\n#3) Da un grande potere derivano grandi responsabilità.</string>
+
+    <string name="ordina_per">Ordina per</string>
+    <string name="scrivi_una_recensione">Scrivi una recensione</string>
+    <string name="come_valuti_esperienza">Com\'è stato il tuo soggiorno?</string>
+    <string name="il_tuo_voto">Il tuo voto</string>
+    <string name="scrivi_la_tua_recensione">Scrivi la tua recensione</string>
+    <string name="racconta_esperienza">Raccontaci la tua esperienza</string>
+    <string name="pubblica">Pubblica</string>
+    <string-array name="ordinamenti_recensioni">
+        <item>Più recenti</item>
+        <item>Migliori</item>
+        <item>Peggiori</item>
+    </string-array>
+    <string name="recensita">Recensione pubblicata con successo</string>
+    <string name="seleziona_motivazione">Perché stai segnalando?</string>
+
+    <string name="contenuto_inappropriato">Contenuto inappropriato</string>
+    <string name="contenuto_inappropriato_desc">Il contenuto non era appropriato</string>
+    <string name="informazioni_false">Informazioni false</string>
+    <string name="informazioni_false_desc">Le informazioni fornite sono false</string>
+    <string name="spam">Spam</string>
+    <string name="spam_desc">Il messaggio è spam</string>
+    <string name="comportamento_scorretto">Comportamento scorretto</string>
+    <string name="comportamento_scorretto_desc">Il comportamento è inappropriato</string>
+    <string name="altro">Altro</string>
+    <string name="altro_desc">Il motivo deve essere specificato</string>
+    <string name="dettagli_aggiuntivi">Ulteriori dettagli</string>
+    <string name="descrivi_problema">Descrivi altri dettagli sul problema</string>
+    <string name="segnalazione_inviata">Utente segnalato con successo</string>
+
+    <string name="nuovo_messaggio">Nuovo messaggio da %1$s %2$s</string>
+    <string name="notifica_prenotazione">Notifica di prenotazione</string>
+    <string name="notifica_nuova_prenotazione">Hai una nuova richiesta di prenotazione</string>
+    <string name="notifica_modifica_prenotazione">L\'inquilino ha modificato i dettagli della richiesta</string>
+    <string name="notifica_prenotazione_annullata">Una prenotazione è stata annullata dall\'inquilino</string>
+    <string name="notifica_prenotazione_accettata">Il proprietario ha confermato il tuo soggiorno</string>
+    <string name="notifica_prenotazione_rifiutata">Purtroppo la tua richiesta non è stata accettata</string>
+
+    <string name="panoramica_prenotazioni">Dati prenotazioni</string>
+    <string name="prenotazioni_totali">N. totale di prenotazioni</string>
+    <string name="gestione_utenti">Gestione utenti</string>
+    <string name="filter_all">Mostra tutti</string>
+    <string name="filter_banned">Mostra bannati</string>
+    <string name="filter_suspended">Mostra sospesi</string>
+    <string name="search_users_hint">Cerca utente per email</string>
+    <string name="no_active_reports">Nessuna segnalazione attiva</string>
+    <string name="report_reasons">Motivazioni segnalazione</string>
+    <string name="admin_actions">Azioni</string>
+    <string name="suspension_duration">Durata sospensione</string>
+    <string name="suspend_user">Sospendi utente</string>
+    <string name="block_user_permanently">Banna utente permanentemente</string>
+    <string name="default_suspension_24h">Sospensione predefinita (24h)</string>
+    <string name="ban_user">Banna utente</string>
+    <string name="filter_reported">Mostra segnalati</string>
+    <string name="due_caratteri">Almeno 2 caratteri</string>
+    <string name="modifica_parola">Modifica parola chiave</string>
+    <string name="nuova_parola">Nuova parola chiave</string>
+    <string name="parola_salvata">Parola chiave salvata con successo</string>
+
+    <string name="ok">OK</string>
+    <string name="sospeso">Sospeso</string>
+    <string name="bandito">Bannato</string>
+
+    <string name="utente_sospeso">Utente sospeso con successo</string>
+    <string name="utente_bandito">Utente bannato con successo</string>
+
+    <string name="sei_sospeso">SEI STATO SOSPESO</string>
+    <string name="sei_bandito">SEI STATO BANNATO</string>
+    <string name="schermata_blocco">Sei stato rimosso a causa di una violazione dei nostri termini e condizioni.\n\nSe ritieni ci sia un errore, contatta il nostro servizio di supporto.</string>
+    <string name="info_sospeso">Potrai accedere di nuovo dopo il %1$s</string>
+    <string name="parola_attiva">Segna come attiva</string>
+    <string name="no_parole">Nessuna parola chiave trovata</string>
+    <string name="nessuna_recensione">Nessuno ti ha ancora recensito</string>
+
+    <string-array name="suspension_durations">
+        <item>6 ore</item>
+        <item>12 ore</item>
+        <item>24 ore</item>
+        <item>2 giorni</item>
+        <item>7 giorni</item>
+        <item>30 giorni</item>
+        <item>90 giorni</item>
+    </string-array>
+</resources>

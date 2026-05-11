@@ -4,16 +4,13 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
 import it.tizzycek.micasaestucasa.R
 import it.tizzycek.micasaestucasa.data.parolechiave.ParoleChiave
@@ -22,12 +19,12 @@ import it.tizzycek.micasaestucasa.data.proprieta.Proprieta
 import it.tizzycek.micasaestucasa.databinding.AggiungiModificaProprietaBinding
 import it.tizzycek.micasaestucasa.databinding.ItemAvailabilityBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo
-import it.tizzycek.micasaestucasa.ui.adapters.ImageAdapter
 import it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.BaseImageManagerActivity
 import it.tizzycek.micasaestucasa.utils.DateValidator
 import it.tizzycek.micasaestucasa.utils.findPlace
 import it.tizzycek.micasaestucasa.utils.mostraErrore
 import it.tizzycek.micasaestucasa.utils.setupParoleChiave
+import it.tizzycek.micasaestucasa.utils.sistemaSchermo
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.Calendar
@@ -65,6 +62,8 @@ class AggiungiModificaProprieta: BaseImageManagerActivity() {
         } else {
             setupAvailability() // Mostra riga vuota solo se stiamo aggiungendo
         }
+
+        sistemaSchermo(binding.root.rootView)
     }
 
     private fun getKeyWords() {

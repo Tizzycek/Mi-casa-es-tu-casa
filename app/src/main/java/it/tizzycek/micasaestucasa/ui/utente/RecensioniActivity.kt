@@ -16,6 +16,7 @@ import it.tizzycek.micasaestucasa.databinding.ActivityRecensioniBinding
 import it.tizzycek.micasaestucasa.repo.MainRepo
 import it.tizzycek.micasaestucasa.ui.adapters.RecensioniAdapter
 import it.tizzycek.micasaestucasa.utils.mostraErrore
+import it.tizzycek.micasaestucasa.utils.sistemaSchermo
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -30,6 +31,8 @@ class RecensioniActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRecensioniBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        sistemaSchermo(binding.root.rootView)
 
         setupRecyclerView()
         setupSpinner()

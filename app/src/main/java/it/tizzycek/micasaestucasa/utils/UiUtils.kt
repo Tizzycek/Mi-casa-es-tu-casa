@@ -6,6 +6,8 @@ import android.location.Address
 import android.location.Geocoder
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.snackbar.Snackbar
 import it.tizzycek.micasaestucasa.R
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -47,5 +49,15 @@ suspend fun Context.findPlace(address: String): Address? = suspendCancellableCor
     } catch (e: Exception) {
         // Fallback per versioni vecchie o errori di rete
         continuation.resume(null)
+    }
+}
+
+// serve a non fare uscire l'applicazione dai bordi
+
+fun Activity.sistemaSchermo(view: View) {
+    ViewCompat.setOnApplyWindowInsetsListener(view) { v, windowInsets ->
+        val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+        v.setPadding(insets.left, insets.top, insets.right, insets.bottom)
+        windowInsets
     }
 }

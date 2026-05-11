@@ -22,6 +22,7 @@ import it.tizzycek.micasaestucasa.ui.home.fragments.nonadmin.MessaggisticaFragme
 import it.tizzycek.micasaestucasa.ui.utente.ChatActivity
 import it.tizzycek.micasaestucasa.ui.utente.LoginActivity
 import it.tizzycek.micasaestucasa.utils.notifiche.NotificationHelper
+import it.tizzycek.micasaestucasa.utils.sistemaSchermo
 
 class FragmentManager: AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
@@ -45,12 +46,8 @@ class FragmentManager: AppCompatActivity() {
         setupNavigation(utente.tipo)
         handleNotificationIntent(intent)
 
-        // serve a non fare uscire l'applicazione dai bordi
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root.rootView) { v, windowInsets ->
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(insets.left, insets.top, insets.right, insets.bottom)
-            windowInsets
-        }
+        sistemaSchermo(binding.root.rootView)
+
     }
 
     override fun onNewIntent(intent: Intent) {
