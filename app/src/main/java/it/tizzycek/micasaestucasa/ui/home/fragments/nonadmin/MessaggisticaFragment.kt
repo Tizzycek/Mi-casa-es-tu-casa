@@ -59,6 +59,7 @@ class MessaggisticaFragment: Fragment() {
                 if (lista.isEmpty()) {
                     binding.emptyStateLayout.visibility = View.VISIBLE
                 } else {
+                    binding.emptyStateLayout.visibility = View.GONE
                     messagePreviewAdapter.aggiornaLista(lista)
                     listaAnteprime = lista
                 }

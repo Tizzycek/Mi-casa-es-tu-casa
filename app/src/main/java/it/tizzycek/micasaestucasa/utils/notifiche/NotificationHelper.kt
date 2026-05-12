@@ -50,9 +50,12 @@ class NotificationHelper(private val context: Context) {
         val intent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             putExtra("NOTIFICATION_TYPE", if (type == NotificationType.Messaggi) "MESSAGGIO" else "PRENOTAZIONE")
-            putExtra("TARGET_ID", targetId)
-            putExtra("nomeDestinatario", message["nome"])
-            putExtra("cognomeDestinatario", message["cognome"])
+            if (type == NotificationType.Messaggi) {
+                putExtra("TARGET_ID", targetId)
+                putExtra("nomeDestinatario", message["nome"])
+                putExtra("cognomeDestinatario", message["cognome"])
+                putExtra("destinatarioId", message["senderId"])
+            }
         }
 
         val requestCode = System.currentTimeMillis().hashCode()

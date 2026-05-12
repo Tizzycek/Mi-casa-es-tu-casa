@@ -1,34 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="?android:attr/colorBackground"
     tools:context=".ui.utente.RecensioniActivity">
 
-    <!-- Header con info utente -->
     <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
+        android:id="@+id/headerCard"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        app:cardBackgroundColor="?android:attr/colorBackground"
         app:cardCornerRadius="12dp"
         app:cardElevation="4dp"
-        app:cardBackgroundColor="?android:attr/colorBackground">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:padding="16dp">
 
-            <!-- Avatar con iniziali -->
             <FrameLayout
+                android:id="@+id/avatarFrame"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_gravity="center_vertical">
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:id="@+id/avatarInitialsTextView"
@@ -39,7 +42,7 @@
                     android:textColor="?android:attr/colorBackground"
                     android:textSize="22sp"
                     android:textStyle="bold"
-                    tools:text="MR"/>
+                    tools:text="MR" />
 
                 <ImageView
                     android:id="@+id/badgeImageView"
@@ -48,227 +51,239 @@
                     android:layout_gravity="bottom|end"
                     android:src="@drawable/ic_badge"
                     android:visibility="gone"
-                    tools:visibility="visible"/>
+                    tools:visibility="visible" />
             </FrameLayout>
 
-            <!-- Info utente -->
-            <LinearLayout
+            <TextView
+                android:id="@+id/nomeCognomeTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
-                android:orientation="vertical"
-                android:layout_gravity="center_vertical">
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/ratingFlow"
+                app:layout_constraintEnd_toStartOf="@+id/btnSegnala"
+                app:layout_constraintStart_toEndOf="@id/avatarFrame"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="Mario Rossi" />
 
-                <TextView
-                    android:id="@+id/nomeCognomeTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    tools:text="Mario Rossi"/>
+            <androidx.constraintlayout.helper.widget.Flow
+                android:id="@+id/ratingFlow"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                app:constraint_referenced_ids="mediaRatingBar,mediaValoreTextView,bulletTextView,numeroRecensioniTextView"
+                app:flow_horizontalBias="0.0"
+                app:flow_horizontalGap="4dp"
+                app:flow_horizontalStyle="packed"
+                app:flow_verticalGap="4dp"
+                app:flow_wrapMode="chain"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btnSegnala"
+                app:layout_constraintStart_toStartOf="@id/nomeCognomeTextView"
+                app:layout_constraintTop_toBottomOf="@id/nomeCognomeTextView" />
 
-                <!-- Stelle e numero recensioni in orizzontale -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="4dp">
+            <RatingBar
+                android:id="@+id/mediaRatingBar"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:progressTint="@color/secondary"
+                android:stepSize="0.5"
+                tools:rating="4.5" />
 
-                    <RatingBar
-                        android:id="@+id/mediaRatingBar"
-                        style="?android:attr/ratingBarStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:isIndicator="true"
-                        android:numStars="5"
-                        android:progressTint="@color/secondary"
-                        android:stepSize="0.5"
-                        tools:rating="4.5"/>
+            <TextView
+                android:id="@+id/mediaValoreTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="14sp"
+                tools:text="4.5" />
 
+            <TextView
+                android:id="@+id/bulletTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="•"
+                android:textColor="?android:attr/textColorHint"
+                android:textSize="14sp" />
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="4dp">
-
-
-                <TextView
-                    android:id="@+id/mediaValoreTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:textSize="14sp"
-                    tools:text="4.5"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="?android:attr/textColorHint"
-                    android:textSize="14sp"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:text="•"/>
-
-                <TextView
-                    android:id="@+id/numeroRecensioniTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:textSize="14sp"
-                    tools:text="15 recensioni"/>
-                </LinearLayout>
-            </LinearLayout>
+            <TextView
+                android:id="@+id/numeroRecensioniTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="14sp"
+                tools:text="15 recensioni" />
 
             <Button
                 android:id="@+id/btnSegnala"
                 style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/holo_red_dark"
+                android:minHeight="48dp"
+                android:paddingHorizontal="12dp"
                 android:text="@string/segnala"
                 android:textAllCaps="false"
-                android:textSize="14sp"
                 android:textColor="@color/backgroundColor"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="0dp"
-                app:strokeColor="@android:color/holo_red_dark"
-                android:icon="@drawable/report_24px"
+                android:textSize="14sp"
+                android:visibility="gone"
+                app:icon="@drawable/report_24px"
                 app:iconSize="16dp"
                 app:iconTint="@color/backgroundColor"
-                android:backgroundTint="@android:color/holo_red_dark"
-                android:visibility="gone"
-                tools:visibility="visible"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeColor="@android:color/holo_red_dark"
+                tools:visibility="visible" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Barra per ordinamento e titolo -->
-    <LinearLayout
-        android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/sortContainer"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:paddingHorizontal="16dp"
-        android:paddingBottom="8dp"
-        android:gravity="center_vertical">
+        android:paddingVertical="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerCard">
 
-        <!-- Titolo sezione recensioni -->
-        <TextView
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/flowOrdinamento"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/recensioni"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="?android:attr/textColorPrimary"/>
+            app:constraint_referenced_ids="tvTitoloRecensioni,layoutOrdinamento"
+            app:flow_horizontalStyle="spread_inside"
+            app:flow_verticalGap="12dp"
+            app:flow_wrapMode="chain"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Layout ordinamento -->
-        <LinearLayout
+        <TextView
+            android:id="@+id/tvTitoloRecensioni"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
+            android:text="@string/recensioni"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/layoutOrdinamento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@drawable/spinner_background"
+            android:gravity="center_vertical"
+            android:minHeight="48dp"
+            android:orientation="horizontal"
             android:paddingHorizontal="12dp"
-            android:paddingVertical="8dp">
+            android:paddingVertical="4dp">
 
             <ImageView
                 android:layout_width="18dp"
                 android:layout_height="18dp"
-                android:src="@drawable/sort_24px"
                 android:layout_marginEnd="8dp"
+                android:src="@drawable/sort_24px"
                 app:tint="?android:attr/textColorSecondary" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
                 android:text="@string/ordina_per"
-                android:textSize="14sp"
                 android:textColor="?android:attr/textColorSecondary"
-                android:layout_marginEnd="4dp"/>
+                android:textSize="14sp" />
 
             <Spinner
                 android:id="@+id/spinnerOrdinamento"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
-                android:popupBackground="?android:attr/colorBackgroundFloating"
                 android:dropDownVerticalOffset="8dp"
                 android:paddingEnd="24dp"
-                android:spinnerMode="dropdown"/>
+                android:popupBackground="?android:attr/colorBackgroundFloating"
+                android:spinnerMode="dropdown" />
         </LinearLayout>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Divider -->
     <View
-        android:layout_width="match_parent"
+        android:id="@+id/divider"
+        android:layout_width="0dp"
         android:layout_height="1dp"
-        android:background="?android:attr/listDivider"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginBottom="8dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sortContainer" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
-    <!-- RecyclerView per le recensioni -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recensioniRecyclerView"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:clipToPadding="false"
-        android:padding="8dp"
-        tools:listitem="@layout/item_recensione"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recensioniRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:padding="8dp"
+            tools:listitem="@layout/item_recensione" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-
-<!--     Empty state -->
     <LinearLayout
         android:id="@+id/emptyStateLayout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
+        android:orientation="vertical"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider"
         tools:visibility="visible">
 
         <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@drawable/ic_empty_reviews"
             android:layout_marginBottom="16dp"
+            android:src="@drawable/ic_empty_reviews"
             app:tint="?android:attr/textColorHint" />
 
         <TextView
             android:id="@+id/emptyStateTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/nessuna_recensione"
             android:textColor="?android:attr/textColorSecondary"
-            android:textSize="16sp"
-            android:gravity="center"/>
+            android:textSize="16sp" />
     </LinearLayout>
 
-    <!-- Progress Bar -->
     <ProgressBar
         android:id="@+id/progressBar"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center"
-        android:layout_margin="16dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:indeterminateTint="@color/primary"
         android:visibility="gone"
-        android:indeterminateTint="@color/primary"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

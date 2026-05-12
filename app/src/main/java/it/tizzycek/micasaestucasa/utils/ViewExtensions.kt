@@ -24,6 +24,7 @@ fun ChipGroup.setupParoleChiave(scope: CoroutineScope, onSelectionChanged: (List
                     chip.isCheckable = true
 
                     chip.setChipBackgroundColorResource(R.color.secondary_dark)
+                    chip.setTextColor(ContextCompat.getColor(context, R.color.black))
                     chip.chipIcon = ContextCompat.getDrawable(context, R.drawable.check_small_24px)
                     chip.isChipIconVisible = false
 
@@ -66,6 +67,7 @@ fun ChipGroup.paroleChiaveProprieta(scope: CoroutineScope, listaParole: List<Str
                     chip.text = it.parola
                     chip.isCheckable = false
                     chip.setChipBackgroundColorResource(R.color.secondary_dark)
+                    chip.setTextColor(ContextCompat.getColor(context, R.color.black))
                     chip.chipIcon = ContextCompat.getDrawable(context, R.drawable.check_small_24px)
                     chip.isChipIconVisible = false
 

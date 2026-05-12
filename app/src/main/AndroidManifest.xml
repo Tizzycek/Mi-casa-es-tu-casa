@@ -49,6 +49,7 @@
         <activity android:name=".ui.utente.RecensioniActivity"
             android:exported="false"/>
         <activity android:name=".ui.utente.ChatActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false"/>
         <activity android:name=".ui.utente.BannedActivity"
             android:exported="false"/>

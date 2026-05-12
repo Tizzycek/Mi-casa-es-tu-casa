@@ -63,12 +63,13 @@ class FragmentManager: AppCompatActivity() {
 
             val nomeDestinatario = intent.getStringExtra("nomeDestinatario")
             val cognomeDestinatario = intent.getStringExtra("cognomeDestinatario")
+            val idDestinatario = intent.getStringExtra("destinatarioId")
 
             if (type != null) {
                 when (type) {
                     "MESSAGGIO" -> {
                         if (targetId != null)
-                        navigaAChat(targetId, nomeDestinatario ?: "Not", cognomeDestinatario ?: "Available")
+                        navigaAChat(targetId, nomeDestinatario ?: "Not", cognomeDestinatario ?: "Available", idDestinatario ?: "")
                     }
                     "PRENOTAZIONE" -> navigaAPrenotazioni()
                 }
@@ -76,15 +77,17 @@ class FragmentManager: AppCompatActivity() {
                 intent.removeExtra("TARGET_ID")
                 intent.removeExtra("nomeDestinatario")
                 intent.removeExtra("cognomeDestinatario")
+                intent.removeExtra("destinatarioId")
             }
         }
     }
 
-    private fun navigaAChat(chatId: String, nomeDestinatario: String, cognomeDestinatario: String) {
+    private fun navigaAChat(chatId: String, nomeDestinatario: String, cognomeDestinatario: String, idDestinatario: String) {
         val intent = Intent(this, ChatActivity::class.java).apply {
             putExtra("CHAT_ID", chatId)
             putExtra("nomeDestinatario", nomeDestinatario)
             putExtra("cognomeDestinatario", cognomeDestinatario)
+            putExtra("destinatarioId", idDestinatario)
         }
         MainRepo.getChatRepository().azzeraMessaggiNonLetti(chatId, MainRepo.getUserRepository().getCurrentUser()?.id!!)
         startActivity(intent)

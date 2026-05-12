@@ -21,7 +21,8 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         val messageData = mapOf(
             "nome" to data["nome"],
             "cognome" to data["cognome"],
-            "messagePreview" to data["messagePreview"]
+            "messagePreview" to data["messagePreview"],
+            "senderId" to data["senderId"]
         )
 
         val bookingData = mapOf(

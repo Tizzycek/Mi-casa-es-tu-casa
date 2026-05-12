@@ -56,7 +56,7 @@ suspend fun Context.findPlace(address: String): Address? = suspendCancellableCor
 
 fun Activity.sistemaSchermo(view: View) {
     ViewCompat.setOnApplyWindowInsetsListener(view) { v, windowInsets ->
-        val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+        val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.ime())
         v.setPadding(insets.left, insets.top, insets.right, insets.bottom)
         windowInsets
     }

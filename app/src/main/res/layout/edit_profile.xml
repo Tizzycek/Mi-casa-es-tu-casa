@@ -233,7 +233,7 @@
             <Button
                 android:id="@+id/btnSalvaModifiche"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 android:backgroundTint="@color/primary"
                 android:text="@string/salva_propriet"
                 android:textSize="16sp"
@@ -247,7 +247,7 @@
             <Button
                 android:id="@+id/btnAnnulla"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 android:backgroundTint="@color/light_gray"
                 android:text="@string/annulla"
                 android:textSize="16sp"

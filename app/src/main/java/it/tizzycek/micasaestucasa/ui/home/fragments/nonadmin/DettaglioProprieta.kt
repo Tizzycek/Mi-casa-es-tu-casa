@@ -55,14 +55,14 @@ class DettaglioProprieta: AppCompatActivity() {
         idProprieta = intent.getStringExtra("PROPRIETA_ID")
 
         if (idProprieta != null) {
-            caricaDatiPropieta(idProprieta!!)
+            caricaDatiProprieta(idProprieta!!)
         } else {
             finish()
         }
         setupButtons()
     }
 
-    private fun caricaDatiPropieta(id: String) {
+    private fun caricaDatiProprieta(id: String) {
         lifecycleScope.launch {
             binding.progressBar.visibility = View.VISIBLE
 
