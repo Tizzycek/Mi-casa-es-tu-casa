@@ -21,13 +21,11 @@ class ImageDetailAdapter(private val images: List<String>) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        // Usa un layout semplicissimo con solo una ImageView (match_parent)
         val binding = ItemImageDetailBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        // Carichiamo l'URL usando Coil
         holder.imageView.load(images[position]) {
             crossfade(true)
             placeholder(R.drawable.house_24px) // Immagine temporanea

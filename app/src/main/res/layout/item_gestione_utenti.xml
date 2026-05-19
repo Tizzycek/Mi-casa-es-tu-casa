@@ -20,7 +20,6 @@
         android:layout_height="wrap_content"
         android:padding="12dp">
 
-        <!-- Avatar utente -->
         <FrameLayout
             android:id="@+id/avatarContainer"
             android:layout_width="60dp"
@@ -54,7 +53,6 @@
 
         </FrameLayout>
 
-        <!-- Nome utente e email -->
         <LinearLayout
             android:id="@+id/userInfoLayout"
             android:layout_width="0dp"
@@ -81,7 +79,6 @@
                     android:textStyle="bold"
                     tools:text="Mario Rossi" />
 
-                <!-- Icona segnalazione vicino al nome -->
                 <ImageView
                     android:id="@+id/reportedIcon"
                     android:layout_width="16dp"
@@ -106,7 +103,6 @@
 
         </LinearLayout>
 
-        <!-- Stato utente - OK, Sospeso, Bannato -->
         <TextView
             android:id="@+id/tvStatoUtente"
             android:layout_width="wrap_content"

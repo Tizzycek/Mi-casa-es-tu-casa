@@ -15,7 +15,6 @@
         android:padding="24dp"
         android:background="?android:attr/colorBackground">
 
-        <!-- Drag handle -->
         <View
             android:layout_width="40dp"
             android:layout_height="4dp"
@@ -24,7 +23,6 @@
             android:background="?android:attr/textColorHint"
             android:alpha="0.4"/>
 
-        <!-- Titolo -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,7 +40,6 @@
             android:textColor="?android:attr/textColorSecondary"
             android:layout_marginBottom="20dp"/>
 
-        <!-- Opzioni segnalazione -->
         <RadioGroup
             android:id="@+id/radioGroupMotivazioni"
             android:layout_width="match_parent"
@@ -295,7 +292,6 @@
             </com.google.android.material.card.MaterialCardView>
         </RadioGroup>
 
-        <!-- Dettagli aggiuntivi -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -356,7 +352,6 @@
                 android:textColor="?android:attr/colorBackground"/>
         </LinearLayout>
 
-        <!-- Progress indicator -->
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="40dp"

@@ -20,7 +20,6 @@ class FiltriRicercaSheet(val onFiltriApplicati: (Map<String, Any?>) -> Unit) : B
 
     private lateinit var binding: LayoutFiltriRicercaBinding
 
-    private var guestCount = 1
     private var dataInizio: LocalDate? = null
     private var dataFine: LocalDate? = null
 
@@ -42,17 +41,6 @@ class FiltriRicercaSheet(val onFiltriApplicati: (Map<String, Any?>) -> Unit) : B
             binding.tvMinPrice.text = "$min"
             binding.tvMaxPrice.text = "$max"
         }
-
-//        binding.btnPlusGuests.setOnClickListener {
-//            guestCount++
-//            binding.tvGuestCount.text = guestCount.toString()
-//        }
-//        binding.btnMinusGuests.setOnClickListener {
-//            if (guestCount > 1) {
-//                guestCount--
-//                binding.tvGuestCount.text = guestCount.toString()
-//            }
-//        }
 
         binding.cardDateRange.setOnClickListener {
             setupDatePicker()
@@ -105,7 +93,7 @@ class FiltriRicercaSheet(val onFiltriApplicati: (Map<String, Any?>) -> Unit) : B
 
     private fun setupDatePicker() {
         binding.cardDateRange.setOnClickListener {
-            binding.cardDateRange.isEnabled = false
+            //binding.cardDateRange.isEnabled = false
             val builder = MaterialDatePicker.Builder.dateRangePicker()
             builder.setTitleText(getString(R.string.seleziona_date))
 
@@ -127,7 +115,7 @@ class FiltriRicercaSheet(val onFiltriApplicati: (Map<String, Any?>) -> Unit) : B
 
 
                 binding.tvDateRange.text = "$dataInizio - $dataFine"
-                binding.cardDateRange.isEnabled = true
+                //binding.cardDateRange.isEnabled = true
             }
         }
     }

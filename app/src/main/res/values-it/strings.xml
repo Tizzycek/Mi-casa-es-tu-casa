@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name" translatable="false">Mi Casa es tu Casa</string>
-
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
@@ -61,7 +59,7 @@
     <string name="immagini">Immagini</string>
     <string name="immagine">Immagine</string>
     <string name="aggiungi_foto">+ Aggiungi foto</string>
-    <string name="disponibilit_e_prezzi">Disponibilità e prezzi</string>
+    <string name="disponibilit_e_prezzi">Disponibilità e prezzi per notte</string>
     <string name="aggiungi_periodo">Aggiungi data</string>
     <string name="salva_propriet">Salva</string>
     <string name="date_error">La data inserita non è corretta</string>

@@ -20,7 +20,6 @@
             android:src="@android:drawable/ic_menu_my_calendar"
             app:tint="@android:color/darker_gray" />
 
-        <!-- Data inizio -->
         <TextView
             android:id="@+id/tvStartDate"
             android:layout_width="wrap_content"
@@ -37,7 +36,6 @@
             android:textSize="12sp"
             android:textColor="@android:color/darker_gray" />
 
-        <!-- Data fine -->
         <TextView
             android:id="@+id/tvEndDate"
             android:layout_width="wrap_content"
@@ -53,7 +51,6 @@
             android:background="@android:color/darker_gray"
             android:layout_marginHorizontal="8dp" />
 
-        <!-- Prezzo -->
         <TextView
             android:id="@+id/tvPrice"
             android:layout_width="wrap_content"
@@ -61,7 +58,6 @@
             android:textSize="14sp"
             android:textStyle="bold" />
 
-        <!-- Simbolo valuta -->
         <TextView
             android:id="@+id/tvCurrencySymbol"
             android:layout_width="wrap_content"
@@ -70,7 +66,6 @@
             android:paddingStart="2dp"
             android:paddingEnd="4dp" />
 
-        <!-- Etichetta prezzo per notte -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

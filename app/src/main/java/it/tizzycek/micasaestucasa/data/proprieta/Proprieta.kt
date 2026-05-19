@@ -46,7 +46,3 @@ data class Proprieta(var id: String?, val proprietarioId: String, var nome: Stri
         }
     }
 }
-
-// recensioni, valutazione (media)
-
-// val prezzoBase

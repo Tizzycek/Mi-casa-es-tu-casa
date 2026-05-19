@@ -19,7 +19,6 @@
             android:orientation="vertical"
             android:padding="24dp">
 
-            <!-- Header con Avatar (iniziali) -->
             <FrameLayout
                 android:layout_width="100dp"
                 android:layout_height="100dp"
@@ -37,7 +36,6 @@
                     android:textStyle="bold"
                     tools:text="MR"/>
 
-                <!-- Badge (visibile condizionalmente) -->
                 <ImageView
                     android:id="@+id/badgeImageView"
                     android:layout_width="32dp"
@@ -49,7 +47,6 @@
                     tools:visibility="visible"/>
             </FrameLayout>
 
-            <!-- Nome e Cognome -->
             <TextView
                 android:id="@+id/nomeCognomeTextView"
                 android:layout_width="match_parent"
@@ -61,7 +58,6 @@
                 android:layout_marginBottom="8dp"
                 tools:text="Mario Rossi"/>
 
-            <!-- Media Recensioni con Stelline -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -91,7 +87,6 @@
                     tools:text="4.5/5"/>
             </LinearLayout>
 
-            <!-- Numero Recensioni -->
             <TextView
                 android:id="@+id/numeroRecensioniTextView"
                 android:layout_width="match_parent"
@@ -109,14 +104,12 @@
                 android:layout_gravity="center"
                 android:visibility="gone" />
 
-            <!-- Divider -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
                 android:layout_marginBottom="24dp"/>
 
-            <!-- Opzione 1: Modifica Utente -->
             <LinearLayout
                 android:id="@+id/modificaUtenteLayout"
                 android:layout_width="match_parent"
@@ -149,14 +142,12 @@
                     app:tint="?android:attr/textColorHint"/>
             </LinearLayout>
 
-            <!-- Divider -->
             <View
                 android:id="@+id/reviewDivider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"/>
 
-            <!-- Opzione 2: Visualizza Recensioni -->
             <LinearLayout
                 android:id="@+id/visualizzaRecensioniLayout"
                 android:layout_width="match_parent"
@@ -190,13 +181,11 @@
                     app:tint="?android:attr/textColorHint"/>
             </LinearLayout>
 
-            <!-- Divider -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"/>
 
-            <!-- Opzione 3: Logout -->
             <LinearLayout
                 android:id="@+id/logoutLayout"
                 android:layout_width="match_parent"

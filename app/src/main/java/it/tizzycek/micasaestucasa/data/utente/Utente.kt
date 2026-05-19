@@ -3,8 +3,6 @@ package it.tizzycek.micasaestucasa.data.utente
 import android.util.Patterns
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
-import it.tizzycek.micasaestucasa.data.utente.Stato
-import java.time.Instant
 import java.time.LocalDate
 
 data class Utente (var id: String?, val email: String, val nome: String, val cognome: String, val nascita: LocalDate, var stato: Stato = Stato.OK, var segnalato: Boolean = false, val tipo: TipoUtente, var fcmToken: String? = null, var suspension: Timestamp? = null) {

@@ -84,12 +84,19 @@ class PrenotazioniAdapter(private val items: List<Prenotazioni>, private val lif
                 StatoPrenotazione.ANNULLATA -> {
                     binding.tvStatoPrenotazione.setBackgroundResource(R.drawable.bg_status_rejected)
                     binding.tvStatoPrenotazione.setText(R.string.annullata)
-
-                    binding.tvNomeProprieta.paintFlags = binding.tvNomeProprieta.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                    binding.tvOspitiItem.paintFlags = binding.tvNomeProprieta.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                    binding.tvDateRangeItem.paintFlags = binding.tvNomeProprieta.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                    binding.tvPrezzoTotale.paintFlags = binding.tvNomeProprieta.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                 }
+            }
+
+            if (prenotazione.statoPrenotazione == StatoPrenotazione.ANNULLATA) {
+                binding.tvNomeProprieta.paintFlags = binding.tvNomeProprieta.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                binding.tvOspitiItem.paintFlags = binding.tvOspitiItem.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                binding.tvDateRangeItem.paintFlags = binding.tvDateRangeItem.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                binding.tvPrezzoTotale.paintFlags = binding.tvPrezzoTotale.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            } else {
+                binding.tvNomeProprieta.paintFlags = binding.tvNomeProprieta.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                binding.tvOspitiItem.paintFlags = binding.tvOspitiItem.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                binding.tvDateRangeItem.paintFlags = binding.tvDateRangeItem.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                binding.tvPrezzoTotale.paintFlags = binding.tvPrezzoTotale.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
             }
 
             binding.tvOspitiItem.text = "${prenotazione.ospiti} ${binding.root.context.getString(R.string.ospiti)}"
@@ -133,6 +140,8 @@ class PrenotazioniAdapter(private val items: List<Prenotazioni>, private val lif
                 }
 
             } else {
+                binding.btnRecensione.visibility = View.GONE
+
                 if (tipoUtente == TipoUtente.PROPRIETARIO) {
                     if (prenotazione.statoPrenotazione == StatoPrenotazione.IN_ATTESA) {
                         binding.btnSinistro.visibility = View.VISIBLE
@@ -162,6 +171,9 @@ class PrenotazioniAdapter(private val items: List<Prenotazioni>, private val lif
                         binding.btnDestro.visibility = View.GONE
                     }
                 } else {
+                    binding.btnSinistro.visibility = View.VISIBLE
+                    binding.btnDestro.visibility = View.VISIBLE
+
                     binding.btnSinistro.setText(R.string.annulla)
                     binding.btnSinistro.setCompoundDrawablesWithIntrinsicBounds(R.drawable.cancel_24px, 0, 0, 0)
                     binding.btnSinistro.setBackgroundColor(ContextCompat.getColor(binding.root.context, android.R.color.holo_red_dark))
@@ -410,7 +422,7 @@ class PrenotazioniAdapter(private val items: List<Prenotazioni>, private val lif
                         binding.tvPrezzoTotale.text = "${nuovaValuta.symbol} ${"%.2f".format(nuovoPrezzo)}"
                     },
                     onFailure = { e ->
-                        (binding.root.context as? android.app.Activity)?.mostraErrore(e.message ?: "Errore")
+                        (binding.root.context as? android.app.Activity)?.mostraErrore(e.message ?: binding.root.context.getString(R.string.unknown_error))
                     }
                 )
             }
@@ -425,10 +437,8 @@ class PrenotazioniAdapter(private val items: List<Prenotazioni>, private val lif
                 try {
                     val idUtente = if (tipoUtente == TipoUtente.PROPRIETARIO) p.affittuarioId else p.proprietarioId
 
-                    // 1. Prendi statistiche
                     val statistica = MainRepo.getStatisticheRepository().getStatistiche(idUtente).getOrThrow()
 
-                    // 2. Aggiorna statistiche
                     statistica.aggiungiRecensione(recensione)
                     MainRepo.getStatisticheRepository().aggiornaStatistiche(idUtente, statistica).getOrThrow()
 
@@ -437,7 +447,6 @@ class PrenotazioniAdapter(private val items: List<Prenotazioni>, private val lif
                     else
                         p.daRecensire = p.daRecensire.copy(daRecensireAffittuario = false)
 
-                    // 3. Segna prenotazione come fatta
                     val fine = MainRepo.getPrenotazioniRepository().aggiornaPrenotazione(p)
 
                     if (fine.isFailure) {

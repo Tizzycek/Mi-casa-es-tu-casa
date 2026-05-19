@@ -63,16 +63,6 @@
                     android:textSize="11sp"
                     tools:text="14:30" />
 
-<!--                <TextView-->
-<!--                    android:id="@+id/messageStatusTextView"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginStart="4dp"-->
-<!--                    android:text="✓"-->
-<!--                    android:textColor="@color/white_transparent_high"-->
-<!--                    android:textSize="12sp"-->
-<!--                    tools:text="✓" />-->
-
             </LinearLayout>
 
         </LinearLayout>

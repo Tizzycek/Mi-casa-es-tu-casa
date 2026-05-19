@@ -11,7 +11,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Titolo della sezione -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -22,7 +21,6 @@
             android:layout_marginBottom="20dp"
             android:fontFamily="sans-serif-medium" />
 
-        <!-- Card 1: Prenotazioni Totali (IN EVIDENZA - a tutta larghezza) -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -83,14 +81,12 @@
             android:layout_gravity="center"
             android:visibility="gone" />
 
-        <!-- Griglia 2x2 per le altre 4 card -->
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:columnCount="2"
             android:rowCount="2">
 
-            <!-- Card 2: In Attesa -->
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
                 android:layout_height="160dp"
@@ -141,7 +137,6 @@
 
             </androidx.cardview.widget.CardView>
 
-            <!-- Card 3: Accettate -->
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
                 android:layout_height="160dp"
@@ -192,7 +187,6 @@
 
             </androidx.cardview.widget.CardView>
 
-            <!-- Card 4: Rifiutate -->
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
                 android:layout_height="160dp"
@@ -243,7 +237,6 @@
 
             </androidx.cardview.widget.CardView>
 
-            <!-- Card 5: Annullate -->
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
                 android:layout_height="160dp"

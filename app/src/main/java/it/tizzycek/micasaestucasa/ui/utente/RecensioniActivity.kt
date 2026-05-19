@@ -119,7 +119,6 @@ class RecensioniActivity: AppCompatActivity() {
                     binding.badgeImageView.visibility = View.VISIBLE
             }
 
-            // Notifica l'adapter con la nuova lista
             if (s.listaRecensioni.isEmpty())
                 binding.emptyStateLayout.visibility = View.VISIBLE
             else

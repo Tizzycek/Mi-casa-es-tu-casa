@@ -75,7 +75,7 @@ class NotificationHelper(private val context: Context) {
             }
         }
 
-        val builder = NotificationCompat.Builder(context, type.id).setSmallIcon(R.drawable.ic_launcher_foreground).setContentTitle(title).setContentText(notificationText).setPriority(if (type == NotificationType.Messaggi) NotificationCompat.PRIORITY_HIGH else NotificationCompat.PRIORITY_DEFAULT).setContentIntent(pendingIntent).setAutoCancel(true)
+        val builder = NotificationCompat.Builder(context, type.id).setSmallIcon(R.drawable.agente).setContentTitle(title).setContentText(notificationText).setPriority(if (type == NotificationType.Messaggi) NotificationCompat.PRIORITY_HIGH else NotificationCompat.PRIORITY_DEFAULT).setContentIntent(pendingIntent).setAutoCancel(true)
 
         notificationManager.notify(System.currentTimeMillis().toInt(), builder.build())
     }

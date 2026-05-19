@@ -163,8 +163,7 @@ class ParoleChiaveFragment: Fragment() {
 
         dialog.show()
 
-        // Per mantenere il dialog aperto in caso di errore
-        // bisogna override del listener dopo show()
+        // per mantenere il dialog aperto in caso di errore bisogna fare override del listener dopo show()
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
             val text = etKeyword.text.toString().trim()
 
@@ -186,7 +185,7 @@ class ParoleChiaveFragment: Fragment() {
             }
         }
 
-        // Reset errori quando l'utente digita
+        // reset errori digitazione utente
         etKeyword.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {

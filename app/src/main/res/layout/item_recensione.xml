@@ -17,7 +17,6 @@
         android:orientation="vertical"
         android:padding="12dp">
 
-        <!-- Header recensione: stelle e data -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -69,7 +68,6 @@
 
         </LinearLayout>
 
-        <!-- Testo recensione -->
         <TextView
             android:id="@+id/testoRecensioneTextView"
             android:layout_width="match_parent"
@@ -79,17 +77,7 @@
             android:maxLines="4"
             android:ellipsize="end"
             tools:text="testo di prova"/>
-        <!-- Bottone "Leggi di più" (visibile solo se testo lungo) -->
-        <TextView
-            android:id="@+id/leggiDiPiuTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Leggi di più"
-            android:textColor="@color/primary"
-            android:textSize="12sp"
-            android:layout_marginTop="4dp"
-            android:visibility="gone"
-            tools:visibility="visible"/>
+
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

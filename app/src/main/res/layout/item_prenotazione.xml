@@ -122,6 +122,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/scrivi_una_recensione"
                 android:visibility="gone"
+                android:enabled="false"
                 app:backgroundTint="@color/primary" />
 
             <com.google.android.material.button.MaterialButton

@@ -13,7 +13,6 @@
     android:paddingEnd="16dp"
     android:paddingBottom="12dp">
 
-    <!-- Avatar -->
     <FrameLayout
         android:id="@+id/avatarContainer"
         android:layout_width="52dp"
@@ -35,7 +34,6 @@
 
     </FrameLayout>
 
-    <!-- Nome contatto -->
     <TextView
         android:id="@+id/contactNameTextView"
         android:layout_width="0dp"
@@ -52,7 +50,6 @@
         app:layout_constraintTop_toTopOf="@+id/avatarContainer"
         tools:text="Mario Rossi" />
 
-    <!-- Timestamp -->
     <TextView
         android:id="@+id/timestampTextView"
         android:layout_width="wrap_content"
@@ -64,7 +61,6 @@
         app:layout_constraintTop_toTopOf="@+id/contactNameTextView"
         tools:text="14:30" />
 
-    <!-- Anteprima messaggio -->
     <TextView
         android:id="@+id/messagePreviewTextView"
         android:layout_width="0dp"
@@ -80,7 +76,6 @@
         app:layout_constraintTop_toBottomOf="@+id/contactNameTextView"
         tools:text="Ciao! Ci vediamo domani per il caffè? Ti aspetto alle 18:00" />
 
-    <!-- Badge messaggi non letti (con numero) -->
     <FrameLayout
         android:id="@+id/unreadBadgeContainer"
         android:layout_width="wrap_content"
@@ -112,7 +107,6 @@
 
     </FrameLayout>
 
-    <!-- Divisore sottile (come WhatsApp) -->
     <View
         android:id="@+id/divider"
         android:layout_width="0dp"

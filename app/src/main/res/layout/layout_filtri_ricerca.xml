@@ -115,100 +115,6 @@
 
             </androidx.cardview.widget.CardView>
 
-            <!--TODO guarda sta roba cos'è-->
-            <!-- Raggio di ricerca (visibile solo quando c'è una località) -->
-<!--            <com.google.android.material.card.MaterialCardView-->
-<!--                android:id="@+id/cardRadius"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="8dp"-->
-<!--                android:visibility="gone"-->
-<!--                app:cardCornerRadius="8dp"-->
-<!--                app:cardElevation="1dp"-->
-<!--                app:cardBackgroundColor="?android:attr/colorBackground">-->
-
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:orientation="vertical"-->
-<!--                    android:padding="16dp">-->
-
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:orientation="horizontal"-->
-<!--                        android:gravity="center_vertical"-->
-<!--                        android:layout_marginBottom="8dp">-->
-
-<!--                        <ImageView-->
-<!--                            android:layout_width="20dp"-->
-<!--                            android:layout_height="20dp"-->
-<!--                            android:src="@android:drawable/ic_menu_compass"-->
-<!--                            android:layout_marginEnd="8dp"-->
-<!--                            app:tint="@color/primary" />-->
-
-<!--                        <TextView-->
-<!--                            android:layout_width="0dp"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_weight="1"-->
-<!--                            android:text="raggio di ricerca"-->
-<!--                            android:textSize="14sp" />-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/tvRadiusValue"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="20 km"-->
-<!--                            android:textSize="14sp"-->
-<!--                            android:textStyle="bold"-->
-<!--                            android:textColor="@color/primary" />-->
-
-<!--                    </LinearLayout>-->
-
-<!--                    <com.google.android.material.slider.Slider-->
-<!--                        android:id="@+id/sliderRadius"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:valueFrom="1"-->
-<!--                        android:valueTo="100"-->
-<!--                        android:value="20"-->
-<!--                        android:stepSize="1"-->
-<!--                        app:labelBehavior="gone"-->
-<!--                        app:trackColorActive="@color/primary"-->
-<!--                        app:trackColorInactive="@color/light_gray"-->
-<!--                        app:thumbColor="@color/primary"-->
-<!--                        app:haloColor="@color/primary_light" />-->
-
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:orientation="horizontal"-->
-<!--                        android:layout_marginTop="4dp">-->
-
-<!--                        <TextView-->
-<!--                            android:layout_width="0dp"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_weight="1"-->
-<!--                            android:text="1 km"-->
-<!--                            android:textSize="12sp"-->
-<!--                            android:textColor="@android:color/darker_gray" />-->
-
-<!--                        <TextView-->
-<!--                            android:layout_width="0dp"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_weight="1"-->
-<!--                            android:text="100 km"-->
-<!--                            android:textSize="12sp"-->
-<!--                            android:textColor="@android:color/darker_gray"-->
-<!--                            android:gravity="end" />-->
-
-<!--                    </LinearLayout>-->
-
-<!--                </LinearLayout>-->
-
-<!--            </com.google.android.material.card.MaterialCardView>-->
-
-            <!-- Date -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -259,7 +165,6 @@
 
             </androidx.cardview.widget.CardView>
 
-            <!-- Ospiti -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -312,7 +217,6 @@
 
             </androidx.cardview.widget.CardView>
 
-            <!-- Prezzo -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -378,7 +282,6 @@
 
             </androidx.cardview.widget.CardView>
 
-            <!-- Parole chiave -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -411,7 +314,6 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Footer -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

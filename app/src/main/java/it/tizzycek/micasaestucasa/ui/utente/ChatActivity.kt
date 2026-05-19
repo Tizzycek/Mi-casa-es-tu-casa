@@ -136,14 +136,4 @@ class ChatActivity: BaseImageManagerActivity() {
             }
         }
     }
-
-    private fun setSendingState(isSending: Boolean) {
-        if (isSending) {
-            binding.sendButton.isEnabled = false
-            binding.sendButton.visibility = View.GONE
-            binding.sendProgressBar.visibility = View.VISIBLE
-        } else {
-
-        }
-    }
 }

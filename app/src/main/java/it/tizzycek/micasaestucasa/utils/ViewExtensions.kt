@@ -7,11 +7,6 @@ import it.tizzycek.micasaestucasa.repo.MainRepo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-/**
- * Popola un ChipGroup con le parole chiave recuperate dal repository.
- * @param scope Il lifecycleScope della View chiamante.
- * @param onSelectionChanged Callback facoltativa che restituisce la lista degli ID selezionati.
- */
 fun ChipGroup.setupParoleChiave(scope: CoroutineScope, onSelectionChanged: (List<Chip>) -> Unit = {}) {
     scope.launch {
         MainRepo.getParoleChiave().getParoleChiave().fold(

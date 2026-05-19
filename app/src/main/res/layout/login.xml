@@ -18,13 +18,12 @@
             android:orientation="vertical"
             android:padding="24dp">
 
-            <!-- Icona/Logo -->
             <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="86dp"
+                android:layout_height="86dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="24dp"
-                android:src="@drawable/ic_launcher_foreground"
+                android:src="@mipmap/ic_launcher_foreground"
                 android:contentDescription="@string/app_name"/>
 
             <TextView
@@ -46,7 +45,6 @@
                 android:gravity="center"
                 android:layout_marginBottom="32dp"/>
 
-            <!-- Email -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -69,7 +67,6 @@
                 android:textColor="?android:attr/textColorPrimary"
                 android:textColorHint="?android:attr/textColorHint"/>
 
-            <!-- Password -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -92,7 +89,6 @@
                 android:textColor="?android:attr/textColorPrimary"
                 android:textColorHint="?android:attr/textColorHint"/>
 
-            <!-- Progress Bar -->
             <ProgressBar
                 android:id="@+id/progressBar"
                 android:layout_width="40dp"
@@ -101,7 +97,6 @@
                 android:visibility="gone"
                 android:indeterminateTint="@color/primary"/>
 
-            <!-- Bottone Accedi -->
             <Button
                 android:id="@+id/btnLogin"
                 android:layout_width="match_parent"

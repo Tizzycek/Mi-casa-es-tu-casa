@@ -27,9 +27,9 @@ data class Recensione(val id: String, val autoreId: String, val nomeAutore: Stri
 
             // metodo per evitare eccezioni col timestamp
             val dataCreazione = when (dataRaw) {
-                is com.google.firebase.Timestamp -> dataRaw.toDate().toInstant() // Se Firebase restituisce un Timestamp
-                is String -> Instant.parse(dataRaw) // Se Firebase restituisce la stringa che hai salvato
-                else -> Instant.now() // Fallback di sicurezza
+                is com.google.firebase.Timestamp -> dataRaw.toDate().toInstant()
+                is String -> Instant.parse(dataRaw)
+                else -> Instant.now() // fallback di sicurezza
             }
 
             return Recensione(

@@ -9,7 +9,6 @@
     android:padding="24dp"
     android:background="?android:attr/colorBackground">
 
-    <!-- Drag handle -->
     <View
         android:layout_width="40dp"
         android:layout_height="4dp"
@@ -18,7 +17,6 @@
         android:background="?android:attr/textColorHint"
         android:alpha="0.4"/>
 
-    <!-- Titolo -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,7 +26,6 @@
         android:textColor="?android:attr/textColorPrimary"
         android:layout_marginBottom="16dp"/>
 
-    <!-- Info professionista/utente da recensire -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -72,7 +69,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Rating Bar -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -91,7 +87,6 @@
         android:layout_marginBottom="20dp"
         android:rating="0"/>
 
-    <!-- Testo recensione -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -122,65 +117,6 @@
             android:padding="12dp"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Suggerimenti rapidi (opzionale) -->
-<!--    <TextView-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="@string/suggerimenti_rapidi"-->
-<!--        android:textSize="12sp"-->
-<!--        android:textColor="?android:attr/textColorHint"-->
-<!--        android:layout_marginBottom="8dp"/>-->
-
-<!--    <com.google.android.flexbox.FlexboxLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginBottom="20dp"-->
-<!--        app:flexWrap="wrap">-->
-
-<!--        <com.google.android.material.chip.Chip-->
-<!--            android:id="@+id/chipPuntuale"-->
-<!--            style="@style/Widget.Material3.Chip.Suggestion"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="👍 Puntuale"-->
-<!--            android:checkable="true"-->
-<!--            android:layout_marginEnd="8dp"-->
-<!--            android:layout_marginBottom="8dp"/>-->
-
-<!--        <com.google.android.material.chip.Chip-->
-<!--            android:id="@+id/chipProfessionale"-->
-<!--            style="@style/Widget.Material3.Chip.Suggestion"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="⭐ Professionale"-->
-<!--            android:checkable="true"-->
-<!--            android:layout_marginEnd="8dp"-->
-<!--            android:layout_marginBottom="8dp"/>-->
-
-<!--        <com.google.android.material.chip.Chip-->
-<!--            android:id="@+id/chipCortese"-->
-<!--            style="@style/Widget.Material3.Chip.Suggestion"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="😊 Cortese"-->
-<!--            android:checkable="true"-->
-<!--            android:layout_marginEnd="8dp"-->
-<!--            android:layout_marginBottom="8dp"/>-->
-
-<!--        <com.google.android.material.chip.Chip-->
-<!--            android:id="@+id/chipQualita"-->
-<!--            style="@style/Widget.Material3.Chip.Suggestion"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="🏆 Qualità eccellente"-->
-<!--            android:checkable="true"-->
-<!--            android:layout_marginEnd="8dp"-->
-<!--            android:layout_marginBottom="8dp"/>-->
-<!--    </com.google.android.flexbox.FlexboxLayout>-->
-
-
-
-    <!-- Bottoni azione -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -209,7 +145,6 @@
             android:textColor="?android:attr/colorBackground"/>
     </LinearLayout>
 
-    <!-- Progress indicator -->
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="40dp"

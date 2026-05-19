@@ -15,7 +15,6 @@
         android:layout_height="wrap_content"
         android:padding="12dp">
 
-        <!-- Switch per stato attivo/non attivo -->
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/switch_active"
             android:layout_width="wrap_content"
@@ -26,7 +25,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             tools:checked="true" />
 
-        <!-- Parola chiave -->
         <TextView
             android:id="@+id/tv_keyword"
             android:layout_width="0dp"
@@ -42,7 +40,6 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Esempio parola chiave" />
 
-        <!-- Bottone Modifica -->
         <ImageButton
             android:id="@+id/btn_edit"
             android:layout_width="40dp"
@@ -56,7 +53,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:tint="#FFA500" />
 
-        <!-- Bottone Elimina -->
         <ImageButton
             android:id="@+id/btn_delete"
             android:layout_width="40dp"

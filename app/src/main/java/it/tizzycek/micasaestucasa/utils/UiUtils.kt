@@ -15,10 +15,7 @@ import java.util.Locale
 import kotlin.coroutines.resume
 
 fun Activity.mostraErrore(messaggio: String) {
-    Snackbar.make(findViewById(android.R.id.content), messaggio, Snackbar.LENGTH_LONG)
-        .setBackgroundTint(ContextCompat.getColor(this, R.color.red))
-        .setTextColor(ContextCompat.getColor(this, R.color.white))
-        .show()
+    Snackbar.make(findViewById(android.R.id.content), messaggio, Snackbar.LENGTH_LONG).setBackgroundTint(ContextCompat.getColor(this, R.color.red)).setTextColor(ContextCompat.getColor(this, R.color.white)).show()
 }
 
 fun Activity.mostraErrore(resId: Int) {
@@ -26,17 +23,13 @@ fun Activity.mostraErrore(resId: Int) {
 }
 
 fun View.mostraErrore(messaggio: String) {
-    Snackbar.make(this, messaggio, Snackbar.LENGTH_LONG)
-        .setBackgroundTint(ContextCompat.getColor(context, R.color.red))
-        .setTextColor(ContextCompat.getColor(context, R.color.white))
-        .show()
+    Snackbar.make(this, messaggio, Snackbar.LENGTH_LONG).setBackgroundTint(ContextCompat.getColor(context, R.color.red)).setTextColor(ContextCompat.getColor(context, R.color.white)).show()
 }
 
 suspend fun Context.findPlace(address: String): Address? = suspendCancellableCoroutine { continuation ->
     val geocoder = Geocoder(this, Locale.getDefault())
     
     try {
-        // Usiamo la versione con listener (API 33+) che è asincrona
         geocoder.getFromLocationName(address, 1, object : Geocoder.GeocodeListener {
             override fun onGeocode(addresses: MutableList<Address>) {
                 continuation.resume(addresses.firstOrNull())

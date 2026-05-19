@@ -99,11 +99,7 @@ class ProprietaRepository {
         }
     }
 
-    suspend fun aggiornaProprieta(
-        proprieta: Proprieta,
-        immagini: List<ByteArray>,
-        immaginiDaEliminare: List<String>
-    ): Result<Boolean> = coroutineScope {
+    suspend fun aggiornaProprieta(proprieta: Proprieta, immagini: List<ByteArray>, immaginiDaEliminare: List<String>): Result<Boolean> = coroutineScope {
         try {
             if (immaginiDaEliminare.isNotEmpty()) {
                 val deleteTask = immaginiDaEliminare.map { url ->
@@ -224,8 +220,7 @@ class ProprietaRepository {
                 }.toList()
             } else emptyList()
 
-            // Se la cache ha risultati validi E contiene la maggior parte dei dati,
-            // potremmo usarli direttamente
+
             if (risultatiDaCache.isNotEmpty() && cacheProprieta.size > 10) {
                 return Result.success(risultatiDaCache)
             }
@@ -277,110 +272,3 @@ class ProprietaRepository {
         return r * c
     }
 }
-
-/*class ProprietaRepository {
-    // ... codice esistente ...
-
-    private data class CacheEntry(
-        val proprieta: Proprieta,
-        val timestamp: Long = System.currentTimeMillis()
-    )
-
-    private val cacheProprieta = mutableMapOf<String, CacheEntry>()
-    private val CACHE_TTL = 5 * 60 * 1000L // 5 minuti
-
-    private fun isCacheValid(entry: CacheEntry): Boolean {
-        return System.currentTimeMillis() - entry.timestamp < CACHE_TTL
-    }
-
-    private fun getCachedProprieta(id: String): Proprieta? {
-        return cacheProprieta[id]?.takeIf { isCacheValid(it) }?.proprieta
-    }
-
-    suspend fun cercaDisponibiliConCacheIntelligente(
-        lat: Double? = null,
-        lng: Double? = null,
-        raggioKm: Double = 20.0,
-        dal: LocalDate? = null,
-        al: LocalDate? = null,
-        posti: Int? = null,
-        paroleChiaveIds: List<String>? = null,
-        prezzoMin: Double? = null,
-        prezzoMax: Double? = null,
-        forceRefresh: Boolean = false
-    ): Result<List<Proprieta>> {
-        return try {
-            // Se forceRefresh è false e la cache ha dati validi, proviamo dalla cache
-            if (!forceRefresh && cacheProprieta.isNotEmpty()) {
-                val cachedResults = cacheProprieta.values
-                    .filter { isCacheValid(it) }
-                    .map { it.proprieta }
-                    .filter { prop ->
-                        posti?.let { prop.posti >= it } ?: true
-                    }
-                    .filter { prop ->
-                        if (dal != null && al != null) prop.isDisponibile(dal, al) else true
-                    }
-                    .filter { prop ->
-                        if (lat != null && lng != null) {
-                            calcolaDistanza(lat, lng, prop.latitudine, prop.longitudine) <= raggioKm
-                        } else true
-                    }
-                    .filter { prop ->
-                        if (prezzoMin != null && prezzoMax != null) {
-                            prop.disponibilita.any { it.prezzo in prezzoMin..prezzoMax }
-                        } else true
-                    }
-                    .filter { prop ->
-                        paroleChiaveIds?.let { ids ->
-                            prop.paroleChiaveIds?.any { it in ids } ?: false
-                        } ?: true
-                    }
-
-                // Se abbiamo almeno un risultato dalla cache, lo restituiamo
-                if (cachedResults.isNotEmpty()) {
-                    return Result.success(cachedResults)
-                }
-            }
-
-            // Query Firestore come fallback
-            var query: Query = firestore.collection(collection)
-
-            posti?.let { query = query.whereGreaterThanOrEqualTo("posti", it) }
-            paroleChiaveIds?.let { ids ->
-                if (ids.isNotEmpty()) query = query.whereArrayContainsAny("paroleChiaveIds", ids)
-            }
-
-            val snapshot = query.limit(100).get().await()
-            var risultati = snapshot.documents.mapNotNull { it.toProprieta() }
-
-            // Aggiorna cache
-            risultati.forEach { prop ->
-                prop.id?.let { id ->
-                    cacheProprieta[id] = CacheEntry(prop)
-                }
-            }
-
-            // Filtri post-query
-            if (dal != null && al != null) {
-                risultati = risultati.filter { it.isDisponibile(dal, al) }
-            }
-
-            if (lat != null && lng != null) {
-                risultati = risultati.filter { prop ->
-                    calcolaDistanza(lat, lng, prop.latitudine, prop.longitudine) <= raggioKm
-                }
-            }
-
-            if (prezzoMin != null && prezzoMax != null) {
-                risultati = risultati.filter { prop ->
-                    prop.disponibilita.any { it.prezzo in prezzoMin..prezzoMax }
-                }
-            }
-
-            Result.success(risultati)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-}*/

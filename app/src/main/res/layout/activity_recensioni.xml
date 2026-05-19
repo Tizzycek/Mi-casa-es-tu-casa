@@ -262,8 +262,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginBottom="16dp"
-            android:src="@drawable/ic_empty_reviews"
-            app:tint="?android:attr/textColorHint" />
+            android:src="@drawable/ic_empty_reviews" />
 
         <TextView
             android:id="@+id/emptyStateTextView"

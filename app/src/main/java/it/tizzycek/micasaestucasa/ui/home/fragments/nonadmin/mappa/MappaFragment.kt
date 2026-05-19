@@ -294,8 +294,8 @@ class MappaFragment: Fragment(), OnMapReadyCallback {
             val posti = getString(R.string.posti_disponibili) + " ${proprieta.posti}"
             val marker = mMap.addMarker(MarkerOptions().position(posizione).title(proprieta.nome).snippet(posti))
 
-            marker?.let {
-                markerMap[it] = requireNotNull(proprieta.id)
+            marker?.let { mk ->
+                markerMap[mk] = requireNotNull(proprieta.id)
             }
         }
     }
