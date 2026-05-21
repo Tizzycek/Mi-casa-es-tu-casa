@@ -1,12 +1,10 @@
 package it.tizzycek.micasaestucasa.repo.prenotazioni
 
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
 import it.tizzycek.micasaestucasa.data.prenotazioni.Prenotazioni
 import it.tizzycek.micasaestucasa.data.prenotazioni.Prenotazioni.Companion.toHashMap
 import it.tizzycek.micasaestucasa.data.prenotazioni.Prenotazioni.Companion.toPrenotazioni
 import it.tizzycek.micasaestucasa.data.prenotazioni.StatoPrenotazione
-import it.tizzycek.micasaestucasa.data.utente.Stato
 import kotlinx.coroutines.tasks.await
 
 class PrenotazioniRepository {

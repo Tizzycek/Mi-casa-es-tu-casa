@@ -10,16 +10,10 @@ object PrenotazioneLogic {
         val vecchiaInizio = prenotazione.vecchiaDataInizio!!
         val vecchiaFine = prenotazione.vecchiaDataFine!!
 
-        //    Il prezzo per notte corretto è quello del blocco originale da cui la
-        //    prenotazione era stata ritagliata.  Quel blocco non esiste più in
-        //    listaAttuale, ma i suoi vicini immediati (il blocco che termina il
-        //    giorno prima dell'inizio vecchio e/o quello che inizia il giorno dopo
-        //    la fine vecchia) conservano lo stesso prezzo.
-        //    Se entrambi i vicini concordano → usiamo quel prezzo.
-        //    Se c'è un solo vicino → usiamo il suo prezzo.
-        //    Se i vicini hanno prezzi diversi o non esistono (prenotazione che
-        //    copriva tutta la disponibilità) → fallback al calcolo proporzionale
-        //    sul totale della nuova prenotazione (comportamento precedente).
+        /*
+         Il blocco originale non esiste più. Bisogna vedere se, sulla prenotazione, ce ne sono di contigui per prendere il loro prezzo per notte. Se non ce ne sono, il prezzo va ricalcolato.
+         Il blocco va comunque aggiornato, riunendo se ci sono contigui e restituendo la lista nuova
+        * */
         val vicini = listaAttuale.filter { disp ->
             disp.dataFine == vecchiaInizio.minusDays(1) || disp.dataInizio == vecchiaFine.plusDays(1)
         }
@@ -82,13 +76,13 @@ object PrenotazioneLogic {
         var bloccoTrovato = false
 
         for (disp in listaAttuale) {
-            // Se il blocco non ha intersezioni con la prenotazione, lo teniamo così com'è
+            // se il blocco non ha intersezioni con la prenotazione, si tiene com'è
             if (fineP.isBefore(disp.dataInizio) || inizioP.isAfter(disp.dataFine)) {
                 nuovaLista.add(disp)
                 continue
             }
 
-            // Se arriviamo qui, c'è un'intersezione. Segnamo che abbiamo trovato dove tagliare.
+            // Qui c'è un'intersezione. È dove bisogna tagliare.
             bloccoTrovato = true
 
             // Caso 1: C'è un pezzo che avanza PRIMA della prenotazione
@@ -107,16 +101,8 @@ object PrenotazioneLogic {
         return nuovaLista.sortedBy { it.dataInizio }
     }
 
-    /**
-     * Decides whether the old blocked dates need to be restored before blocking
-     * the new ones (booking was ACCETTATA before being edited) or whether they
-     * are still present in the availability, and we can just block the new dates
-     * directly (booking was IN_ATTESA when edited, so they were never removed).
-     *
-     * This is the single entry-point called by onPrenotazioneConfermata so that
-     * both Bug 1 (stale proprieta) and Bug 2 (wrong routing for edited bookings)
-     * are handled in one place with fresh Firestore data.
-     */
+
+    /*per ricalcolare le date, se è una modifica (vecchie date non null) bisogna risitemare le date delle prenotazioni*/
     fun computaNuovaDisponibilita(listaAttuale: List<Disponibilita>, p: Prenotazioni): List<Disponibilita> {
         val vecchiaInizio = p.vecchiaDataInizio
         val vecchiaFine = p.vecchiaDataFine
